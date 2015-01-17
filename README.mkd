@@ -1,0 +1,3 @@
+# Mini-Greeter
+
+A minimal, opiniated GTK3 greeter for LightDM.
