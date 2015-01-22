@@ -79,11 +79,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 greeter_PROGRAMS = lightdm-mini-greeter$(EXEEXT)
 subdir = .
-DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
-	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
+DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(srcdir)/config.h.in depcomp $(dist_xgreeters_DATA) COPYING \
-	compile install-sh missing
+	$(srcdir)/config.h.in depcomp $(dist_xgreeters_DATA) compile \
+	install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -100,8 +99,8 @@ PROGRAMS = $(greeter_PROGRAMS)
 am_lightdm_mini_greeter_OBJECTS = lightdm_mini_greeter-main.$(OBJEXT)
 lightdm_mini_greeter_OBJECTS = $(am_lightdm_mini_greeter_OBJECTS)
 lightdm_mini_greeter_LDADD = $(LDADD)
-lightdm_mini_greeter_LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(lightdm_mini_greeter_LDFLAGS) $(LDFLAGS) -o $@
+lightdm_mini_greeter_LINK = $(CCLD) $(lightdm_mini_greeter_CFLAGS) \
+	$(CFLAGS) $(lightdm_mini_greeter_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -302,6 +301,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AUTOMAKE_OPTIONS = \
+				foreign # Disable Requirement for README, AUTHORS, COPYING...
+
 
 # Global Compile Flags
 AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
@@ -312,24 +314,20 @@ AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -Winit-self                                               \
              -ftrapv -fverbose-asm
 
+DISTCLEANFILES = \
+			aclocal.m4
+
 greeterdir = $(bindir)
 xgreetersdir = $(datadir)/xgreeters
 dist_xgreeters_DATA = lightdm-mini-greeter.desktop
 lightdm_mini_greeter_SOURCES = main.c callbacks.o
-lightdm_mini_greeter_CPPFLAGS = \
+lightdm_mini_greeter_CFLAGS = \
 					$(GTK_CFLAGS) \
 					$(LIGHTDM_CFLAGS)
 
 lightdm_mini_greeter_LDFLAGS = \
 					$(GTK_LIBS) \
 					$(LIGHTDM_LIBS)
-
-DISTCLEANFILES = \
-			config.h \
-			aclocal.m4
-
-EXTRA_DIST = \
-			autogen.sh
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -342,15 +340,15 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
-	      echo ' cd $(srcdir) && $(AUTOMAKE) --gnu'; \
-	      $(am__cd) $(srcdir) && $(AUTOMAKE) --gnu \
+	      echo ' cd $(srcdir) && $(AUTOMAKE) --foreign'; \
+	      $(am__cd) $(srcdir) && $(AUTOMAKE) --foreign \
 		&& exit 0; \
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Makefile
+	  $(AUTOMAKE) --foreign Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -455,18 +453,18 @@ distclean-compile:
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 lightdm_mini_greeter-main.o: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(lightdm_mini_greeter_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT lightdm_mini_greeter-main.o -MD -MP -MF $(DEPDIR)/lightdm_mini_greeter-main.Tpo -c -o lightdm_mini_greeter-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lightdm_mini_greeter_CFLAGS) $(CFLAGS) -MT lightdm_mini_greeter-main.o -MD -MP -MF $(DEPDIR)/lightdm_mini_greeter-main.Tpo -c -o lightdm_mini_greeter-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/lightdm_mini_greeter-main.Tpo $(DEPDIR)/lightdm_mini_greeter-main.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='lightdm_mini_greeter-main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(lightdm_mini_greeter_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o lightdm_mini_greeter-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lightdm_mini_greeter_CFLAGS) $(CFLAGS) -c -o lightdm_mini_greeter-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
 
 lightdm_mini_greeter-main.obj: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(lightdm_mini_greeter_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT lightdm_mini_greeter-main.obj -MD -MP -MF $(DEPDIR)/lightdm_mini_greeter-main.Tpo -c -o lightdm_mini_greeter-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lightdm_mini_greeter_CFLAGS) $(CFLAGS) -MT lightdm_mini_greeter-main.obj -MD -MP -MF $(DEPDIR)/lightdm_mini_greeter-main.Tpo -c -o lightdm_mini_greeter-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/lightdm_mini_greeter-main.Tpo $(DEPDIR)/lightdm_mini_greeter-main.Po
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='lightdm_mini_greeter-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(lightdm_mini_greeter_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o lightdm_mini_greeter-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(lightdm_mini_greeter_CFLAGS) $(CFLAGS) -c -o lightdm_mini_greeter-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
 install-dist_xgreetersDATA: $(dist_xgreeters_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_xgreeters_DATA)'; test -n "$(xgreetersdir)" || list=; \

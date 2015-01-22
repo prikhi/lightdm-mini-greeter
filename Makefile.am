@@ -1,3 +1,6 @@
+AUTOMAKE_OPTIONS = \
+				foreign # Disable Requirement for README, AUTHORS, COPYING...
+
 # Global Compile Flags
 AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -Wno-unused-parameter -Wfloat-equal -Wundef -Wshadow      \
@@ -7,6 +10,10 @@ AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -Winit-self                                               \
              -ftrapv -fverbose-asm
 
+DISTCLEANFILES = \
+			aclocal.m4
+
+
 # Program Name & Location
 greeter_PROGRAMS = lightdm-mini-greeter
 greeterdir = $(bindir)
@@ -14,19 +21,11 @@ greeterdir = $(bindir)
 xgreetersdir = $(datadir)/xgreeters
 dist_xgreeters_DATA = lightdm-mini-greeter.desktop
 
-
 lightdm_mini_greeter_SOURCES = main.c callbacks.o
 
-lightdm_mini_greeter_CPPFLAGS = \
+lightdm_mini_greeter_CFLAGS = \
 					$(GTK_CFLAGS) \
 					$(LIGHTDM_CFLAGS)
 lightdm_mini_greeter_LDFLAGS = \
 					$(GTK_LIBS) \
 					$(LIGHTDM_LIBS)
-
-DISTCLEANFILES = \
-			config.h \
-			aclocal.m4
-
-EXTRA_DIST = \
-			autogen.sh
