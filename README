@@ -1,0 +1,14 @@
+# Mini-Greeter
+
+A minimal but highly configurable GTK3 greeter for LightDM.
+
+*This is still in very early alpha, do not expect it to work at all*
+
+## Install
+
+```bash
+./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
+make
+sudo make install
+lightdm --test-mode -d
+```
