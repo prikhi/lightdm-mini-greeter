@@ -1,9 +1,8 @@
 /* Callback Functions for LightDM & GTK */
-
-#include <stdio.h>
-
 #include <gtk/gtk.h>
 #include <lightdm.h>
+
+#include "utils.h"
 
 
 /* Start the Default Session Once Fully Authenticated */
@@ -13,11 +12,11 @@ void authentication_complete_cb(LightDMGreeter *greeter)
     const gchar *default_session = lightdm_greeter_get_default_session_hint(
             greeter);
 
-    fprintf(stderr, "[Debug] Attempting to start session %s", default_session);
+    g_message("Attempting to start session: %s", default_session);
     if (!lightdm_greeter_get_is_authenticated(greeter) ||
             !lightdm_greeter_start_session_sync(greeter, default_session, NULL)) {
-        // Authenticaton Failed, Retry
-        lightdm_greeter_authenticate(greeter, NULL);
+        g_message("Received invalid password");
+        begin_authentication_as_default_user(greeter);
     }
 }
 
@@ -28,11 +27,11 @@ void handle_password(GtkWidget *password_input, LightDMGreeter *greeter)
     gboolean in_authentication = lightdm_greeter_get_in_authentication(greeter);
 
     if (in_authentication) {
-        fprintf(stderr, "[Debug] Attempting authentication\n");
+        g_message("Using entered password to authenticate");
         const gchar *password_text = gtk_entry_get_text(
             GTK_ENTRY(password_input));
         lightdm_greeter_respond(greeter, password_text);
     } else {
-        fprintf(stderr, "[Error] Given password while not in authentication\n");
+        g_critical("Given password while not in authentication");
     }
 }

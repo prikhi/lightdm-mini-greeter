@@ -1,15 +1,16 @@
-#include <stdlib.h>
-
+/* lightdm-mini-greeter - A minimal GTK LightDM Greeter */
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <lightdm.h>
 
 #include "callbacks.c"
+#include "utils.h"
 
 
 int main(int argc, char **argv)
 {
-    // GTK & LightDM Initialization
+    // GLib, GTK & LightDM Initialization
+    g_log_set_always_fatal(G_LOG_LEVEL_CRITICAL);
     gtk_init(&argc, &argv);
     LightDMGreeter *greeter = lightdm_greeter_new();
 
@@ -43,23 +44,10 @@ int main(int argc, char **argv)
                      G_CALLBACK(authentication_complete_cb), NULL);
 
 
-    // Attempt Connection to LightDM daemon
-    if (!lightdm_greeter_connect_sync(greeter, NULL)) {
-        fprintf(stderr, "[Error] Could not connect to LightDM Daemon\n");
-        return EXIT_FAILURE;
-    }
+    connect_to_lightdm_daemon(greeter);
 
+    begin_authentication_as_default_user(greeter);
 
-    // Begin Authentiction as Default User
-    // const gchar *default_user = lightdm_greeter_get_select_user_hint(greeter);
-    const gchar *default_user = "prikhi";
-    fprintf(stderr, "[Debug] Beginning Authentication as Default User %s\n",
-            default_user);
-    lightdm_greeter_authenticate(greeter, default_user);
-
-
-    // Show the Window & Enter the Main Event Loop
     gtk_widget_show_all(main_window);
     gtk_main();
-    return EXIT_SUCCESS;
 }

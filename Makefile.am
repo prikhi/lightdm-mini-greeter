@@ -34,11 +34,14 @@ greeterdir = $(bindir)
 xgreetersdir = $(datadir)/xgreeters
 dist_xgreeters_DATA = lightdm-mini-greeter.desktop
 
-lightdm_mini_greeter_SOURCES = main.c callbacks.o
+lightdm_mini_greeter_SOURCES = \
+							main.c \
+							callbacks.o \
+							utils.o
 
 lightdm_mini_greeter_CFLAGS = \
-					$(GTK_CFLAGS) \
-					$(LIGHTDM_CFLAGS)
+							$(GTK_CFLAGS) \
+							$(LIGHTDM_CFLAGS)
 lightdm_mini_greeter_LDFLAGS = \
-					$(GTK_LIBS) \
-					$(LIGHTDM_LIBS)
+							$(GTK_LIBS) \
+							$(LIGHTDM_LIBS)
