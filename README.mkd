@@ -6,8 +6,8 @@ A minimal but highly configurable GTK3 greeter for LightDM.
 
 ## Goals
 
-Eventually this is will present a very minimal interface, relying on file
-configuration & keyboard shortcuts.
+Eventually this is will present a very minimal, customizable interface
+modifiable through a configuration file.
 
 Language/session info configured in file.
 
@@ -19,16 +19,18 @@ Keyboard shortcuts to power off, hibernate, sleep & reboot.
 
 ## Install
 
-```bash
+```sh
 ./autogen.sh
 ./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
 make
 sudo make install
-lightdm --test-mode -d
+lightdm --test-mode -d -c /your/test/config
 ```
 
 ## Contribute
 
 Feature Requests/Bug Reports:
+
 http://github.com/prikhi/lightdm-mini-greeter
+
 http://bugs.sleepanarchy.com/projects/mini-greeter/
