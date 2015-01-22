@@ -1,4 +1,6 @@
 /* lightdm-mini-greeter - A minimal GTK LightDM Greeter */
+#include <sys/mman.h>
+
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <lightdm.h>
@@ -9,6 +11,9 @@
 
 int main(int argc, char **argv)
 {
+    // Dealing with user passwords - don't swap out the memory
+    mlockall(MCL_CURRENT | MCL_FUTURE);
+
     // GLib, GTK & LightDM Initialization
     g_log_set_always_fatal(G_LOG_LEVEL_CRITICAL);
     gtk_init(&argc, &argv);
