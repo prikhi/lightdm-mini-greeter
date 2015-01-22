@@ -20,6 +20,7 @@ Keyboard shortcuts to power off, hibernate, sleep & reboot.
 ## Install
 
 ```bash
+./autogen.sh
 ./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
 make
 sudo make install

@@ -10,8 +10,21 @@ AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -Winit-self                                               \
              -ftrapv -fverbose-asm
 
+EXTRA_DIST = \
+			autogen.sh
+
 DISTCLEANFILES = \
 			aclocal.m4
+
+MAINTAINERCLEANFILES = \
+					Makefile.in \
+					compile \
+					config.h.in \
+					configure \
+					depcomp \
+					install-sh \
+					missing
+
 
 
 # Program Name & Location
