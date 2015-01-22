@@ -4,6 +4,8 @@ A minimal but highly configurable GTK3 greeter for LightDM.
 
 *This is still in early development, do not expect well functioning software*
 
+Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
+
 ## Goals
 
 Eventually this is will present a very minimal, customizable interface
@@ -24,13 +26,17 @@ Keyboard shortcuts to power off, hibernate, sleep & reboot.
 ./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
 make
 sudo make install
-lightdm --test-mode -d -c /your/test/config
 ```
+
+You can then specify `lightdm-mini-greeter` as your `greeter` in
+`/etc/lightdm/lightdm.conf`.
+
+You can test it out using LightDM's `test-mode`:
+
+    lightdm --test-mode -d
 
 ## Contribute
 
-Feature Requests/Bug Reports:
-
-http://github.com/prikhi/lightdm-mini-greeter
-
-http://bugs.sleepanarchy.com/projects/mini-greeter/
+You can submit feature requests, bug reports, pull requests or patches on
+either [github](http://github.com/prikhi/lightdm-mini-greeter) or
+[redmine](http://bugs.sleepanarchy.com/projects/mini-greeter/).
