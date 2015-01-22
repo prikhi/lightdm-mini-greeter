@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=LightDM Mini Greeter
+Comment=A minimal, highly configurable GTK3 greeter
+Exec=lightdm-mini-greeter
+Type=Application
