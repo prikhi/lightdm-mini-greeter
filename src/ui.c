@@ -15,19 +15,13 @@ static void create_and_attach_password_field(UI *ui);
 
 
 /* Initialize the Main Window & it's Children */
-UI *initialize_ui(LightDMGreeter *greeter)
+UI *initialize_ui(void)
 {
     UI *ui = new_ui();
 
     setup_main_window(ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(ui);
-
-    // Connect Signals
-    g_signal_connect(GTK_ENTRY(ui->password_input), "activate",
-                     G_CALLBACK(handle_password), greeter);
-    g_signal_connect(G_OBJECT(greeter), "authentication-complete",
-                     G_CALLBACK(authentication_complete_cb), NULL);
 
     return ui;
 }

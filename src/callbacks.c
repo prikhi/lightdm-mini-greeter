@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <lightdm.h>
 
+#include "app.h"
 #include "utils.h"
 #include "callbacks.h"
 
@@ -29,16 +30,16 @@ void authentication_complete_cb(LightDMGreeter *greeter)
 
 
 /* If Authenticating, Respond with the Entered Password */
-void handle_password(GtkWidget *password_input, LightDMGreeter *greeter)
+void handle_password(GtkWidget *password_input, App *app)
 {
-    if (!lightdm_greeter_get_is_authenticated(greeter)) {
-        if (!lightdm_greeter_get_in_authentication(greeter)) {
-            begin_authentication_as_default_user(greeter);
+    if (!lightdm_greeter_get_is_authenticated(app->greeter)) {
+        if (!lightdm_greeter_get_in_authentication(app->greeter)) {
+            begin_authentication_as_default_user(app->greeter);
         }
         g_message("Using entered password to authenticate");
         const gchar *password_text =
             gtk_entry_get_text(GTK_ENTRY(password_input));
-        lightdm_greeter_respond(greeter, password_text);
+        lightdm_greeter_respond(app->greeter, password_text);
     } else {
         g_message("Password entered while already authenticated");
     }

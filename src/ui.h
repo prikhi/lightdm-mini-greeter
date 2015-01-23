@@ -12,6 +12,6 @@ typedef struct UI_ {
 } UI;
 
 
-UI *initialize_ui(LightDMGreeter *greeter);
+UI *initialize_ui(void);
 
 #endif
