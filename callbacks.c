@@ -41,4 +41,5 @@ void handle_password(GtkWidget *password_input, LightDMGreeter *greeter)
     } else {
         g_message("Password entered while already authenticated");
     }
+    gtk_entry_set_text(GTK_ENTRY(password_input), "");
 }
