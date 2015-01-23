@@ -34,15 +34,17 @@ dist_xgreeters_DATA = lightdm-mini-greeter.desktop
 
 
 # Greeter Executable
-greeter_PROGRAMS = lightdm-mini-greeter
 greeterdir = $(bindir)
+greeter_PROGRAMS = lightdm-mini-greeter
 
 lightdm_mini_greeter_SOURCES = \
 							src/main.c \
-							src/callbacks.o \
-							src/utils.o
+							src/callbacks.c \
+							src/ui.c \
+							src/utils.c
 
 lightdm_mini_greeter_CFLAGS = \
+							$(AM_CFLAGS) \
 							$(GTK_CFLAGS) \
 							$(LIGHTDM_CFLAGS)
 lightdm_mini_greeter_LDFLAGS = \

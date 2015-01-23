@@ -3,6 +3,7 @@
 #include <lightdm.h>
 
 #include "utils.h"
+#include "callbacks.h"
 
 
 /* Start the Default Session Once Fully Authenticated */
