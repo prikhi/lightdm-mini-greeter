@@ -8,14 +8,20 @@
 /* Start the Default Session Once Fully Authenticated */
 void authentication_complete_cb(LightDMGreeter *greeter)
 {
-    // Attempt to Start the User Session
-    const gchar *default_session = lightdm_greeter_get_default_session_hint(
-            greeter);
+    if (lightdm_greeter_get_is_authenticated(greeter)) {
+        const gchar *default_session =
+            lightdm_greeter_get_default_session_hint(greeter);
 
-    g_message("Attempting to start session: %s", default_session);
-    if (!lightdm_greeter_get_is_authenticated(greeter) ||
-            !lightdm_greeter_start_session_sync(greeter, default_session, NULL)) {
-        g_message("Received invalid password");
+        g_message("Attempting to start session: %s", default_session);
+
+        gboolean session_started_successfully =
+            !lightdm_greeter_start_session_sync(greeter, default_session, NULL);
+
+        if (!session_started_successfully) {
+            g_message("Unable to start session");
+        }
+    } else {
+        g_message("Authenticaton unsuccessful");
         begin_authentication_as_default_user(greeter);
     }
 }
