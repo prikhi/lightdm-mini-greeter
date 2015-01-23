@@ -30,14 +30,15 @@ void authentication_complete_cb(LightDMGreeter *greeter)
 /* If Authenticating, Respond with the Entered Password */
 void handle_password(GtkWidget *password_input, LightDMGreeter *greeter)
 {
-    gboolean in_authentication = lightdm_greeter_get_in_authentication(greeter);
-
-    if (in_authentication) {
+    if (!lightdm_greeter_get_is_authenticated(greeter)) {
+        if (!lightdm_greeter_get_in_authentication(greeter)) {
+            begin_authentication_as_default_user(greeter);
+        }
         g_message("Using entered password to authenticate");
-        const gchar *password_text = gtk_entry_get_text(
-            GTK_ENTRY(password_input));
+        const gchar *password_text =
+            gtk_entry_get_text(GTK_ENTRY(password_input));
         lightdm_greeter_respond(greeter, password_text);
     } else {
-        g_critical("Given password while not in authentication");
+        g_message("Password entered while already authenticated");
     }
 }
