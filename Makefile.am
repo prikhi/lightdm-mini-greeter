@@ -1,5 +1,6 @@
+# Global Options
 AUTOMAKE_OPTIONS = \
-				foreign # Disable Requirement for README, AUTHORS, COPYING...
+				foreign # Disable requirement for README, AUTHORS, COPYING
 
 AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -Wno-unused-parameter -Wfloat-equal -Wundef -Wshadow      \
@@ -10,6 +11,7 @@ AM_CFLAGS = -g -Wall -O3 --std=c11 -Wextra -Werror --std=c11 -pedantic \
              -ftrapv -fverbose-asm
 
 
+# Packaging
 EXTRA_DIST = \
 			autogen.sh
 
@@ -26,11 +28,14 @@ MAINTAINERCLEANFILES = \
 					missing
 
 
-greeter_PROGRAMS = lightdm-mini-greeter
-greeterdir = $(bindir)
-
+# Data Files
 xgreetersdir = $(datadir)/xgreeters
 dist_xgreeters_DATA = lightdm-mini-greeter.desktop
+
+
+# Greeter Executable
+greeter_PROGRAMS = lightdm-mini-greeter
+greeterdir = $(bindir)
 
 lightdm_mini_greeter_SOURCES = \
 							src/main.c \
