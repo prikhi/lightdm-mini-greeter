@@ -2,28 +2,22 @@
 #include <sys/mman.h>
 
 #include <gtk/gtk.h>
-#include <lightdm.h>
 
-#include "ui.h"
+#include "app.h"
 #include "utils.h"
 
 
 int main(int argc, char **argv)
 {
-    // Keep our data out of any swap devices
-    mlockall(MCL_CURRENT | MCL_FUTURE);
+    mlockall(MCL_CURRENT | MCL_FUTURE);  // Keep data out of any swap devices
 
-    // GLib, GTK & LightDM Initialization
-    g_log_set_always_fatal(G_LOG_LEVEL_CRITICAL);
-    gtk_init(&argc, &argv);
-    LightDMGreeter *greeter = lightdm_greeter_new();
+    App *app = initialize_app(argc, argv);
 
-    UI *ui = initialize_ui(greeter);
+    connect_to_lightdm_daemon(app->greeter);
+    begin_authentication_as_default_user(app->greeter);
 
-    connect_to_lightdm_daemon(greeter);
-
-    begin_authentication_as_default_user(greeter);
-
-    gtk_widget_show_all(ui->main_window);
+    gtk_widget_show_all(app->ui->main_window);
     gtk_main();
+
+    destroy_app(app);
 }

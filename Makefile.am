@@ -39,6 +39,7 @@ greeter_PROGRAMS = lightdm-mini-greeter
 
 lightdm_mini_greeter_SOURCES = \
 							src/main.c \
+							src/app.c \
 							src/callbacks.c \
 							src/ui.c \
 							src/utils.c
