@@ -40,3 +40,15 @@ You can test it out using LightDM's `test-mode`:
 You can submit feature requests, bug reports, pull requests or patches on
 either [github](http://github.com/prikhi/lightdm-mini-greeter) or
 [redmine](http://bugs.sleepanarchy.com/projects/mini-greeter/).
+
+
+### Style
+
+* Use indentation and braces, 4 spaces - no tabs, no trailing whitespace.
+* Declare pointers like this: `char *p1, *p2;`, avoid: `char* p1;`.
+* Function braces should be on their own line.
+* If/else/while/do should always use braces and indentation.
+* Use `g_critical` for irrecoverable user errors, `g_error` for programming
+  errors.
+
+When in doubt, check surrounding code.
