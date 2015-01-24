@@ -31,10 +31,10 @@ MAINTAINERCLEANFILES = \
 
 # Data Files
 xgreetersdir = $(datadir)/xgreeters
-dist_xgreeters_DATA = lightdm-mini-greeter.desktop
+dist_xgreeters_DATA = data/lightdm-mini-greeter.desktop
 
 configdir = $(sysconfdir)/lightdm
-dist_config_DATA = lightdm-mini-greeter.conf
+dist_config_DATA = data/lightdm-mini-greeter.conf
 
 
 # Greeter Executable

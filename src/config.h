@@ -3,7 +3,9 @@
 
 #include <glib.h>
 
+#ifndef CONFIG_FILE
 #define CONFIG_FILE "/etc/lightdm/lightdm-minigreeter.conf"
+#endif
 
 
 typedef struct Config_ {
