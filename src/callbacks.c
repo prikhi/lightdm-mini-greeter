@@ -8,7 +8,7 @@
 
 
 /* Start the Default Session Once Fully Authenticated */
-void authentication_complete_cb(LightDMGreeter *greeter)
+void authentication_complete_cb(LightDMGreeter *greeter, App *app)
 {
     if (lightdm_greeter_get_is_authenticated(greeter)) {
         const gchar *default_session =
@@ -24,7 +24,7 @@ void authentication_complete_cb(LightDMGreeter *greeter)
         }
     } else {
         g_message("Authenticaton unsuccessful");
-        begin_authentication_as_default_user(greeter);
+        begin_authentication_as_default_user(app);
     }
 }
 
@@ -34,7 +34,7 @@ void handle_password(GtkWidget *password_input, App *app)
 {
     if (!lightdm_greeter_get_is_authenticated(app->greeter)) {
         if (!lightdm_greeter_get_in_authentication(app->greeter)) {
-            begin_authentication_as_default_user(app->greeter);
+            begin_authentication_as_default_user(app);
         }
         g_message("Using entered password to authenticate");
         const gchar *password_text =

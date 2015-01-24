@@ -60,7 +60,6 @@ static void create_and_attach_layout_container(UI *ui)
 {
     ui->layout_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
     gtk_container_add(GTK_CONTAINER(ui->main_window), ui->layout_box);
-
 }
 
 

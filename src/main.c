@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     App *app = initialize_app(argc, argv);
 
     connect_to_lightdm_daemon(app->greeter);
-    begin_authentication_as_default_user(app->greeter);
+    begin_authentication_as_default_user(app);
 
     gtk_widget_show_all(app->ui->main_window);
     gtk_main();

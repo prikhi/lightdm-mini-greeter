@@ -3,12 +3,14 @@
 
 #include <lightdm.h>
 
+#include "config.h"
 #include "ui.h"
 
 
 typedef struct App_ {
-    UI *ui;
+    Config *config;
     LightDMGreeter *greeter;
+    UI *ui;
 } App;
 
 
