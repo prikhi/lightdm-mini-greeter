@@ -16,7 +16,8 @@ int main(int argc, char **argv)
     connect_to_lightdm_daemon(app->greeter);
     begin_authentication_as_default_user(app);
 
-    gtk_widget_show_all(app->ui->main_window);
+    gtk_widget_show_all(GTK_WIDGET(app->ui->background_window));
+    gtk_widget_show_all(GTK_WIDGET(app->ui->main_window));
     gtk_main();
 
     destroy_app(app);

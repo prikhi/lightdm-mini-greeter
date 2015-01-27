@@ -45,3 +45,19 @@ void handle_password(GtkWidget *password_input, App *app)
     }
     gtk_entry_set_text(GTK_ENTRY(password_input), "");
 }
+
+
+/* Select the Password input if the Tab Key is Pressed */
+gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
+{
+    (void) widget;  // Window accessible through app.
+
+    GdkEventKey *key_event = (GdkEventKey *) event;
+    if (event->type == GDK_KEY_PRESS && key_event->keyval == GDK_KEY_Tab) {
+        g_message("Handling Tab Key Press");
+        gtk_window_present(GTK_WINDOW(app->ui->main_window));
+        gtk_widget_grab_focus(GTK_WIDGET(app->ui->password_input));
+        return FALSE;
+    }
+    return TRUE;
+}

@@ -8,5 +8,6 @@
 
 void authentication_complete_cb(LightDMGreeter *greeter, App *app);
 void handle_password(GtkWidget *password_input, App *app);
+gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app);
 
 #endif

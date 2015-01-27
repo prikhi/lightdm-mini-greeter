@@ -15,6 +15,7 @@ App *initialize_app(int argc, char **argv)
     g_log_set_always_fatal(G_LOG_LEVEL_CRITICAL);
     gtk_init(&argc, &argv);
 
+    // Allocate & Initialize
     App *app = malloc(sizeof(App));
     if (app == NULL) {
         g_error("Could not allocate memory for App");
@@ -24,10 +25,13 @@ App *initialize_app(int argc, char **argv)
     app->greeter = lightdm_greeter_new();
     app->ui = initialize_ui();
 
+    // Connect Greeter & UI Signals
     g_signal_connect(G_OBJECT(app->greeter), "authentication-complete",
                      G_CALLBACK(authentication_complete_cb), app);
     g_signal_connect(GTK_ENTRY(app->ui->password_input), "activate",
                      G_CALLBACK(handle_password), app);
+    g_signal_connect(GTK_WIDGET(app->ui->background_window), "key-press-event",
+                     G_CALLBACK(handle_tab_key), app);
 
     return app;
 }
