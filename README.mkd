@@ -19,6 +19,10 @@ Ability to use a randomized wallpaper choosen from a user-specified folder.
 
 Keyboard shortcuts to power off, hibernate, sleep & reboot.
 
+## Current Status
+
+Right now, all you can do is log in.
+
 ## Install
 
 ```sh
