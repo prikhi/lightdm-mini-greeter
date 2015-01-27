@@ -18,6 +18,7 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(GTK_WIDGET(app->ui->background_window));
     gtk_widget_show_all(GTK_WIDGET(app->ui->main_window));
+    gtk_window_present(app->ui->main_window);
     gtk_main();
 
     destroy_app(app);
