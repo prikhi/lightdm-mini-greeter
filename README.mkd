@@ -21,7 +21,10 @@ Keyboard shortcuts to power off, hibernate, sleep & reboot.
 
 ## Current Status
 
-Right now, all you can do is log in.
+Right now you can:
+
+ * log in
+ * set the login screen's background color
 
 ## Install
 
