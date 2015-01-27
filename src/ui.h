@@ -13,6 +13,6 @@ typedef struct UI_ {
 } UI;
 
 
-UI *initialize_ui(void);
+UI *initialize_ui(Config *config);
 
 #endif

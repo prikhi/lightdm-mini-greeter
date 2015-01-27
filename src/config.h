@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <gdk/gdk.h>
 #include <glib.h>
 
 #ifndef CONFIG_FILE
@@ -10,6 +11,7 @@
 
 typedef struct Config_ {
     gchar *login_user;
+    GdkRGBA *background_color;
 } Config;
 
 

@@ -23,7 +23,7 @@ App *initialize_app(int argc, char **argv)
 
     app->config = initialize_config();
     app->greeter = lightdm_greeter_new();
-    app->ui = initialize_ui();
+    app->ui = initialize_ui(app->config);
 
     // Connect Greeter & UI Signals
     g_signal_connect(G_OBJECT(app->greeter), "authentication-complete",

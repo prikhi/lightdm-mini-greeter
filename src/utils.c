@@ -27,3 +27,15 @@ void begin_authentication_as_default_user(App *app)
         lightdm_greeter_authenticate(app->greeter, default_user);
     }
 }
+
+
+/* Remove every occurence of a character from a string */
+void remove_char(char *str, char garbage) {
+
+    char *src, *dst;
+    for (src = dst = str; *src != '\0'; src++) {
+        *dst = *src;
+        if (*dst != garbage) dst++;
+    }
+    *dst = '\0';
+}

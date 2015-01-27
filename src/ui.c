@@ -6,10 +6,11 @@
 
 #include "callbacks.h"
 #include "ui.h"
+#include "utils.h"
 
 
 static UI *new_ui(void);
-static void setup_background_window(UI *ui);
+static void setup_background_window(Config *config, UI *ui);
 static void set_window_to_screen_size(GtkWindow *window);
 static void setup_main_window(UI *ui);
 static void create_and_attach_layout_container(UI *ui);
@@ -17,11 +18,11 @@ static void create_and_attach_password_field(UI *ui);
 
 
 /* Initialize the Main Window & it's Children */
-UI *initialize_ui(void)
+UI *initialize_ui(Config *config)
 {
     UI *ui = new_ui();
 
-    setup_background_window(ui);
+    setup_background_window(config, ui);
     setup_main_window(ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(ui);
@@ -29,6 +30,8 @@ UI *initialize_ui(void)
     return ui;
 }
 
+
+/* Create a new UI with all values initialized to NULL */
 static UI *new_ui(void)
 {
     UI *ui = malloc(sizeof(UI));
@@ -46,23 +49,21 @@ static UI *new_ui(void)
 
 
 /* Create & Configure the Background Window */
-static void setup_background_window(UI *ui)
+static void setup_background_window(Config *config, UI *ui)
 {
-    GtkWindow *background_window =
-        GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
-    gtk_window_set_type_hint(background_window,
-                             GDK_WINDOW_TYPE_HINT_DESKTOP);
+    GtkWindow *background_window = GTK_WINDOW(gtk_window_new(
+        GTK_WINDOW_TOPLEVEL));
+    gtk_window_set_type_hint(background_window, GDK_WINDOW_TYPE_HINT_DESKTOP);
     gtk_window_set_keep_below(background_window, TRUE);
     gtk_widget_set_app_paintable(GTK_WIDGET(background_window), TRUE);
 
     // Set Window Size to Screen Size
     set_window_to_screen_size(background_window);
 
-    // Set Background Color to Black
-    GdkRGBA background_color = {0, 0, 0, 1};
+    // Set Background Color
     gtk_widget_override_background_color(
         GTK_WIDGET(background_window), GTK_STATE_FLAG_NORMAL,
-        &background_color
+        config->background_color
     );
 
     g_signal_connect(background_window, "destroy", G_CALLBACK(gtk_main_quit),
