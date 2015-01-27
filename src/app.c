@@ -26,7 +26,7 @@ App *initialize_app(int argc, char **argv)
     app->ui = initialize_ui(app->config);
 
     // Connect Greeter & UI Signals
-    g_signal_connect(G_OBJECT(app->greeter), "authentication-complete",
+    g_signal_connect(app->greeter, "authentication-complete",
                      G_CALLBACK(authentication_complete_cb), app);
     g_signal_connect(GTK_ENTRY(app->ui->password_input), "activate",
                      G_CALLBACK(handle_password), app);

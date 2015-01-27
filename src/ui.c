@@ -15,6 +15,7 @@ static void set_window_to_screen_size(GtkWindow *window);
 static void setup_main_window(UI *ui);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(UI *ui);
+static void create_and_attach_feedback_label(UI *ui);
 
 
 /* Initialize the Main Window & it's Children */
@@ -26,6 +27,7 @@ UI *initialize_ui(Config *config)
     setup_main_window(ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(ui);
+    create_and_attach_feedback_label(ui);
 
     return ui;
 }
@@ -40,9 +42,10 @@ static UI *new_ui(void)
     }
     ui->background_window = NULL;
     ui->main_window = NULL;
-    ui->layout_box = NULL;
+    ui->layout_container = NULL;
     ui->password_label = NULL;
     ui->password_input = NULL;
+    ui->feedback_label = NULL;
 
     return ui;
 }
@@ -92,7 +95,7 @@ static void setup_main_window(UI *ui)
 {
     GtkWindow *main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 
-    gtk_window_set_default_size(main_window, 250, 150);
+    gtk_window_set_default_size(main_window, 1, 1);
     gtk_window_set_position(main_window, GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(main_window), 10);
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -104,8 +107,11 @@ static void setup_main_window(UI *ui)
 /* Add a Layout Container for All Displayed Widgets */
 static void create_and_attach_layout_container(UI *ui)
 {
-    ui->layout_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
-    gtk_container_add(GTK_CONTAINER(ui->main_window), ui->layout_box);
+    ui->layout_container = GTK_GRID(gtk_grid_new());
+    gtk_grid_set_column_spacing(ui->layout_container, 5);
+
+    gtk_container_add(GTK_CONTAINER(ui->main_window),
+                      GTK_WIDGET(ui->layout_container));
 }
 
 
@@ -115,11 +121,24 @@ static void create_and_attach_password_field(UI *ui)
     // Label
     ui->password_label = gtk_label_new("Password:");
     gtk_label_set_justify(GTK_LABEL(ui->password_label), GTK_JUSTIFY_RIGHT);
-    gtk_box_pack_start(GTK_BOX(ui->layout_box), ui->password_label, TRUE, FALSE, 0);
+    gtk_grid_attach(ui->layout_container, ui->password_label, 0, 0, 1, 1);
 
     // Entry
     ui->password_input = gtk_entry_new();
     gtk_entry_set_visibility(GTK_ENTRY(ui->password_input), FALSE);
     gtk_entry_set_alignment(GTK_ENTRY(ui->password_input), 1);
-    gtk_box_pack_start(GTK_BOX(ui->layout_box), ui->password_input, TRUE, FALSE, 0);
+    gtk_grid_attach_next_to(ui->layout_container, ui->password_input,
+                            ui->password_label, GTK_POS_RIGHT, 1, 1);
+}
+
+
+/* Add a label for feedback to the user */
+static void create_and_attach_feedback_label(UI *ui)
+{
+    ui->feedback_label = gtk_label_new("");
+    gtk_label_set_justify(GTK_LABEL(ui->feedback_label), GTK_JUSTIFY_CENTER);
+    gtk_widget_set_no_show_all(ui->feedback_label, TRUE);
+
+    gtk_grid_attach_next_to(ui->layout_container, ui->feedback_label,
+                            ui->password_label, GTK_POS_BOTTOM, 2, 1);
 }

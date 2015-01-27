@@ -5,11 +5,12 @@
 
 
 typedef struct UI_ {
-    GtkWindow *background_window;
-    GtkWindow *main_window;
-    GtkWidget *layout_box;
-    GtkWidget *password_label;
-    GtkWidget *password_input;
+    GtkWindow   *background_window;
+    GtkWindow   *main_window;
+    GtkGrid     *layout_container;
+    GtkWidget   *password_label;
+    GtkWidget   *password_input;
+    GtkWidget   *feedback_label;
 } UI;
 
 
