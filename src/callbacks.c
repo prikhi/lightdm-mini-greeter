@@ -25,10 +25,10 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
             g_message("Unable to start session");
         }
     } else {
-        if (!gtk_widget_get_visible(app->ui->feedback_label)) {
-            gtk_widget_show(app->ui->feedback_label);
+        if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
+            gtk_widget_show(APP_FEEDBACK_LABEL(app));
         }
-        gtk_label_set_text(GTK_LABEL(app->ui->feedback_label),
+        gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)),
                            "Invalid Password");
         begin_authentication_as_default_user(app);
     }
@@ -64,8 +64,8 @@ gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
     GdkEventKey *key_event = (GdkEventKey *) event;
     if (event->type == GDK_KEY_PRESS && key_event->keyval == GDK_KEY_Tab) {
         g_message("Handling Tab Key Press");
-        gtk_window_present(GTK_WINDOW(app->ui->main_window));
-        gtk_widget_grab_focus(GTK_WIDGET(app->ui->password_input));
+        gtk_window_present(GTK_WINDOW(APP_MAIN_WINDOW(app)));
+        gtk_widget_grab_focus(GTK_WIDGET(APP_PASSWORD_INPUT(app)));
         return FALSE;
     }
     return TRUE;

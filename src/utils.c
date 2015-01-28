@@ -18,7 +18,7 @@ void connect_to_lightdm_daemon(LightDMGreeter *greeter)
 /* Begin authentication as the default user, or exit with an error */
 void begin_authentication_as_default_user(App *app)
 {
-    const gchar *default_user = app->config->login_user;
+    const gchar *default_user = APP_LOGIN_USER(app);
     if (g_strcmp0(default_user, NULL) == 0) {
         g_critical("A default user has not been not set");
     } else {

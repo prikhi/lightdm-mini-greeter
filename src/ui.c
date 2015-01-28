@@ -97,7 +97,7 @@ static void setup_main_window(UI *ui)
 
     gtk_window_set_default_size(main_window, 1, 1);
     gtk_window_set_position(main_window, GTK_WIN_POS_CENTER);
-    gtk_container_set_border_width(GTK_CONTAINER(main_window), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(main_window), 40);
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     ui->main_window = main_window;

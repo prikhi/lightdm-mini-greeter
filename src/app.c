@@ -28,9 +28,9 @@ App *initialize_app(int argc, char **argv)
     // Connect Greeter & UI Signals
     g_signal_connect(app->greeter, "authentication-complete",
                      G_CALLBACK(authentication_complete_cb), app);
-    g_signal_connect(GTK_ENTRY(app->ui->password_input), "activate",
+    g_signal_connect(GTK_ENTRY(APP_PASSWORD_INPUT(app)), "activate",
                      G_CALLBACK(handle_password), app);
-    g_signal_connect(GTK_WIDGET(app->ui->background_window), "key-press-event",
+    g_signal_connect(GTK_WIDGET(APP_BACKGROUND_WINDOW(app)), "key-press-event",
                      G_CALLBACK(handle_tab_key), app);
 
     return app;
