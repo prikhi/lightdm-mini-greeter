@@ -23,6 +23,8 @@ Right now you can:
 * hide the `Password: ` label
 * set the login screen's background color
 
+![A screen with a dark background and a single password input box in the center](screenshot.png "Mini Greeter Screenshot")
+
 ## Install
 
 ```sh
