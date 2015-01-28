@@ -9,8 +9,12 @@
 #endif
 
 
+// Represents the System's Greeter Configuration. Parsed from `CONFIG_FILE`.
 typedef struct Config_ {
     gchar *login_user;
+    gboolean show_password_label;
+
+    // Theme Configuration
     GdkRGBA *background_color;
 } Config;
 

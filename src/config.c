@@ -20,6 +20,7 @@ Config *initialize_config(void)
         g_error("Could not allocate memory for Config");
     }
 
+    // Load the key-value file
     GKeyFile *keyfile = g_key_file_new();
     gboolean keyfile_loaded = g_key_file_load_from_file(
         keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL);
@@ -27,8 +28,12 @@ Config *initialize_config(void)
         g_error("Could not load configuration file.");
     }
 
+    // Parse values from the keyfile into a Config.
     config->login_user = g_key_file_get_string(
         keyfile, "greeter", "user", NULL);
+    config->show_password_label = g_key_file_get_boolean(
+        keyfile, "greeter", "show-password-label", NULL);
+
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
 
