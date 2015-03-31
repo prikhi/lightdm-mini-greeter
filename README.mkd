@@ -21,7 +21,8 @@ Right now you can:
 
 * log in
 * hide the `Password: ` label
-* set the login screen's background color
+* set the size of the login window and colors for the backgrounds, border &
+  text.
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
 
@@ -40,6 +41,10 @@ You can then specify `lightdm-mini-greeter` as your `greeter` in
 You can test it out using LightDM's `test-mode`:
 
     lightdm --test-mode -d
+
+Uninstall with:
+
+    `sudo make uninstall`
 
 ## Contribute
 

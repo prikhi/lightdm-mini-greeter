@@ -34,8 +34,25 @@ Config *initialize_config(void)
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
 
+    config->text_color =
+        parse_greeter_color_key(keyfile, "text-color");
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
+    config->window_color =
+        parse_greeter_color_key(keyfile, "window-color");
+    config->border_color =
+        parse_greeter_color_key(keyfile, "border-color");
+    config->border_width = g_key_file_get_string(
+        keyfile, "greeter-theme", "border-width", NULL);
+
+    gint layout_spacing = g_key_file_get_integer(
+        keyfile, "greeter-theme", "layout-space", NULL);
+    if (layout_spacing < 0) {
+        config->layout_spacing = (guint) (-1 * layout_spacing);
+    } else {
+        config->layout_spacing = (guint) layout_spacing;
+    }
+
 
     g_key_file_free(keyfile);
 
@@ -56,7 +73,7 @@ void destroy_config(Config *config)
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name)
 {
     gchar *color_string = g_key_file_get_string(
-        keyfile, "greeter-colors", "background-color", NULL);
+        keyfile, "greeter-theme", key_name, NULL);
     if (strstr(color_string, "#") != NULL) {
         // Remove quotations from hex color strings
         remove_char(color_string, '"');

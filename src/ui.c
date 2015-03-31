@@ -1,7 +1,11 @@
 /* Functions related to the GUI. */
+#define _GNU_SOURCE
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <gtk/gtk.h>
+#include <glib.h>
 #include <lightdm.h>
 
 #include "callbacks.h"
@@ -10,12 +14,13 @@
 
 
 static UI *new_ui(void);
-static void setup_background_window(Config *config, UI *ui);
+static void setup_background_window(UI *ui);
 static void set_window_to_screen_size(GtkWindow *window);
-static void setup_main_window(UI *ui);
+static void setup_main_window(Config *config, UI *ui);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
+static void attach_config_colors_to_screen(Config *config);
 
 
 /* Initialize the Main Window & it's Children */
@@ -23,11 +28,12 @@ UI *initialize_ui(Config *config)
 {
     UI *ui = new_ui();
 
-    setup_background_window(config, ui);
-    setup_main_window(ui);
+    setup_background_window(ui);
+    setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
     create_and_attach_feedback_label(ui);
+    attach_config_colors_to_screen(config);
 
     return ui;
 }
@@ -52,22 +58,17 @@ static UI *new_ui(void)
 
 
 /* Create & Configure the Background Window */
-static void setup_background_window(Config *config, UI *ui)
+static void setup_background_window(UI *ui)
 {
     GtkWindow *background_window = GTK_WINDOW(gtk_window_new(
         GTK_WINDOW_TOPLEVEL));
     gtk_window_set_type_hint(background_window, GDK_WINDOW_TYPE_HINT_DESKTOP);
     gtk_window_set_keep_below(background_window, TRUE);
-    gtk_widget_set_app_paintable(GTK_WIDGET(background_window), TRUE);
+    gtk_widget_set_name(GTK_WIDGET(background_window), "background");
 
     // Set Window Size to Screen Size
     set_window_to_screen_size(background_window);
 
-    // Set Background Color
-    gtk_widget_override_background_color(
-        GTK_WIDGET(background_window), GTK_STATE_FLAG_NORMAL,
-        config->background_color
-    );
 
     g_signal_connect(background_window, "destroy", G_CALLBACK(gtk_main_quit),
                      NULL);
@@ -91,13 +92,14 @@ static void set_window_to_screen_size(GtkWindow *window)
 
 
 /* Create & Configure the Main Window */
-static void setup_main_window(UI *ui)
+static void setup_main_window(Config *config, UI *ui)
 {
     GtkWindow *main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 
     gtk_window_set_default_size(main_window, 1, 1);
     gtk_window_set_position(main_window, GTK_WIN_POS_CENTER);
-    gtk_container_set_border_width(GTK_CONTAINER(main_window), 10);
+    gtk_container_set_border_width(GTK_CONTAINER(main_window), config->layout_spacing);
+    gtk_widget_set_name(GTK_WIDGET(main_window), "main");
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     ui->main_window = main_window;
@@ -156,4 +158,41 @@ static void create_and_attach_feedback_label(UI *ui)
 
     gtk_grid_attach_next_to(ui->layout_container, ui->feedback_label,
                             attachment_point, GTK_POS_BOTTOM, width, 1);
+}
+
+/* Attach a style provider to the screen, using color options from config */
+static void attach_config_colors_to_screen(Config *config)
+{
+    GtkCssProvider* provider = gtk_css_provider_new();
+
+    char *css;
+    asprintf(&css,
+        "GtkLabel {\n"
+            "color: %s;\n"
+            "font-weight: bold;\n"
+        "}\n"
+        "#background {\n"
+            "background-color: %s;\n"
+        "}\n"
+        "#main {\n"
+            "background-color: %s;\n"
+            "border-color: %s;\n"
+            "border-style: solid;\n"
+            "border-width: %s;\n"
+        "}\n"
+        , gdk_rgba_to_string(config->text_color)
+        , gdk_rgba_to_string(config->background_color)
+        , gdk_rgba_to_string(config->window_color)
+        , gdk_rgba_to_string(config->border_color)
+        , config->border_width
+    );
+
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+
+    GdkScreen *screen = gdk_screen_get_default();
+    gtk_style_context_add_provider_for_screen(
+        screen, GTK_STYLE_PROVIDER(provider),
+        GTK_STYLE_PROVIDER_PRIORITY_USER + 1);
+
+    g_object_unref(provider);
 }
