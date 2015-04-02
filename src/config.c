@@ -64,7 +64,11 @@ Config *initialize_config(void)
 void destroy_config(Config *config)
 {
     free(config->login_user);
+    free(config->text_color);
     free(config->background_color);
+    free(config->window_color);
+    free(config->border_color);
+    free(config->border_width);
     free(config);
 }
 
