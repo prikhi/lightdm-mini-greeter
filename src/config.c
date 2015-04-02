@@ -9,8 +9,8 @@
 #include "utils.h"
 
 
-static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const gchar *key_name);
-
+static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
+static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
 
 /* Initialize the configuration, sourcing the greeter's configuration file */
 Config *initialize_config(void)
@@ -34,6 +34,24 @@ Config *initialize_config(void)
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
 
+    // Parse Hotkey Settings
+    config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
+    config->hibernate_key = parse_greeter_hotkey_keyval(keyfile, "hibernate-key");
+    config->restart_key = parse_greeter_hotkey_keyval(keyfile, "restart-key");
+    config->shutdown_key = parse_greeter_hotkey_keyval(keyfile, "shutdown-key");
+    gchar *mod_key = g_key_file_get_string(
+        keyfile, "greeter-hotkeys", "mod-key", NULL);
+    if (strcmp(mod_key, "control") == 0) {
+        config->mod_bit = GDK_CONTROL_MASK;
+    } else if (strcmp(mod_key, "alt") == 0) {
+        config->mod_bit = GDK_MOD1_MASK;
+    } else if (strcmp(mod_key, "meta") == 0) {
+        config->mod_bit = GDK_SUPER_MASK;
+    } else {
+        g_error("Invalid mod-key configuration value: '%s'\n", mod_key);
+    }
+
+    // Parse Theme Settings
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->background_color =
@@ -93,4 +111,17 @@ static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name)
     }
 
     return color;
+}
+
+/* Parse a greeter-hotkeys key into the GDKkeyval of it's first character */
+static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name)
+{
+    gchar *key = g_key_file_get_string(
+        keyfile, "greeter-hotkeys", key_name, NULL);
+
+    if (strcmp(key, "") == 0) {
+        g_error("Configuration contains empty key for '%s'\n", key_name);
+    }
+
+    return gdk_unicode_to_keyval((guint) key[0]);
 }

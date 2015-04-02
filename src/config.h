@@ -21,6 +21,13 @@ typedef struct Config_ {
     GdkRGBA  *border_color;
     gchar    *border_width;
     guint     layout_spacing;
+
+    // Hotkeys
+    guint     mod_bit;
+    guint     shutdown_key;
+    guint     restart_key;
+    guint     hibernate_key;
+    guint     suspend_key;
 } Config;
 
 

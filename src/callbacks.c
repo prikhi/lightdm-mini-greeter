@@ -70,3 +70,30 @@ gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
     }
     return TRUE;
 }
+
+/* Shutdown, Restart, Hibernate or Suspend if the correct keys are pressed */
+gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
+                                      Config *config)
+{
+    (void) widget;
+
+    if (event->state & config->mod_bit) {
+        if (event->keyval == config->suspend_key && lightdm_get_can_suspend()) {
+            lightdm_suspend(NULL);
+        } else if (event->keyval == config->hibernate_key &&
+                   lightdm_get_can_hibernate()) {
+            lightdm_hibernate(NULL);
+        } else if (event->keyval == config->restart_key &&
+                   lightdm_get_can_restart()) {
+            lightdm_restart(NULL);
+        } else if (event->keyval == config->shutdown_key &&
+                   lightdm_get_can_shutdown()) {
+            lightdm_shutdown(NULL);
+        } else {
+            return FALSE;
+        }
+        return TRUE;
+    }
+
+    return FALSE;
+}
