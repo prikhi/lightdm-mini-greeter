@@ -1,6 +1,6 @@
 # Mini-Greeter
 
-A minimal but highly configurable GTK3 greeter for LightDM.
+A minimal but highly configurable single-user GTK3 greeter for LightDM.
 
 Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
 
@@ -9,7 +9,6 @@ Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
 Eventually this is will present a more customizable interface:
 
 * Configurable language/session info? (lightdm provides this already?)
-* More Coloring
 * (Randomized) Background Wallpapers
 
 [Open Feature Requests](http://bugs.sleepanarchy.com/projects/mini-greeter/issues/)
@@ -20,8 +19,7 @@ Right now you can:
 
 * log in
 * hide the `Password: ` label
-* set the size of the login window and colors for the backgrounds, border &
-  text.
+* set the size of the login window, the font & every color.
 * use modifiable hotkeys to trigger a shutdown, restart, hibernate or suspend.
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
