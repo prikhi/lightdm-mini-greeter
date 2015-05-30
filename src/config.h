@@ -15,6 +15,7 @@ typedef struct Config_ {
     gboolean  show_password_label;
 
     /* Theme Configuration */
+    gchar    *font;
     GdkRGBA  *text_color;
     GdkRGBA  *error_color;
     // Windows

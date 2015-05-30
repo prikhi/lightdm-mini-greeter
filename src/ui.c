@@ -169,6 +169,9 @@ static void attach_config_colors_to_screen(Config *config)
 
     char *css;
     asprintf(&css,
+        "* {\n"
+            "font-family: %s;\n"
+        "}\n"
         "GtkLabel {\n"
             "color: %s;\n"
             "font-weight: bold;\n"
@@ -190,6 +193,7 @@ static void attach_config_colors_to_screen(Config *config)
             "background-color: %s;\n"
             "border-image-width: 0;\n"
         "}\n"
+        , config->font
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
         , gdk_rgba_to_string(config->background_color)
