@@ -143,6 +143,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
 static void create_and_attach_feedback_label(UI *ui)
 {
     ui->feedback_label = gtk_label_new("");
+    gtk_widget_set_name(GTK_WIDGET(ui->feedback_label), "error");
     gtk_label_set_justify(GTK_LABEL(ui->feedback_label), GTK_JUSTIFY_CENTER);
     gtk_widget_set_no_show_all(ui->feedback_label, TRUE);
 
@@ -171,6 +172,9 @@ static void attach_config_colors_to_screen(Config *config)
             "color: %s;\n"
             "font-weight: bold;\n"
         "}\n"
+        "GtkLabel#error {\n"
+            "color: %s;\n"
+        "}\n"
         "#background {\n"
             "background-color: %s;\n"
         "}\n"
@@ -181,6 +185,7 @@ static void attach_config_colors_to_screen(Config *config)
             "border-width: %s;\n"
         "}\n"
         , gdk_rgba_to_string(config->text_color)
+        , gdk_rgba_to_string(config->error_color)
         , gdk_rgba_to_string(config->background_color)
         , gdk_rgba_to_string(config->window_color)
         , gdk_rgba_to_string(config->border_color)

@@ -16,6 +16,7 @@ typedef struct Config_ {
 
     // Theme Configuration
     GdkRGBA  *text_color;
+    GdkRGBA  *error_color;
     GdkRGBA  *background_color;
     GdkRGBA  *window_color;
     GdkRGBA  *border_color;

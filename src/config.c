@@ -54,6 +54,8 @@ Config *initialize_config(void)
     // Parse Theme Settings
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
+    config->error_color =
+        parse_greeter_color_key(keyfile, "error-color");
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
     config->window_color =
