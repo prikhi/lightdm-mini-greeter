@@ -128,6 +128,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     ui->password_input = gtk_entry_new();
     gtk_entry_set_visibility(GTK_ENTRY(ui->password_input), FALSE);
     gtk_entry_set_alignment(GTK_ENTRY(ui->password_input), 1);
+    gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
     gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
 
     if (config->show_password_label) {
@@ -143,9 +144,9 @@ static void create_and_attach_password_field(Config *config, UI *ui)
 static void create_and_attach_feedback_label(UI *ui)
 {
     ui->feedback_label = gtk_label_new("");
-    gtk_widget_set_name(GTK_WIDGET(ui->feedback_label), "error");
     gtk_label_set_justify(GTK_LABEL(ui->feedback_label), GTK_JUSTIFY_CENTER);
     gtk_widget_set_no_show_all(ui->feedback_label, TRUE);
+    gtk_widget_set_name(GTK_WIDGET(ui->feedback_label), "error");
 
     GtkWidget *attachment_point;
     gint width;
@@ -184,12 +185,19 @@ static void attach_config_colors_to_screen(Config *config)
             "border-style: solid;\n"
             "border-width: %s;\n"
         "}\n"
+        "#password:focused {\n"
+            "color: %s;\n"
+            "background-color: %s;\n"
+            "border-image-width: 0;\n"
+        "}\n"
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
         , gdk_rgba_to_string(config->background_color)
         , gdk_rgba_to_string(config->window_color)
         , gdk_rgba_to_string(config->border_color)
         , config->border_width
+        , gdk_rgba_to_string(config->password_color)
+        , gdk_rgba_to_string(config->password_background_color)
     );
 
     gtk_css_provider_load_from_data(provider, css, -1, NULL);

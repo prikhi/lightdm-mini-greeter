@@ -62,6 +62,10 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "window-color");
     config->border_color =
         parse_greeter_color_key(keyfile, "border-color");
+    config->password_color =
+        parse_greeter_color_key(keyfile, "password-color");
+    config->password_background_color =
+        parse_greeter_color_key(keyfile, "password-background-color");
     config->border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "border-width", NULL);
 
