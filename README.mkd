@@ -43,7 +43,7 @@ You can test it out using LightDM's `test-mode`:
 
 Uninstall with:
 
-    `sudo make uninstall`
+    sudo make uninstall
 
 
 ## Contribute
