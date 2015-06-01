@@ -182,24 +182,28 @@ static void attach_config_colors_to_screen(Config *config)
         "#background {\n"
             "background-color: %s;\n"
         "}\n"
-        "#main {\n"
-            "background-color: %s;\n"
+        "#main, #password:focused {\n"
+            "border-width: %s;\n"
             "border-color: %s;\n"
             "border-style: solid;\n"
-            "border-width: %s;\n"
+        "}\n"
+        "#main {\n"
+            "background-color: %s;\n"
         "}\n"
         "#password:focused {\n"
             "color: %s;\n"
             "background-color: %s;\n"
+            "background-image: none;\n"
+            "box-shadow: none;\n"
             "border-image-width: 0;\n"
         "}\n"
         , config->font
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
         , gdk_rgba_to_string(config->background_color)
-        , gdk_rgba_to_string(config->window_color)
         , gdk_rgba_to_string(config->border_color)
         , config->border_width
+        , gdk_rgba_to_string(config->window_color)
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(config->password_background_color)
     );
