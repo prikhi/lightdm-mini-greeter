@@ -26,6 +26,9 @@ Right now you can:
 
 ## Install
 
+Arch Linux users can just install the [lightdm-mini-greeter
+package][aur-package] from the Arch User Repository.
+
 ```sh
 ./autogen.sh
 ./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
@@ -63,3 +66,11 @@ either [github](http://github.com/prikhi/lightdm-mini-greeter) or
   errors.
 
 When in doubt, check surrounding code.
+
+
+## License
+
+GPL-3
+
+
+[aur-package]: https://aur.archlinux.org/packages/lightdm-mini-greeter/
