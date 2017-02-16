@@ -171,7 +171,7 @@ static void attach_config_colors_to_screen(Config *config)
     GtkCssProvider* provider = gtk_css_provider_new();
 
     char *css;
-    (void) asprintf(&css,
+    int css_string_length = asprintf(&css,
         "* {\n"
             "font-family: %s;\n"
         "}\n"
@@ -211,12 +211,15 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->password_background_color)
     );
 
-    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    if (css_string_length >= 0) {
+        gtk_css_provider_load_from_data(provider, css, -1, NULL);
 
-    GdkScreen *screen = gdk_screen_get_default();
-    gtk_style_context_add_provider_for_screen(
-        screen, GTK_STYLE_PROVIDER(provider),
-        GTK_STYLE_PROVIDER_PRIORITY_USER + 1);
+        GdkScreen *screen = gdk_screen_get_default();
+        gtk_style_context_add_provider_for_screen(
+            screen, GTK_STYLE_PROVIDER(provider),
+            GTK_STYLE_PROVIDER_PRIORITY_USER + 1);
+    }
+
 
     g_object_unref(provider);
 }
