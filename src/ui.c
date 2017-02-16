@@ -80,11 +80,14 @@ static void setup_background_window(UI *ui)
 /* Set the Window's Minimum Size to the Default Screen's Size */
 static void set_window_to_screen_size(GtkWindow *window)
 {
-    GdkScreen *screen = gdk_screen_get_default();
+    GdkDisplay *display = gdk_display_get_default();
+    GdkMonitor *monitor = gdk_display_get_primary_monitor(display);
+    GdkRectangle geometry;
+    gdk_monitor_get_geometry(monitor, &geometry);
     gtk_widget_set_size_request(
         GTK_WIDGET(window),
-        gdk_screen_get_width(screen),
-        gdk_screen_get_height(screen)
+        geometry.width,
+        geometry.height
     );
     gtk_window_move(window, 0, 0);
     gtk_window_set_resizable(window, FALSE);
