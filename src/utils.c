@@ -24,7 +24,7 @@ void begin_authentication_as_default_user(App *app)
     } else {
         g_message("Beginning authentication as the default user: %s",
                   default_user);
-        lightdm_greeter_authenticate(app->greeter, default_user);
+        lightdm_greeter_authenticate(app->greeter, default_user, NULL);
     }
 }
 
