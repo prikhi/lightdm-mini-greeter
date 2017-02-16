@@ -171,7 +171,7 @@ static void attach_config_colors_to_screen(Config *config)
     GtkCssProvider* provider = gtk_css_provider_new();
 
     char *css;
-    asprintf(&css,
+    (void) asprintf(&css,
         "* {\n"
             "font-family: %s;\n"
         "}\n"
