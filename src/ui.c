@@ -16,6 +16,7 @@
 static UI *new_ui(void);
 static void setup_background_window(UI *ui);
 static void set_window_to_screen_size(GtkWindow *window);
+static void get_screen_dimensions(GdkRectangle *geometry);
 static void setup_main_window(Config *config, UI *ui);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
@@ -80,10 +81,8 @@ static void setup_background_window(UI *ui)
 /* Set the Window's Minimum Size to the Default Screen's Size */
 static void set_window_to_screen_size(GtkWindow *window)
 {
-    GdkDisplay *display = gdk_display_get_default();
-    GdkMonitor *monitor = gdk_display_get_primary_monitor(display);
     GdkRectangle geometry;
-    gdk_monitor_get_geometry(monitor, &geometry);
+    get_screen_dimensions(&geometry);
     gtk_widget_set_size_request(
         GTK_WIDGET(window),
         geometry.width,
@@ -91,6 +90,28 @@ static void set_window_to_screen_size(GtkWindow *window)
     );
     gtk_window_move(window, 0, 0);
     gtk_window_set_resizable(window, FALSE);
+}
+
+
+/* Naively Estimate the Total Screen Size by Summing Every Monitor Dimension */
+static void get_screen_dimensions(GdkRectangle *geometry)
+{
+    int width = 0;
+    int height = 0;
+    GdkDisplay *display = gdk_display_get_default();
+    int monitor_count = gdk_display_get_n_monitors(display);
+    for (int m = 0; m < monitor_count; m++) {
+        GdkMonitor *monitor = gdk_display_get_monitor(display, m);
+        if (monitor == NULL) {
+            break;
+        }
+        GdkRectangle monitor_geometry;
+        gdk_monitor_get_geometry(monitor, &monitor_geometry);
+        width += monitor_geometry.width;
+        height += monitor_geometry.height;
+    }
+    geometry->width = width;
+    geometry->height = height;
 }
 
 
