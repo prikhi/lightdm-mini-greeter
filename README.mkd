@@ -1,5 +1,7 @@
 # Mini-Greeter
 
+[![AUR package](https://repology.org/badge/version-for-repo/aur/lightdm-mini-greeter.svg)](https://repology.org/metapackage/lightdm-mini-greeter) [![AUR package](https://repology.org/badge/version-for-repo/aur/lightdm-mini-greeter.svg)](https://repology.org/metapackage/lightdm-mini-greeter)
+
 A minimal but highly configurable single-user GTK3 greeter for LightDM.
 
 Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
