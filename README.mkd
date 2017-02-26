@@ -1,6 +1,6 @@
 # Mini-Greeter
 
-[![AUR package](https://repology.org/badge/version-for-repo/aur/lightdm-mini-greeter.svg)](https://repology.org/metapackage/lightdm-mini-greeter) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a1c58074072542be8ea60d1bf14863fc)](https://www.codacy.com/app/pavan-rikhi-agit/lightdm-mini-greeter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prikhi/lightdm-mini-greeter&amp;utm_campaign=Badge_Grade)
+[![AUR package](https://repology.org/badge/version-for-repo/aur/lightdm-mini-greeter.svg)](https://aur.archlinux.org/packages/lightdm-mini-greeter) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a1c58074072542be8ea60d1bf14863fc)](https://www.codacy.com/app/pavan-rikhi-agit/lightdm-mini-greeter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prikhi/lightdm-mini-greeter&amp;utm_campaign=Badge_Grade)
 
 A minimal but highly configurable single-user GTK3 greeter for LightDM.
 
