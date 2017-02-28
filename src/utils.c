@@ -1,7 +1,7 @@
 /* General Utility Functions */
 #include <lightdm.h>
 
-#include <utils.h>
+#include "utils.h"
 
 #include "app.h"
 
