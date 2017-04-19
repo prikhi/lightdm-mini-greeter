@@ -29,7 +29,13 @@ Right now you can:
 ## Install
 
 Arch Linux users can just install the [lightdm-mini-greeter
-package][aur-package] from the Arch User Repository.
+package][aur-package] from the Arch User Repository:
+
+```sh
+packer -S lightdm-mini-greeter
+```
+
+Otherwise, grab the source, build the greeter, & install it manually:
 
 ```sh
 ./autogen.sh
@@ -56,6 +62,8 @@ Uninstall with:
 You can submit feature requests, bug reports, pull requests or patches on
 either [github](http://github.com/prikhi/lightdm-mini-greeter) or
 [redmine](http://bugs.sleepanarchy.com/projects/mini-greeter/).
+
+If you like Mini-Greeter, please consider packaging it for your distribution.
 
 
 ### Style
