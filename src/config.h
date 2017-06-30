@@ -16,6 +16,7 @@ typedef struct Config_ {
 
     /* Theme Configuration */
     gchar    *font;
+    gchar    *font_size;
     GdkRGBA  *text_color;
     GdkRGBA  *error_color;
     // Windows
