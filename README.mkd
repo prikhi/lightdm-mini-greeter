@@ -44,9 +44,11 @@ make
 sudo make install
 ```
 
-You can then specify `lightdm-mini-greeter` as your `greeter-session` as well
-as a value for `user-session` under the `[Seat:*]` section(e.g.,
-`user-session=gnome`) in `/etc/lightdm/lightdm.conf`.
+You can then specify `lightdm-mini-greeter` as your `greeter-session` in
+`/etc/lightdm/lightdm.conf`. If you have multiple Desktop Environments or
+Window Mangers installed, you can specify the one to start by changing the
+`user-session` option as well(look in `/usr/share/xsession` for possible
+values).
 
 Modify `/etc/lightdm/lightdm-mini-greeter.conf` to customize the greeter. At
 the very least, you will need to set the `user`.
@@ -54,6 +56,10 @@ the very least, you will need to set the `user`.
 You can test it out using LightDM's `test-mode`:
 
     lightdm --test-mode -d
+
+Or with `dm-tool`:
+
+    dm-tool add-nested-seat
 
 Uninstall with:
 

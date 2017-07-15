@@ -18,6 +18,10 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
 
         g_message("Attempting to start session: %s", default_session);
 
+        if (g_strcmp0(default_session, "default") == 0) {
+            default_session = NULL;
+        }
+
         gboolean session_started_successfully =
             !lightdm_greeter_start_session_sync(greeter, default_session, NULL);
 
