@@ -54,6 +54,8 @@ Config *initialize_config(void)
     // Parse Theme Settings
     config->font = g_key_file_get_string(
         keyfile, "greeter-theme", "font", NULL);
+    config->font_size = g_key_file_get_string(
+        keyfile, "greeter-theme", "font-size", NULL);
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
@@ -91,6 +93,7 @@ void destroy_config(Config *config)
 {
     free(config->login_user);
     free(config->font);
+    free(config->font_size);
     free(config->text_color);
     free(config->error_color);
     free(config->background_color);
