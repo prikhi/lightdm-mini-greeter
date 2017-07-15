@@ -216,6 +216,7 @@ static void attach_config_colors_to_screen(Config *config)
         "}\n"
         "#password:focus {\n"
             "color: %s;\n"
+            "caret-color: %s;\n"
             "background-color: %s;\n"
             "background-image: none;\n"
             "box-shadow: none;\n"
@@ -229,6 +230,7 @@ static void attach_config_colors_to_screen(Config *config)
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
         , gdk_rgba_to_string(config->window_color)
+        , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(config->password_background_color)
     );
