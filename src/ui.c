@@ -221,8 +221,8 @@ static void attach_config_colors_to_screen(Config *config)
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
         "}\n"
-        , config->font
         , config->font_size
+        , config->font
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
         , gdk_rgba_to_string(config->background_color)
