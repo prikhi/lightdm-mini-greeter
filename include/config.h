@@ -5,7 +5,7 @@
 #include <glib.h>
 
 #ifndef CONFIG_FILE
-#define CONFIG_FILE "/etc/lightdm/lightdm-minigreeter.conf"
+#define CONFIG_FILE "/etc/lightdm/lightdm-mini-greeter.conf"
 #endif
 
 

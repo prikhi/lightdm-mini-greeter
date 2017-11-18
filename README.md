@@ -28,18 +28,12 @@ Right now you can:
 
 ## Install
 
-Arch Linux users can just install the [lightdm-mini-greeter
-package][aur-package] from the Arch User Repository:
+Grab the source, build the greeter and install it manually:
 
 ```sh
-packer -S lightdm-mini-greeter
-```
-
-Otherwise, grab the source, build the greeter, & install it manually:
-
-```sh
-./autogen.sh
-./configure --datadir /usr/share --bindir /usr/bin --sysconfdir /etc
+mkdir build
+cd build
+cmake ..
 make
 sudo make install
 ```
