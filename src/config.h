@@ -22,6 +22,7 @@ typedef struct Config_ {
     GdkRGBA  *text_color;
     GdkRGBA  *error_color;
     // Windows
+    gchar    *background_image;
     GdkRGBA  *background_color;
     GdkRGBA  *window_color;
     GdkRGBA  *border_color;
