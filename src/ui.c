@@ -204,7 +204,7 @@ static void attach_config_colors_to_screen(Config *config)
             "color: %s;\n"
         "}\n"
         "#background {\n"
-            "background-color: %s;\n"
+            "background-image: image(url(%s), %s);\n"
         "}\n"
         "#main, #password:focus {\n"
             "border-width: %s;\n"
@@ -226,6 +226,7 @@ static void attach_config_colors_to_screen(Config *config)
         , config->font_size
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
+	, config->background_image
         , gdk_rgba_to_string(config->background_color)
         , config->border_width
         , gdk_rgba_to_string(config->border_color)

@@ -60,6 +60,8 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
         parse_greeter_color_key(keyfile, "error-color");
+    config->background_image = g_key_file_get_string(
+        keyfile, "greeter-theme", "background-image", NULL);
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
     config->window_color =
@@ -96,6 +98,7 @@ void destroy_config(Config *config)
     free(config->font_size);
     free(config->text_color);
     free(config->error_color);
+    free(config->background_image);
     free(config->background_color);
     free(config->window_color);
     free(config->border_color);
