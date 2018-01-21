@@ -233,7 +233,7 @@ static void attach_config_colors_to_screen(Config *config)
         , config->font
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
-	, config->background_image
+        , config->background_image
         , gdk_rgba_to_string(config->background_color)
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
