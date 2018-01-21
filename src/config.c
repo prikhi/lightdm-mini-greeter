@@ -33,6 +33,8 @@ Config *initialize_config(void)
         keyfile, "greeter", "user", NULL);
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
+    config->password_label_text = g_key_file_get_string(
+        keyfile, "greeter", "password-label-text", NULL);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
@@ -100,6 +102,7 @@ void destroy_config(Config *config)
     free(config->window_color);
     free(config->border_color);
     free(config->border_width);
+    free(config->password_label_text);
     free(config->password_color);
     free(config->password_background_color);
     free(config);

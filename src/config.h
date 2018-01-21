@@ -13,6 +13,7 @@
 typedef struct Config_ {
     gchar    *login_user;
     gboolean  show_password_label;
+    gchar    *password_label_text;
 
     /* Theme Configuration */
     gchar    *font;

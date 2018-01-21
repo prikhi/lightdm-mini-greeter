@@ -156,7 +156,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
 
     if (config->show_password_label) {
-        ui->password_label = gtk_label_new("Password:");
+        ui->password_label = gtk_label_new(config->password_label_text);
         gtk_label_set_justify(GTK_LABEL(ui->password_label), GTK_JUSTIFY_RIGHT);
         gtk_grid_attach_next_to(ui->layout_container, ui->password_label,
                                 ui->password_input, GTK_POS_LEFT, 1, 1);
