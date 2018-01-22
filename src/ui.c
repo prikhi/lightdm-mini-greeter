@@ -212,6 +212,8 @@ static void attach_config_colors_to_screen(Config *config)
         "}\n"
         "#background {\n"
             "background-image: image(url(%s), %s);\n"
+            "background-repeat: no-repeat;\n"
+            "background-position: center;\n"
         "}\n"
         "#main, #password:focus {\n"
             "border-width: %s;\n"
