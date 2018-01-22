@@ -1,9 +1,10 @@
 # CHANGELOG
 
-## v0.2.1
+## v0.3.0
 
-* Add a `password-label-text` option to the configuration file.
-* Add a `show-input-cursor` option to the configuration file.
+* Add a `password-label-text` option to customize the label text.
+* Add a `show-input-cursor` option to hide the input's cursor.
+* Add a `background-image` option to set a centered background image.
 * Change the default value of the `user` option to `CHANGE_ME`.
 
 ## v0.2.0

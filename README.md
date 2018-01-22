@@ -10,8 +10,8 @@ Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
 
 Eventually this is will present a more customizable interface:
 
+* Randomized Background Wallpapers
 * Configurable language/session info? (lightdm provides this already?)
-* (Randomized) Background Wallpapers
 
 [Open Feature Requests](http://bugs.sleepanarchy.com/projects/mini-greeter/issues/)
 
@@ -23,6 +23,7 @@ Right now you can:
 * hide the `Password:` label & customize the text
 * hide the password input's cursor
 * set the size of the login window, the font & every color.
+* set a background image.
 * use modifiable hotkeys to trigger a shutdown, restart, hibernate or suspend.
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
