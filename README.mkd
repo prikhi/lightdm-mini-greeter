@@ -21,6 +21,7 @@ Right now you can:
 
 * log in
 * hide the `Password:` label & customize the text
+* hide the password input's cursor
 * set the size of the login window, the font & every color.
 * use modifiable hotkeys to trigger a shutdown, restart, hibernate or suspend.
 
