@@ -191,6 +191,13 @@ static void attach_config_colors_to_screen(Config *config)
 {
     GtkCssProvider* provider = gtk_css_provider_new();
 
+    GdkRGBA *caret_color;
+    if (config->show_input_cursor) {
+        caret_color = config->password_color;
+    } else {
+        caret_color = config->password_background_color;
+    }
+
     char *css;
     int css_string_length = asprintf(&css,
         "* {\n"
@@ -231,7 +238,7 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->border_color)
         , gdk_rgba_to_string(config->window_color)
         , gdk_rgba_to_string(config->password_color)
-        , gdk_rgba_to_string(config->password_color)
+        , gdk_rgba_to_string(caret_color)
         , gdk_rgba_to_string(config->password_background_color)
     );
 

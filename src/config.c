@@ -38,6 +38,8 @@ Config *initialize_config(void)
         keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = g_key_file_get_string(
         keyfile, "greeter", "password-label-text", NULL);
+    config->show_input_cursor = g_key_file_get_boolean(
+        keyfile, "greeter", "show-input-cursor", NULL);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
