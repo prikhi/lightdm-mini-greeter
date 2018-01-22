@@ -31,6 +31,9 @@ Config *initialize_config(void)
     // Parse values from the keyfile into a Config.
     config->login_user = g_key_file_get_string(
         keyfile, "greeter", "user", NULL);
+    if (strcmp(config->login_user, "CHANGE_ME") == 0) {
+        g_message("User configuration value is unchanged.");
+    }
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = g_key_file_get_string(
