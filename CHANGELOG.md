@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.3.1
+
+* Fix white background when the `background-image` option is blank or not
+  present in the config file.
+
 ## v0.3.0
 
 * Add a `password-label-text` option to customize the label text.
