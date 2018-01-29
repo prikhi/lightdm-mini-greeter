@@ -18,6 +18,7 @@ static void setup_background_window(UI *ui);
 static void set_window_to_screen_size(GtkWindow *window);
 static void get_screen_dimensions(GdkRectangle *geometry);
 static void setup_main_window(Config *config, UI *ui);
+static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
@@ -120,13 +121,38 @@ static void setup_main_window(Config *config, UI *ui)
 {
     GtkWindow *main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 
-    gtk_window_set_default_size(main_window, 1, 1);
-    gtk_window_set_position(main_window, GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(main_window), config->layout_spacing);
     gtk_widget_set_name(GTK_WIDGET(main_window), "main");
+
+    g_signal_connect(main_window, "show", G_CALLBACK(place_main_window), NULL);
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     ui->main_window = main_window;
+}
+
+
+/* Move the Main Window to the Center of the Primary Monitor
+ *
+ * This is done after the main window is shown(via the "show" signal) so that
+ * the width of the window is properly calculated. Otherwise the returned size
+ * will not include the size of the password label text.
+ */
+static void place_main_window(GtkWidget *main_window, gpointer user_data)
+{
+    // Get the Geometry of the Primary Monitor
+    GdkDisplay *display = gdk_display_get_default();
+    GdkMonitor *primary_monitor = gdk_display_get_primary_monitor(display);
+    GdkRectangle primary_monitor_geometry;
+    gdk_monitor_get_geometry(primary_monitor, &primary_monitor_geometry);
+
+    // Get the Geometry of the Window
+    gint window_width, window_height;
+    gtk_window_get_size(GTK_WINDOW(main_window), &window_width, &window_height);
+
+    gtk_window_move(
+        GTK_WINDOW(main_window),
+        primary_monitor_geometry.x + primary_monitor_geometry.width / 2 - window_width / 2,
+        primary_monitor_geometry.y + primary_monitor_geometry.height / 2 - window_height / 2);
 }
 
 

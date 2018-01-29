@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.3.2
+
+* Fix positioning main window in the center of the primary monitor for various
+  multi-head configurations.
+
 ## v0.3.1
 
 * Fix white background when the `background-image` option is blank or not
