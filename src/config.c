@@ -38,6 +38,9 @@ Config *initialize_config(void)
         keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = g_key_file_get_string(
         keyfile, "greeter", "password-label-text", NULL);
+    if (config->password_label_text == NULL) {
+        config->password_label_text = (gchar *) "Password:";
+    }
     config->show_input_cursor = g_key_file_get_boolean(
         keyfile, "greeter", "show-input-cursor", NULL);
 
@@ -69,6 +72,9 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "error-color");
     config->background_image = g_key_file_get_string(
         keyfile, "greeter-theme", "background-image", NULL);
+    if (config->background_image == NULL || strcmp(config->background_image, "") == 0) {
+        config->background_image = (gchar *) "\"\"";
+    }
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
     config->window_color =

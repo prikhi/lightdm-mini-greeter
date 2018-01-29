@@ -224,9 +224,6 @@ static void attach_config_colors_to_screen(Config *config)
         caret_color = config->password_background_color;
     }
 
-    const gchar *background_image = strcmp(config->background_image, "") == 0
-        ? "\"\"" : config->background_image;
-
     char *css;
     int css_string_length = asprintf(&css,
         "* {\n"
@@ -264,7 +261,7 @@ static void attach_config_colors_to_screen(Config *config)
         , config->font
         , gdk_rgba_to_string(config->text_color)
         , gdk_rgba_to_string(config->error_color)
-        , background_image
+        , config->background_image
         , gdk_rgba_to_string(config->background_color)
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
