@@ -2,6 +2,7 @@
 
 ## v0.3.2
 
+* Fix linker flag build failures.
 * Fix silent failures when using old configuration files that are missing newly
   added options.
 * Fix positioning main window in the center of the primary monitor for various
