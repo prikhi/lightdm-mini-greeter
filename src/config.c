@@ -96,6 +96,24 @@ Config *initialize_config(void)
         config->layout_spacing = (guint) layout_spacing;
     }
 
+    gdouble position_x = g_key_file_get_double(
+        keyfile, "greeter-theme", "window-position-x", NULL);
+    if (position_x < 0 || position_x >1) {
+        g_message(
+            "window-position-x=%f should be between 0 and 1. Setting to 0.5\n", 
+            position_x);
+        position_x = 0.5;
+    }
+    gdouble position_y = g_key_file_get_double(
+        keyfile, "greeter-theme", "window-position-y", NULL);
+    if (position_y < 0 || position_y >1) {
+        g_message(
+            "window-position-y=%f should be between 0 and 1. Setting to 0.5\n", 
+            position_y);
+        position_y = 0.5;
+    }
+    config->position_x = position_x;
+    config->position_y = position_y;
 
     g_key_file_free(keyfile);
 
