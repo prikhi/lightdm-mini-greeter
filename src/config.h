@@ -15,6 +15,7 @@ typedef struct Config_ {
     gboolean  show_password_label;
     gchar    *password_label_text;
     gboolean  show_input_cursor;
+    gboolean  password_alignment;
 
     /* Theme Configuration */
     gchar    *font;
