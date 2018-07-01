@@ -182,7 +182,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
 {
     ui->password_input = gtk_entry_new();
     gtk_entry_set_visibility(GTK_ENTRY(ui->password_input), FALSE);
-    gtk_entry_set_alignment(GTK_ENTRY(ui->password_input), 1);
+    gtk_entry_set_alignment(GTK_ENTRY(ui->password_input), (gfloat) config->password_alignment);
     gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
     gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
 

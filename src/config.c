@@ -48,6 +48,8 @@ Config *initialize_config(void)
     }
     config->show_input_cursor = g_key_file_get_boolean(
         keyfile, "greeter", "show-input-cursor", NULL);
+    config->password_alignment = g_key_file_get_boolean(
+        keyfile, "greeter", "password-alignment", NULL);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
