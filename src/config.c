@@ -41,6 +41,11 @@ Config *initialize_config(void)
     if (config->password_label_text == NULL) {
         config->password_label_text = (gchar *) "Password:";
     }
+    config->invalid_password_text = g_key_file_get_string(
+        keyfile, "greeter", "invalid-password-text", NULL);
+    if (config->invalid_password_text == NULL) {
+        config->invalid_password_text = (gchar *) "Invalid Password";
+    }
     config->show_input_cursor = g_key_file_get_boolean(
         keyfile, "greeter", "show-input-cursor", NULL);
 
@@ -117,6 +122,7 @@ void destroy_config(Config *config)
     free(config->border_color);
     free(config->border_width);
     free(config->password_label_text);
+    free(config->invalid_password_text);
     free(config->password_color);
     free(config->password_background_color);
     free(config);

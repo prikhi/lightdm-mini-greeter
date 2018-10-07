@@ -29,11 +29,13 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
             g_message("Unable to start session");
         }
     } else {
-        if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
-            gtk_widget_show(APP_FEEDBACK_LABEL(app));
+        if (strlen(app->config->invalid_password_text) > 0) {
+           if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
+                gtk_widget_show(APP_FEEDBACK_LABEL(app));
+            }
+            gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)),
+                               app->config->invalid_password_text);
         }
-        gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)),
-                           "Invalid Password");
         begin_authentication_as_default_user(app);
     }
 }
