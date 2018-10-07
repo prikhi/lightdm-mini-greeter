@@ -46,6 +46,20 @@ make
 sudo make install
 ```
 
+Build Dependencies:
+* automake
+* pkg-config
+* GTK+
+
+Debian/Ubuntu:
+* liblightdm-gobject-1-dev
+* libgtk-3-dev
+
+Dependency install on Debian/Ubuntu:
+```sh
+sudo apt install automake pkg-config liblightdm-gobject-1-dev libgtk-3-dev
+```
+
 You can then specify `lightdm-mini-greeter` as your `greeter-session` in
 `/etc/lightdm/lightdm.conf`. If you have multiple Desktop Environments or
 Window Mangers installed, you can specify the one to start by changing the
