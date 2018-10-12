@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## master
+
+* Fix customization of label colors.
+
 ## v0.3.2
 
 * Fix linker flag build failures.
