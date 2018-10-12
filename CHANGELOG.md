@@ -2,6 +2,7 @@
 
 ## master
 
+* Fix builds with liblightdm v1.19.1 and below.
 * Fix customization of label colors.
 
 ## v0.3.2

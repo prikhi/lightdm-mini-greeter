@@ -1,9 +1,9 @@
 /* General Utility Functions */
 #include <lightdm.h>
 
-#include "utils.h"
-
 #include "app.h"
+#include "compat.h"
+#include "utils.h"
 
 
 /* Connect to the LightDM daemon or exit with an error */
@@ -24,7 +24,7 @@ void begin_authentication_as_default_user(App *app)
     } else {
         g_message("Beginning authentication as the default user: %s",
                   default_user);
-        lightdm_greeter_authenticate(app->greeter, default_user, NULL);
+        compat_greeter_authenticate(app->greeter, default_user, NULL);
     }
 }
 
