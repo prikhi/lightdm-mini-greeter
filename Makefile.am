@@ -22,7 +22,7 @@ DISTCLEANFILES = \
 MAINTAINERCLEANFILES = \
 					Makefile.in \
 					compile \
-					config.h.in \
+					defines.h.in \
 					configure \
 					depcomp \
 					install-sh \
