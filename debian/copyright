@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: LightDM Mini Greeter
+Upstream-Contact: Pavan Rikhi <pavan.rikhi@gmail.com>
+Source: https://github.com/prikhi/lightdm-mini-greeter
+
+Files: *
+Copyright: Pavan Rikhi
+License: GPL-3+

@@ -1,0 +1,19 @@
+Source: lightdm-mini-greeter
+Section: x11
+Priority: optional
+Maintainer: Pavan Rikhi <pavan.rikhi@gmail.com>
+Build-Depends: debhelper (>= 9),
+               pkg-config,
+               libgtk-3-dev,
+               liblightdm-gobject-dev
+Standards-Version: 3.9.8
+Homepage: https://github.com/prikhi/lightdm-mini-greeter
+Vcs-Git: https://github.com/prikhi/lightdm-mini-greeter.git
+Vcs-Browser: https://github.com/prikhi/lightdm-mini-greeter
+
+Package: lightdm-mini-greeter
+Provides: lightdm-greeter
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: a minimal LightDM greeter
+ A minimal but highly configurable single-user GTK3 greeter for LightDM
