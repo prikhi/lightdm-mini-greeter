@@ -6,14 +6,17 @@ A minimal but highly configurable single-user GTK3 greeter for LightDM.
 
 Inspired by the SLiM Display Manager & LightDM GTK3 Greeter.
 
+
 ## Goals
 
 Eventually this is will present a more customizable interface:
 
 * Randomized Background Wallpapers
 * Configurable language/session info? (lightdm provides this already?)
+* Hotkey to cycle between DE/WM sessions
 
 [Open Feature Requests](http://bugs.sleepanarchy.com/projects/mini-greeter/issues/)
+
 
 ## Current Status
 
@@ -28,16 +31,47 @@ Right now you can:
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
 
+
 ## Install
 
-Arch Linux users can just install the [lightdm-mini-greeter
-package][aur-package] from the Arch User Repository:
+### Arch Linux
+
+Install the [lightdm-mini-greeter package][aur-package] from the Arch User
+Repository:
 
 ```sh
 packer -S lightdm-mini-greeter
 ```
 
-Otherwise, grab the source, build the greeter, & install it manually:
+### Gentoo Linux
+
+Emerge the [lightdm-mini-greeter package](gentoo-package):
+
+```sh
+emerge x11-misc/lightdm-mini-greeter
+```
+
+### Debian
+
+Debian packages for the latest `stable` branch are available on the
+[Releases][releases] page.
+
+You can use `debhelper` to build the package yourself:
+
+```sh
+sudo apt-get install build-essential automake pkg-config fakeroot debhelper \
+    liblightdm-gobject-1-dev libgtk-3-dev
+cd lightdm-mini-greeter
+fakeroot dh binary
+sudo dpkg -i ../lightdm-mini-greeter_*.deb
+```
+
+### Manual
+
+You will need `automake`, `pkg-config`, `gtk+`, & `liblightdm-gobject` to build
+the project.
+
+Grab the source, build the greeter, & install it manually:
 
 ```sh
 ./autogen.sh
@@ -46,25 +80,16 @@ make
 sudo make install
 ```
 
-Build Dependencies:
-* automake
-* pkg-config
-* GTK+
+Run `sudo make uninstall` to remove the greeter.
 
-Debian/Ubuntu:
-* liblightdm-gobject-1-dev
-* libgtk-3-dev
 
-Dependency install on Debian/Ubuntu:
-```sh
-sudo apt install automake pkg-config liblightdm-gobject-1-dev libgtk-3-dev
-```
+## Configure
 
-You can then specify `lightdm-mini-greeter` as your `greeter-session` in
-`/etc/lightdm/lightdm.conf`. If you have multiple Desktop Environments or
-Window Mangers installed, you can specify the one to start by changing the
-`user-session` option as well(look in `/usr/share/xsession` for possible
-values).
+Once installed, you should specify `lightdm-mini-greeter` as your
+`greeter-session` in `/etc/lightdm/lightdm.conf`. If you have multiple Desktop
+Environments or Window Managers installed, you can specify the one to start by
+changing the `user-session` option as well(look in `/usr/share/xsession` for
+possible values).
 
 Modify `/etc/lightdm/lightdm-mini-greeter.conf` to customize the greeter. At
 the very least, you will need to set the `user`.
@@ -76,10 +101,6 @@ You can test it out using LightDM's `test-mode`:
 Or with `dm-tool`:
 
     dm-tool add-nested-seat
-
-Uninstall with:
-
-    sudo make uninstall
 
 
 ## Contribute
@@ -109,3 +130,5 @@ GPL-3
 
 
 [aur-package]: https://aur.archlinux.org/packages/lightdm-mini-greeter/
+[gentoo-package]: https://packages.gentoo.org/packages/x11-misc/lightdm-mini-greeter
+[releases]: https://github.com/prikhi/lightdm-mini-greeter/releases
