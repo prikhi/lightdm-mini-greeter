@@ -263,15 +263,23 @@ static void attach_config_colors_to_screen(Config *config)
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
         "}\n"
+        // *
         , config->font_size
         , config->font
+        // label
         , gdk_rgba_to_string(config->text_color)
+        // label#error
         , gdk_rgba_to_string(config->error_color)
+        // #background
         , gdk_rgba_to_string(config->background_color)
+        // #background.image-background
         , config->background_image
+        // #main, #password:focus
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
+        // #main
         , gdk_rgba_to_string(config->window_color)
+        // #password:focus
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(caret_color)
         , gdk_rgba_to_string(config->password_background_color)
