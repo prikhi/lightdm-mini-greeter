@@ -2,6 +2,7 @@
 
 ## master
 
+* Fix background image aligment in multi-head configurations.
 * Fix builds with liblightdm v1.19.1 and below.
 * Fix customization of label colors.
 

@@ -14,6 +14,7 @@ Eventually this is will present a more customizable interface:
 * Randomized Background Wallpapers
 * Configurable language/session info? (lightdm provides this already?)
 * Hotkey to cycle between DE/WM sessions
+* Handle GdkDisplay's `monitor-added` & `monitor-removed` signals
 
 [Open Feature Requests](http://bugs.sleepanarchy.com/projects/mini-greeter/issues/)
 
