@@ -51,6 +51,34 @@ Emerge the [lightdm-mini-greeter package](gentoo-package):
 emerge x11-misc/lightdm-mini-greeter
 ```
 
+### NixOS
+
+Enable & configure the greeter & default session in your `configuration.nix`:
+
+```nix
+{
+    services.xserver = {
+        enable = true;
+        displayManager.lightdm.greeters.mini = {
+            enable = true;
+            user = "your-username";
+            extraConfig = ''
+                [greeter]
+                show-password-label = false
+                [greeter-theme]
+                background-image = ""
+            '';
+        };
+        windowManager = {
+            default = "awesome";
+            awesome.enable = true;
+        };
+    };
+}
+```
+
+Then rebuild & switch your configuration with `nixos-rebuild switch`.
+
 ### Debian
 
 Debian packages for the latest `stable` branch are available on the
