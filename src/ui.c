@@ -14,7 +14,7 @@
 
 
 static UI *new_ui(void);
-static void setup_background_windows(UI *ui);
+static void setup_background_windows(Config *config, UI *ui);
 static GtkWindow *new_background_window(GdkMonitor *monitor);
 static void set_window_to_monitor_size(GdkMonitor *monitor, GtkWindow *window);
 static void setup_main_window(Config *config, UI *ui);
@@ -30,7 +30,7 @@ UI *initialize_ui(Config *config)
 {
     UI *ui = new_ui();
 
-    setup_background_windows(ui);
+    setup_background_windows(config, ui);
     setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
@@ -61,7 +61,7 @@ static UI *new_ui(void)
 
 
 /* Create a Background Window for Every Monitor */
-static void setup_background_windows(UI *ui)
+static void setup_background_windows(Config *config, UI *ui)
 {
     GdkDisplay *display = gdk_display_get_default();
     ui->monitor_count = gdk_display_get_n_monitors(display);
@@ -75,7 +75,9 @@ static void setup_background_windows(UI *ui)
         GtkWindow *background_window = new_background_window(monitor);
         ui->background_windows[m] = background_window;
 
-        if (gdk_monitor_is_primary(monitor)) {
+        gboolean show_background_image = gdk_monitor_is_primary(monitor) &&
+            (strcmp(config->background_image, "\"\"") != 0);
+        if (show_background_image) {
             GtkStyleContext *style_context =
                 gtk_widget_get_style_context(GTK_WIDGET(background_window));
             gtk_style_context_add_class(style_context, "with-image");
