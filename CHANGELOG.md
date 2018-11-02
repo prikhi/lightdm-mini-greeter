@@ -2,6 +2,9 @@
 
 ## master
 
+
+## v0.3.4
+
 * Fix flashing of password input on start.
 * Fix background color on primary monitor when background image is not set.
 
