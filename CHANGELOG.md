@@ -2,6 +2,7 @@
 
 ## master
 
+* Fix background color on primary monitor when background image is not set.
 
 ## v0.3.3
 
