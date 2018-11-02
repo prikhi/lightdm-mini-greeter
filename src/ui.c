@@ -243,7 +243,7 @@ static void attach_config_colors_to_screen(Config *config)
             "background-color: %s;\n"
         "}\n"
         "#background.with-image {\n"
-            "background-image: image(url(%s));\n"
+            "background-image: image(url(%s), %s);\n"
             "background-repeat: no-repeat;\n"
             "background-position: center;\n"
         "}\n"
@@ -274,6 +274,7 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->background_color)
         // #background.image-background
         , config->background_image
+        , gdk_rgba_to_string(config->background_color)
         // #main, #password:focus
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
