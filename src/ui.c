@@ -249,7 +249,7 @@ static void attach_config_colors_to_screen(Config *config)
             "background-repeat: no-repeat;\n"
             "background-position: center;\n"
         "}\n"
-        "#main, #password:focus {\n"
+        "#main, #password {\n"
             "border-width: %s;\n"
             "border-color: %s;\n"
             "border-style: solid;\n"
@@ -257,7 +257,7 @@ static void attach_config_colors_to_screen(Config *config)
         "#main {\n"
             "background-color: %s;\n"
         "}\n"
-        "#password:focus {\n"
+        "#password {\n"
             "color: %s;\n"
             "caret-color: %s;\n"
             "background-color: %s;\n"
@@ -277,12 +277,12 @@ static void attach_config_colors_to_screen(Config *config)
         // #background.image-background
         , config->background_image
         , gdk_rgba_to_string(config->background_color)
-        // #main, #password:focus
+        // #main, #password
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
         // #main
         , gdk_rgba_to_string(config->window_color)
-        // #password:focus
+        // #password
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(caret_color)
         , gdk_rgba_to_string(config->password_background_color)
