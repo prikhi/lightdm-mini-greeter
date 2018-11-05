@@ -11,6 +11,7 @@
 
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
+static gdouble get_relative_position(GKeyFile *keyfile, const char *axis);
 
 /* Initialize the configuration, sourcing the greeter's configuration file */
 Config *initialize_config(void)
@@ -96,6 +97,8 @@ Config *initialize_config(void)
         config->layout_spacing = (guint) layout_spacing;
     }
 
+    config->position_x = get_relative_position(keyfile, "x");
+    config->position_y = get_relative_position(keyfile, "y");
 
     g_key_file_free(keyfile);
 
@@ -156,4 +159,22 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
     }
 
     return gdk_unicode_to_keyval((guint) key[0]);
+}
+
+/* Get relative window position double value, return 0.5 if missing or unable to parse */
+static gdouble get_relative_position(GKeyFile *keyfile, const char *axis) {
+    g_autoptr(GError) error = NULL;
+    char key[80];
+    gdouble pos = g_key_file_get_double(
+                    keyfile,
+                    "greeter-theme",
+                    strcat(strcpy(key, "window-position-"), axis),
+                    &error);
+
+    if (error != NULL || pos < 0.0 || pos > 1.0) {
+        g_message("Error while parsing window-position-%s", axis);
+        pos = 0.5;
+    }
+
+    return pos;
 }
