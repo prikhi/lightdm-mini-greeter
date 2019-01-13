@@ -2,6 +2,8 @@
 
 ## master
 
+* Add an `invalid-password-text` option to customize the wrong password error
+  text.
 
 ## v0.3.4
 
