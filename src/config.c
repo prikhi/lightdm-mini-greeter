@@ -11,6 +11,8 @@
 
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
+static gboolean parse_greeter_password_alignment(GKeyFile *keyfile);
+static gboolean is_rtl_keymap_layout(void);
 
 /* Initialize the configuration, sourcing the greeter's configuration file */
 Config *initialize_config(void)
@@ -48,8 +50,7 @@ Config *initialize_config(void)
     }
     config->show_input_cursor = g_key_file_get_boolean(
         keyfile, "greeter", "show-input-cursor", NULL);
-    config->password_alignment = g_key_file_get_boolean(
-        keyfile, "greeter", "password-alignment", NULL);
+    config->password_alignment = parse_greeter_password_alignment(keyfile);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
@@ -164,4 +165,49 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
     }
 
     return gdk_unicode_to_keyval((guint) key[0]);
+}
+
+/* Parse the password input alignment, properly handling RTL layouts.
+ *
+ * Note that the gboolean returned by this function is meant to be used with
+ * the `gtk_entry_set_alignment` function.
+ */
+static gboolean parse_greeter_password_alignment(GKeyFile *keyfile) {
+    gboolean initial_alignment;
+
+    gchar *password_alignment_text = g_key_file_get_string(
+        keyfile, "greeter", "password-alignment", NULL);
+    if (password_alignment_text == NULL) {
+        initial_alignment = 1;
+    } else {
+        if (strcmp(password_alignment_text, "left") == 0) {
+            initial_alignment = 0;
+        } else {
+            initial_alignment = 1;
+        }
+        free(password_alignment_text);
+    }
+
+    // The left/right values are switched for RTL layouts.
+    if (is_rtl_keymap_layout()) {
+        if (initial_alignment == 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } else {
+        return initial_alignment;
+    }
+}
+
+/* Determine if the default Display's Keymap is in the Right-to-Left direction
+ */
+static gboolean is_rtl_keymap_layout(void) {
+    GdkDisplay *display = gdk_display_get_default();
+    if (display == NULL) {
+        return FALSE;
+    }
+    GdkKeymap *keymap = gdk_keymap_get_for_display(display);
+    PangoDirection text_direction = gdk_keymap_get_direction(keymap);
+    return text_direction == PANGO_DIRECTION_RTL;
 }
