@@ -3,7 +3,7 @@
 set -e
 
 if [ "$1" = "remove" ]; then
-  update-alternatives --remove lightdm-greeter /usr/share/xgreeters/lightdm-mini-greeter.desktop
+    update-alternatives --remove lightdm-greeter /usr/share/xgreeters/lightdm-mini-greeter.desktop
 fi
 
 #DEBHELPER#
