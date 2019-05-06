@@ -1,6 +1,7 @@
 /* Callback Functions for LightDM & GTK */
 #include <gtk/gtk.h>
 #include <lightdm.h>
+#include <string.h>
 
 #include "app.h"
 #include "utils.h"
