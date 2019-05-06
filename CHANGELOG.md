@@ -2,6 +2,7 @@
 
 ## master
 
+* Use the alternatives system for Debian-based builds.
 * Add a `password-alignment` option to customize the alignment of the text in the
   password input.
 * Add an `invalid-password-text` option to customize the wrong password error
