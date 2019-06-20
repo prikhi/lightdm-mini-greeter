@@ -89,16 +89,25 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "window-color");
     config->border_color =
         parse_greeter_color_key(keyfile, "border-color");
+    config->border_width = g_key_file_get_string(
+        keyfile, "greeter-theme", "border-width", NULL);
     config->password_color =
         parse_greeter_color_key(keyfile, "password-color");
     config->password_background_color =
         parse_greeter_color_key(keyfile, "password-background-color");
-    config->password_border_color =
-        parse_greeter_color_key(keyfile, "password-border-color");
+    gchar *temp_password_background_color = g_key_file_get_string(
+        keyfile, "greeter-theme", "password-border-color", NULL);
+    if (temp_password_background_color == NULL) {
+        config->password_border_color = config->border_color;
+    } else {
+        config->password_border_color =
+            parse_greeter_color_key(keyfile, "password-border-color");
+    }
     config->password_border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "password-border-width", NULL);
-    config->border_width = g_key_file_get_string(
-        keyfile, "greeter-theme", "border-width", NULL);
+    if (config->password_border_width == NULL) {
+        config->password_border_width = config->border_width;
+    }
 
     gint layout_spacing = g_key_file_get_integer(
         keyfile, "greeter-theme", "layout-space", NULL);
