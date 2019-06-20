@@ -262,6 +262,9 @@ static void attach_config_colors_to_screen(Config *config)
             "color: %s;\n"
             "caret-color: %s;\n"
             "background-color: %s;\n"
+            "border-width: %s;\n"
+            "border-color: %s;\n"
+            "border-style: solid;\n"
             "background-image: none;\n"
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
@@ -287,6 +290,8 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(caret_color)
         , gdk_rgba_to_string(config->password_background_color)
+        , config->password_border_width
+        , gdk_rgba_to_string(config->password_border_color)
     );
 
     if (css_string_length >= 0) {

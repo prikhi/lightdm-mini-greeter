@@ -93,6 +93,10 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "password-color");
     config->password_background_color =
         parse_greeter_color_key(keyfile, "password-background-color");
+    config->password_border_color =
+        parse_greeter_color_key(keyfile, "password-border-color");
+    config->password_border_width = g_key_file_get_string(
+        keyfile, "greeter-theme", "password-border-width", NULL);
     config->border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "border-width", NULL);
 
@@ -128,6 +132,7 @@ void destroy_config(Config *config)
     free(config->invalid_password_text);
     free(config->password_color);
     free(config->password_background_color);
+    free(config->password_border_width);
     free(config);
 }
 
