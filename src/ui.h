@@ -11,6 +11,7 @@ typedef struct UI_ {
     GtkGrid     *layout_container;
     GtkWidget   *password_label;
     GtkWidget   *password_input;
+    GtkWidget   *session_label;
     GtkWidget   *feedback_label;
 } UI;
 

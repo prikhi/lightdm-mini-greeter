@@ -16,7 +16,7 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
 {
     if (lightdm_greeter_get_is_authenticated(greeter)) {
         const gchar *default_session =
-            lightdm_greeter_get_default_session_hint(greeter);
+            lightdm_session_get_key(app->config->login_session);
 
         g_message("Attempting to start session: %s", default_session);
 
@@ -41,7 +41,6 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
         begin_authentication_as_default_user(app);
     }
 }
-
 
 
 /* GUI Callbacks */
@@ -79,24 +78,35 @@ gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
     return TRUE;
 }
 
+void handle_session_keypress(App *app) {
+    if (gtk_widget_get_visible(APP_SESSION_LABEL(app))) {
+        select_next_session(app->config);
+    } else {
+        gtk_widget_show(APP_SESSION_LABEL(app));
+    }
+    gtk_label_set_text(GTK_LABEL(APP_SESSION_LABEL(app)),
+                       lightdm_session_get_name(app->config->login_session));
+}
+
 /* Shutdown, Restart, Hibernate or Suspend if the correct keys are pressed */
-gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
-                                      Config *config)
+gboolean handle_key_presses(GtkWidget *widget, GdkEventKey *event, App *app)
 {
     (void) widget;
 
-    if (event->state & config->mod_bit) {
-        if (event->keyval == config->suspend_key && lightdm_get_can_suspend()) {
+    if (event->state & app->config->mod_bit) {
+        if (event->keyval == app->config->suspend_key && lightdm_get_can_suspend()) {
             lightdm_suspend(NULL);
-        } else if (event->keyval == config->hibernate_key &&
+        } else if (event->keyval == app->config->hibernate_key &&
                    lightdm_get_can_hibernate()) {
             lightdm_hibernate(NULL);
-        } else if (event->keyval == config->restart_key &&
+        } else if (event->keyval == app->config->restart_key &&
                    lightdm_get_can_restart()) {
             lightdm_restart(NULL);
-        } else if (event->keyval == config->shutdown_key &&
+        } else if (event->keyval == app->config->shutdown_key &&
                    lightdm_get_can_shutdown()) {
             lightdm_shutdown(NULL);
+        } else if (event->keyval == app->config->session_key) {
+            handle_session_keypress(app);
         } else {
             return FALSE;
         }

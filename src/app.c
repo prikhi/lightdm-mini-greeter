@@ -39,11 +39,18 @@ App *initialize_app(int argc, char **argv)
                          G_CALLBACK(handle_tab_key), app);
     }
     g_signal_connect(GTK_WIDGET(APP_MAIN_WINDOW(app)), "key-press-event",
-                     G_CALLBACK(handle_power_management_keys), app->config);
+                     G_CALLBACK(handle_key_presses), app);
 
     return app;
 }
 
+void load_lightdm_config(App *app) {
+    // Add lightdm-sourced config here
+    app->config->sessions = lightdm_get_sessions();
+    app->config->login_session =
+        find_session(app->config,
+                     lightdm_greeter_get_default_session_hint(app->greeter));
+}
 
 /* Free any dynamically allocated memory */
 void destroy_app(App *app)

@@ -21,6 +21,7 @@ static void setup_main_window(Config *config, UI *ui);
 static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
+static void create_and_attach_session_label(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
 static void attach_config_colors_to_screen(Config *config);
 
@@ -35,6 +36,7 @@ UI *initialize_ui(Config *config)
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
     create_and_attach_feedback_label(ui);
+    create_and_attach_session_label(config, ui);
     attach_config_colors_to_screen(config);
 
     return ui;
@@ -193,6 +195,28 @@ static void create_and_attach_password_field(Config *config, UI *ui)
         gtk_grid_attach_next_to(ui->layout_container, ui->password_label,
                                 ui->password_input, GTK_POS_LEFT, 1, 1);
     }
+}
+
+/* Add label for session to log in to */
+static void create_and_attach_session_label(Config *config, UI *ui)
+{
+    ui->session_label = gtk_label_new("");
+    gtk_label_set_justify(GTK_LABEL(ui->session_label), GTK_JUSTIFY_CENTER);
+    gtk_widget_set_no_show_all(ui->session_label, TRUE);
+    gtk_widget_set_name(GTK_WIDGET(ui->session_label), "session");
+
+    GtkWidget *attachment_point;
+    gint width;
+    if (ui->password_label == NULL) {
+        attachment_point = ui->password_input;
+        width = 1;
+    } else {
+        attachment_point = ui->password_label;
+        width = 2;
+    }
+
+    gtk_grid_attach_next_to(ui->layout_container, ui->session_label,
+                            attachment_point, GTK_POS_TOP, width, 1);
 }
 
 

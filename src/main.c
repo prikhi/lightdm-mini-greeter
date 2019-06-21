@@ -14,6 +14,7 @@ int main(int argc, char **argv)
     App *app = initialize_app(argc, argv);
 
     connect_to_lightdm_daemon(app->greeter);
+    load_lightdm_config(app);
     begin_authentication_as_default_user(app);
 
     for (int m = 0; m < APP_MONITOR_COUNT(app); m++) {

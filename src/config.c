@@ -57,6 +57,7 @@ Config *initialize_config(void)
     config->hibernate_key = parse_greeter_hotkey_keyval(keyfile, "hibernate-key");
     config->restart_key = parse_greeter_hotkey_keyval(keyfile, "restart-key");
     config->shutdown_key = parse_greeter_hotkey_keyval(keyfile, "shutdown-key");
+    config->session_key = parse_greeter_hotkey_keyval(keyfile, "session-key");
     gchar *mod_key = g_key_file_get_string(
         keyfile, "greeter-hotkeys", "mod-key", NULL);
     if (strcmp(mod_key, "control") == 0) {
@@ -110,6 +111,35 @@ Config *initialize_config(void)
     return config;
 }
 
+void select_next_session(Config *config) {
+    for (const GList *elem = config->sessions; elem != NULL; elem = elem->next) {
+        LightDMSession *session = elem->data;
+
+        if (strcmp(lightdm_session_get_key(session),
+                   lightdm_session_get_key(config->login_session)) == 0) {
+
+            if (elem->next == NULL) {
+                config->login_session = config->sessions->data;
+            } else {
+                config->login_session = elem->next->data;
+            }
+            g_message("Session set to: %s",
+                      lightdm_session_get_name(config->login_session));
+            break;
+        }
+    }
+}
+
+LightDMSession *find_session(Config *config, const gchar *name) {
+    for (const GList *elem = config->sessions; elem != NULL; elem = elem->next) {
+        LightDMSession *session = elem->data;
+
+        if (strcmp(lightdm_session_get_key(session), name) == 0) {
+            return session;
+        }
+    }
+    return NULL;
+}
 
 /* Cleanup any memory allocated for the Config */
 void destroy_config(Config *config)
@@ -162,6 +192,9 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
 
     if (strcmp(key, "") == 0) {
         g_error("Configuration contains empty key for '%s'\n", key_name);
+    }
+    if (strcmp(key, "tab") == 0) {
+        return GDK_KEY_Tab;
     }
 
     return gdk_unicode_to_keyval((guint) key[0]);
