@@ -78,7 +78,8 @@ gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
     return TRUE;
 }
 
-void handle_session_keypress(App *app) {
+void handle_session_keypress(App *app)
+{
     if (gtk_widget_get_visible(APP_SESSION_LABEL(app))) {
         select_next_session(app->config);
     } else {

@@ -44,7 +44,8 @@ App *initialize_app(int argc, char **argv)
     return app;
 }
 
-void load_lightdm_config(App *app) {
+void load_lightdm_config(App *app)
+{
     // Add lightdm-sourced config here
     app->config->sessions = lightdm_get_sessions();
     app->config->login_session =

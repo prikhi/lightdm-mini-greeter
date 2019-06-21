@@ -111,7 +111,8 @@ Config *initialize_config(void)
     return config;
 }
 
-void select_next_session(Config *config) {
+void select_next_session(Config *config)
+{
     for (const GList *elem = config->sessions; elem != NULL; elem = elem->next) {
         LightDMSession *session = elem->data;
 
@@ -130,7 +131,8 @@ void select_next_session(Config *config) {
     }
 }
 
-LightDMSession *find_session(Config *config, const gchar *name) {
+LightDMSession *find_session(Config *config, const gchar *name)
+{
     for (const GList *elem = config->sessions; elem != NULL; elem = elem->next) {
         LightDMSession *session = elem->data;
 
