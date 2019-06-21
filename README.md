@@ -132,8 +132,9 @@ Or with `dm-tool`:
     dm-tool add-nested-seat
 
 If you've added a `background-image` it will appear in this preview, but not
-in the real thing unless the image is located within `/etc/lightdm`. A
-symlink into this location won't work.
+in the real thing unless the image is located within `/etc/lightdm` or another
+directory which lightdm has permission to read. A symlink into this location
+won't work.
 
 ## Contribute
 
