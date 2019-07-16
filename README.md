@@ -89,7 +89,7 @@ You can use `debhelper` to build the package yourself:
 
 ```sh
 sudo apt-get install build-essential automake pkg-config fakeroot debhelper \
-    liblightdm-gobject-1-dev libgtk-3-dev
+    liblightdm-gobject-dev libgtk-3-dev
 cd lightdm-mini-greeter
 fakeroot dh binary
 sudo dpkg -i ../lightdm-mini-greeter_*.deb
