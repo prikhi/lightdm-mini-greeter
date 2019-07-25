@@ -8,6 +8,7 @@
 
 void authentication_complete_cb(LightDMGreeter *greeter, App *app);
 void handle_password(GtkWidget *password_input, App *app);
+GdkFilterReturn window_event_activity(GdkXEvent *xevent, GdkEvent *event, gpointer user_data);
 gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app);
 gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
                                       Config *config);

@@ -56,4 +56,5 @@ lightdm_mini_greeter_CFLAGS = \
 							$(LIGHTDM_CFLAGS)
 lightdm_mini_greeter_LDADD = \
 							$(GTK_LIBS) \
+							$(X11_LIBS) \
 							$(LIGHTDM_LIBS)

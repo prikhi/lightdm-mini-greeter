@@ -1,5 +1,8 @@
 /* Callback Functions for LightDM & GTK */
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
+#include <X11/Xlib.h>
+#include <X11/extensions/scrnsaver.h>
 #include <lightdm.h>
 #include <string.h>
 
@@ -63,6 +66,43 @@ void handle_password(GtkWidget *password_input, App *app)
     gtk_entry_set_text(GTK_ENTRY(password_input), "");
 }
 
+/* X events handler to monitor activity */
+GdkFilterReturn window_event_activity(GdkXEvent *xevent, GdkEvent *event, gpointer user_data) {
+    App *app = user_data;
+    gboolean check_switch = FALSE;
+    XEvent *e = (XEvent *) xevent;
+
+    if (e->type == VisibilityNotify) {
+        GdkWindow *window = gtk_widget_get_window(GTK_WIDGET(APP_MAIN_WINDOW(app)));
+        if (window != NULL && gdk_x11_window_get_xid(window) == e->xvisibility.window) {
+            g_message("Window visibility changed");
+            app->window_visible = e->xvisibility.state != VisibilityFullyObscured;
+            check_switch = TRUE;
+        }
+    } else if (app->xss_event_base >= 0 && e->type == app->xss_event_base + ScreenSaverNotify) {
+        XScreenSaverNotifyEvent *xssne = (XScreenSaverNotifyEvent *) e;
+        if (xssne->state == ScreenSaverOff || xssne->state == ScreenSaverDisabled) {
+            g_message("Screen saver is inactive");
+            app->xss_active = FALSE;
+            check_switch = TRUE;
+        } else if (xssne->state == ScreenSaverOn) {
+            g_message("Screen saver is active");
+            app->xss_active = TRUE;
+            check_switch = TRUE;
+        }
+    }
+
+    if (check_switch && app_is_active_switch(app)) {
+        if (app_is_active(app)) {
+            begin_authentication_as_default_user(app);
+            g_message("Authentication process resumed");
+        } else {
+            compat_greeter_cancel_authentication(app->greeter, NULL);
+            g_message("Authentication process cancelled");
+        }
+    }
+    return GDK_FILTER_CONTINUE;
+}
 
 /* Select the Password input if the Tab Key is Pressed */
 gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)

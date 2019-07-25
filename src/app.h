@@ -11,11 +11,18 @@ typedef struct App_ {
     Config *config;
     LightDMGreeter *greeter;
     UI *ui;
+    gboolean window_visible;
+    gboolean xss_active;
+    gint xss_event_base;
+    gboolean last_active;
 } App;
 
 
 App *initialize_app(int argc, char **argv);
 void destroy_app(App *app);
+
+gboolean app_is_active(App *app);
+gboolean app_is_active_switch(App *app);
 
 /* Config Member Accessors */
 #define APP_LOGIN_USER(app)             (app)->config->login_user
