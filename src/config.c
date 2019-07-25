@@ -103,6 +103,10 @@ Config *initialize_config(void)
     } else {
         config->layout_spacing = (guint) layout_spacing;
     }
+    config->x_offset = g_key_file_get_integer(
+        keyfile, "greeter-theme", "x-offset", NULL);
+    config->y_offset = g_key_file_get_integer(
+        keyfile, "greeter-theme", "y-offset", NULL);
 
 
     g_key_file_free(keyfile);
