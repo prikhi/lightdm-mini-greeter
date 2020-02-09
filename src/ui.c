@@ -233,11 +233,13 @@ static void attach_config_colors_to_screen(Config *config)
     char *css;
     int css_string_length = asprintf(&css,
         "* {\n"
-            "font: %s %s;\n"
+            "font-family: %s;\n"
+            "font-size: %s;\n"
+            "font-weight: %s;\n"
+            "font-style: %s;\n"
         "}\n"
         "label {\n"
             "color: %s;\n"
-            "font-weight: bold;\n"
         "}\n"
         "label#error {\n"
             "color: %s;\n"
@@ -267,8 +269,10 @@ static void attach_config_colors_to_screen(Config *config)
             "border-image-width: 0;\n"
         "}\n"
         // *
-        , config->font_size
         , config->font
+        , config->font_size
+        , config->font_weight
+        , config->font_style
         // label
         , gdk_rgba_to_string(config->text_color)
         // label#error
