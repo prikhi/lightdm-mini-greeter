@@ -74,6 +74,10 @@ Config *initialize_config(void)
         keyfile, "greeter-theme", "font", NULL);
     config->font_size = g_key_file_get_string(
         keyfile, "greeter-theme", "font-size", NULL);
+    config->font_weight = g_key_file_get_string(
+        keyfile, "greeter-theme", "font-weight", NULL);
+    config->font_style = g_key_file_get_string(
+        keyfile, "greeter-theme", "font-style", NULL);
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
@@ -117,6 +121,8 @@ void destroy_config(Config *config)
     free(config->login_user);
     free(config->font);
     free(config->font_size);
+    free(config->font_weight);
+    free(config->font_style);
     free(config->text_color);
     free(config->error_color);
     free(config->background_image);
