@@ -2,6 +2,7 @@
 
 ## master
 
+* Fix default path to config file if not set by autotools.
 * Add `font-weight` & `font-style` options to customize the bolding &
   italicizing of all text.
 * Use the alternatives system for Debian-based builds.
