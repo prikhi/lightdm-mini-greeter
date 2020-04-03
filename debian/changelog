@@ -1,3 +1,9 @@
+lightdm-mini-greeter (0.4.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Pavan Rikhi <pavan.rikhi@gmail.com>  Fri, 03 Apr 2020 06:50:10 -0400
+
 lightdm-mini-greeter (0.3.4-1.1) unstable; urgency=medium
 
   * Register lightdm-mini-greeter in debian alternatives system.

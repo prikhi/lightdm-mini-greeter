@@ -2,6 +2,9 @@
 
 ## master
 
+
+## v0.4.0
+
 * Add `password-border-color` & `password-border-width` options for customizing
   the password input's border independently of the main window's border.
 * Fix default path to config file if not set by autotools.
