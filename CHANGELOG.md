@@ -2,6 +2,8 @@
 
 ## master
 
+* Add `font-weight` & `font-style` options to customize the bolding &
+  italicizing of all text.
 * Use the alternatives system for Debian-based builds.
 * Add a `password-alignment` option to customize the alignment of the text in the
   password input.
