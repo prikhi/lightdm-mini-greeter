@@ -17,6 +17,8 @@ static UI *new_ui(void);
 static void setup_background_windows(Config *config, UI *ui);
 static GtkWindow *new_background_window(GdkMonitor *monitor);
 static void set_window_to_monitor_size(GdkMonitor *monitor, GtkWindow *window);
+static void hide_mouse_cursor(GtkWidget *window, gpointer user_data);
+static void move_mouse_to_background_window(void);
 static void setup_main_window(Config *config, UI *ui);
 static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
@@ -31,6 +33,7 @@ UI *initialize_ui(Config *config)
     UI *ui = new_ui();
 
     setup_background_windows(config, ui);
+    move_mouse_to_background_window();
     setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
@@ -99,6 +102,8 @@ static GtkWindow *new_background_window(GdkMonitor *monitor)
     // Set Window Size to Monitor Size
     set_window_to_monitor_size(monitor, background_window);
 
+    g_signal_connect(background_window, "realize", G_CALLBACK(hide_mouse_cursor),
+                     NULL);
     // TODO: is this needed?
     g_signal_connect(background_window, "destroy", G_CALLBACK(gtk_main_quit),
                      NULL);
@@ -122,6 +127,40 @@ static void set_window_to_monitor_size(GdkMonitor *monitor, GtkWindow *window)
 }
 
 
+/* Hide the mouse cursor when it is hovered over the given widget.
+ *
+ * Note: This has no effect when used with a GtkEntry widget.
+ */
+static void hide_mouse_cursor(GtkWidget *widget, gpointer user_data)
+{
+    GdkDisplay *display = gdk_display_get_default();
+    GdkCursor *blank_cursor = gdk_cursor_new_for_display(display, GDK_BLANK_CURSOR);
+    GdkWindow *window = gtk_widget_get_window(widget);
+    if (window != NULL) {
+        gdk_window_set_cursor(window, blank_cursor);
+    }
+}
+
+
+/* Move the mouse cursor to the upper-left corner of the primary screen.
+ *
+ * This is necessary for hiding the mouse cursor because we cannot hide the
+ * mouse cursor when it is hovered over a GtkEntry. Instead, we hide the cursor
+ * when it is over the background windows and then move the mouse to the corner
+ * of the screen where it should hover over the background window or main
+ * window instead.
+ *
+ */
+static void move_mouse_to_background_window(void)
+{
+    GdkDisplay *display = gdk_display_get_default();
+    GdkDevice *mouse = gdk_seat_get_pointer(gdk_display_get_default_seat(display));
+    GdkScreen *screen = gdk_display_get_default_screen(display);
+
+    gdk_device_warp(mouse, screen, 0, 0);
+}
+
+
 /* Create & Configure the Main Window */
 static void setup_main_window(Config *config, UI *ui)
 {
@@ -131,6 +170,7 @@ static void setup_main_window(Config *config, UI *ui)
     gtk_widget_set_name(GTK_WIDGET(main_window), "main");
 
     g_signal_connect(main_window, "show", G_CALLBACK(place_main_window), NULL);
+    g_signal_connect(main_window, "realize", G_CALLBACK(hide_mouse_cursor), NULL);
     g_signal_connect(main_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     ui->main_window = main_window;
