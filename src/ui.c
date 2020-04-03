@@ -266,7 +266,6 @@ static void attach_config_colors_to_screen(Config *config)
             "background-color: %s;\n"
             "border-width: %s;\n"
             "border-color: %s;\n"
-            "border-style: solid;\n"
             "background-image: none;\n"
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
