@@ -13,6 +13,16 @@ gboolean compat_greeter_authenticate(LightDMGreeter *greeter, const gchar *usern
 #endif
 }
 
+gboolean compat_greeter_cancel_authentication(LightDMGreeter *greeter, GError **error)
+{
+#ifdef LIGHTDM_1_19_1_LOWER
+    lightdm_greeter_cancel_authentication(greeter);
+    return TRUE;
+#else
+    return lightdm_greeter_cancel_authentication(greeter, error);
+#endif
+}
+
 gboolean compat_greeter_respond(LightDMGreeter *greeter, const gchar *response, GError **error)
 {
 #ifdef LIGHTDM_1_19_1_LOWER

@@ -36,6 +36,8 @@ Config *initialize_config(void)
     if (strcmp(config->login_user, "CHANGE_ME") == 0) {
         g_message("User configuration value is unchanged.");
     }
+    config->stop_on_inactivity = g_key_file_get_boolean(
+        keyfile, "greeter", "stop-on-inactivity", NULL);
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = g_key_file_get_string(

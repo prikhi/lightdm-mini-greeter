@@ -21,6 +21,13 @@ AC_CHECK_HEADERS([stdlib.h])
 
 # Checks for library functions.
 
+# Check for X libraries.
+AC_CHECK_LIB([X11], [XOpenDisplay], [X11_LIBS="$X11_LIBS -lX11"],
+             AC_MSG_ERROR([X11 is not found]))
+AC_CHECK_LIB([Xss], [XScreenSaverSelectInput], [X11_LIBS="$X11_LIBS -lXss"],
+             AC_MSG_ERROR([Xss is not found]))
+AC_SUBST([X11_LIBS])
+
 # Check if liblightdm is v1.19.1 or below for debian builds
 LDM_CHECK=$(pkg-config --max-version=1.19.1 liblightdm-gobject-1)
 AS_IF([test $? = 0],
