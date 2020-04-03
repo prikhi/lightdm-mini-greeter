@@ -70,6 +70,7 @@ Config *initialize_config(void)
     }
 
     // Parse Theme Settings
+    // Font
     config->font = g_key_file_get_string(
         keyfile, "greeter-theme", "font", NULL);
     config->font_size = g_key_file_get_string(
@@ -88,6 +89,7 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
         parse_greeter_color_key(keyfile, "error-color");
+    // Background
     config->background_image = g_key_file_get_string(
         keyfile, "greeter-theme", "background-image", NULL);
     if (config->background_image == NULL || strcmp(config->background_image, "") == 0) {
@@ -95,12 +97,14 @@ Config *initialize_config(void)
     }
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
+    // Window
     config->window_color =
         parse_greeter_color_key(keyfile, "window-color");
     config->border_color =
         parse_greeter_color_key(keyfile, "border-color");
     config->border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "border-width", NULL);
+    // Password
     config->password_color =
         parse_greeter_color_key(keyfile, "password-color");
     config->password_background_color =
