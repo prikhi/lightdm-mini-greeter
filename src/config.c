@@ -76,8 +76,14 @@ Config *initialize_config(void)
         keyfile, "greeter-theme", "font-size", NULL);
     config->font_weight = g_key_file_get_string(
         keyfile, "greeter-theme", "font-weight", NULL);
+    if (config->font_weight == NULL) {
+        config->font_weight = (gchar *) "bold";
+    }
     config->font_style = g_key_file_get_string(
         keyfile, "greeter-theme", "font-style", NULL);
+    if (config->font_style == NULL) {
+        config->font_style = (gchar *) "normal";
+    }
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
