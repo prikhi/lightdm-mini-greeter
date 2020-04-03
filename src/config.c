@@ -157,6 +157,7 @@ void destroy_config(Config *config)
     free(config->invalid_password_text);
     free(config->password_color);
     free(config->password_background_color);
+    free(config->password_border_color);
     free(config->password_border_width);
     free(config);
 }
