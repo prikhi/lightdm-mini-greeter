@@ -2,6 +2,8 @@
 
 ## master
 
+* Add `password-border-color` & `password-border-width` options for customizing
+  the password input's border independently of the main window's border.
 * Fix default path to config file if not set by autotools.
 * Add `font-weight` & `font-style` options to customize the bolding &
   italicizing of all text.
