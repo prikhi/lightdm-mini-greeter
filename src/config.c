@@ -99,11 +99,12 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "password-color");
     config->password_background_color =
         parse_greeter_color_key(keyfile, "password-background-color");
-    gchar *temp_password_background_color = g_key_file_get_string(
+    gchar *temp_password_border_color = g_key_file_get_string(
         keyfile, "greeter-theme", "password-border-color", NULL);
-    if (temp_password_background_color == NULL) {
+    if (temp_password_border_color == NULL) {
         config->password_border_color = config->border_color;
     } else {
+        free(temp_password_border_color);
         config->password_border_color =
             parse_greeter_color_key(keyfile, "password-border-color");
     }
