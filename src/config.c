@@ -53,8 +53,8 @@ Config *initialize_config(void)
     config->hibernate_key = parse_greeter_hotkey_keyval(keyfile, "hibernate-key");
     config->restart_key = parse_greeter_hotkey_keyval(keyfile, "restart-key");
     config->shutdown_key = parse_greeter_hotkey_keyval(keyfile, "shutdown-key");
-    gchar *mod_key = g_key_file_get_string(
-        keyfile, "greeter-hotkeys", "mod-key", NULL);
+    gchar *mod_key = g_strchomp(g_key_file_get_string(
+        keyfile, "greeter-hotkeys", "mod-key", NULL));
     if (strcmp(mod_key, "control") == 0) {
         config->mod_bit = GDK_CONTROL_MASK;
     } else if (strcmp(mod_key, "alt") == 0) {
@@ -208,8 +208,8 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
 static gboolean parse_greeter_password_alignment(GKeyFile *keyfile) {
     gboolean initial_alignment;
 
-    gchar *password_alignment_text = g_key_file_get_string(
-        keyfile, "greeter", "password-alignment", NULL);
+    gchar *password_alignment_text = g_strchomp(g_key_file_get_string(
+        keyfile, "greeter", "password-alignment", NULL));
     if (password_alignment_text == NULL) {
         initial_alignment = 1;
     } else {

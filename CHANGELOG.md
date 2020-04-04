@@ -2,7 +2,8 @@
 
 ## master
 
-* Ignore any trailing whitespace in the `greeter.user` configuration option.
+* Ignore any trailing whitespace in the `user`, `mod-key`, &
+  `password-alignment` configuration options.
 
 ## v0.4.0
 
