@@ -31,8 +31,8 @@ Config *initialize_config(void)
     }
 
     // Parse values from the keyfile into a Config.
-    config->login_user = g_key_file_get_string(
-        keyfile, "greeter", "user", NULL);
+    config->login_user = g_strchomp(g_key_file_get_string(
+        keyfile, "greeter", "user", NULL));
     if (strcmp(config->login_user, "CHANGE_ME") == 0) {
         g_message("User configuration value is unchanged.");
     }

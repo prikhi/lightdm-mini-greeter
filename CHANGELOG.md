@@ -2,6 +2,7 @@
 
 ## master
 
+* Ignore any trailing whitespace in the `greeter.user` configuration option.
 
 ## v0.4.0
 
