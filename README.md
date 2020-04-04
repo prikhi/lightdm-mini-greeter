@@ -46,7 +46,7 @@ packer -S lightdm-mini-greeter
 
 ### Gentoo Linux
 
-Emerge the [lightdm-mini-greeter package](gentoo-package):
+Emerge the [lightdm-mini-greeter package][gentoo-package]:
 
 ```sh
 emerge x11-misc/lightdm-mini-greeter
