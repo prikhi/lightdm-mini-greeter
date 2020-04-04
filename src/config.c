@@ -33,19 +33,19 @@ Config *initialize_config(void)
     }
 
     // Parse values from the keyfile into a Config.
-    config->login_user = g_strchomp(g_key_file_get_string(
-        keyfile, "greeter", "user", NULL));
+    config->login_user = 
+        g_strchomp(g_key_file_get_string(keyfile, "greeter", "user", NULL));
     if (strcmp(config->login_user, "CHANGE_ME") == 0) {
         g_message("User configuration value is unchanged.");
     }
-    config->show_password_label = g_key_file_get_boolean(
-        keyfile, "greeter", "show-password-label", NULL);
+    config->show_password_label = 
+        g_key_file_get_boolean(keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = parse_greeter_string(
         keyfile, "greeter", "password-label-text", "Password:");
     config->invalid_password_text = parse_greeter_string(
         keyfile, "greeter", "invalid-password-text", "Invalid Password");
-    config->show_input_cursor = g_key_file_get_boolean(
-        keyfile, "greeter", "show-input-cursor", NULL);
+    config->show_input_cursor = 
+        g_key_file_get_boolean(keyfile, "greeter", "show-input-cursor", NULL);
     config->password_alignment = parse_greeter_password_alignment(keyfile);
 
     // Parse Hotkey Settings
@@ -67,21 +67,21 @@ Config *initialize_config(void)
 
     // Parse Theme Settings
     // Font
-    config->font = g_key_file_get_string(
-        keyfile, "greeter-theme", "font", NULL);
-    config->font_size = g_key_file_get_string(
-        keyfile, "greeter-theme", "font-size", NULL);
-    config->font_weight = parse_greeter_string(
-        keyfile, "greeter-theme", "font-weight", "bold");
-    config->font_style = parse_greeter_string(
-        keyfile, "greeter-theme", "font-style", "normal");
+    config->font = 
+        g_key_file_get_string(keyfile, "greeter-theme", "font", NULL);
+    config->font_size = 
+        g_key_file_get_string(keyfile, "greeter-theme", "font-size", NULL);
+    config->font_weight = 
+        parse_greeter_string(keyfile, "greeter-theme", "font-weight", "bold");
+    config->font_style = 
+        parse_greeter_string(keyfile, "greeter-theme", "font-style", "normal");
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
         parse_greeter_color_key(keyfile, "error-color");
     // Background
-    config->background_image = g_key_file_get_string(
-        keyfile, "greeter-theme", "background-image", NULL);
+    config->background_image = 
+        g_key_file_get_string(keyfile, "greeter-theme", "background-image", NULL);
     if (config->background_image == NULL || strcmp(config->background_image, "") == 0) {
         config->background_image = (gchar *) "\"\"";
     }
@@ -110,8 +110,8 @@ Config *initialize_config(void)
     config->password_border_width = parse_greeter_string(
         keyfile, "greeter-theme", "password-border-width", config->border_width);
 
-    gint layout_spacing = g_key_file_get_integer(
-        keyfile, "greeter-theme", "layout-space", NULL);
+    gint layout_spacing = 
+        g_key_file_get_integer(keyfile, "greeter-theme", "layout-space", NULL);
     if (layout_spacing < 0) {
         config->layout_spacing = (guint) (-1 * layout_spacing);
     } else {
