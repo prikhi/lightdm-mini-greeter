@@ -9,6 +9,8 @@
 #include "utils.h"
 
 
+static gchar *parse_greeter_string(GKeyFile *keyfile, const char *group_name,
+                                   const char *key_name, const gchar *fallback);
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
 static gboolean parse_greeter_password_alignment(GKeyFile *keyfile);
@@ -38,16 +40,10 @@ Config *initialize_config(void)
     }
     config->show_password_label = g_key_file_get_boolean(
         keyfile, "greeter", "show-password-label", NULL);
-    config->password_label_text = g_key_file_get_string(
-        keyfile, "greeter", "password-label-text", NULL);
-    if (config->password_label_text == NULL) {
-        config->password_label_text = (gchar *) "Password:";
-    }
-    config->invalid_password_text = g_key_file_get_string(
-        keyfile, "greeter", "invalid-password-text", NULL);
-    if (config->invalid_password_text == NULL) {
-        config->invalid_password_text = (gchar *) "Invalid Password";
-    }
+    config->password_label_text = parse_greeter_string(
+        keyfile, "greeter", "password-label-text", "Password:");
+    config->invalid_password_text = parse_greeter_string(
+        keyfile, "greeter", "invalid-password-text", "Invalid Password");
     config->show_input_cursor = g_key_file_get_boolean(
         keyfile, "greeter", "show-input-cursor", NULL);
     config->password_alignment = parse_greeter_password_alignment(keyfile);
@@ -75,16 +71,10 @@ Config *initialize_config(void)
         keyfile, "greeter-theme", "font", NULL);
     config->font_size = g_key_file_get_string(
         keyfile, "greeter-theme", "font-size", NULL);
-    config->font_weight = g_key_file_get_string(
-        keyfile, "greeter-theme", "font-weight", NULL);
-    if (config->font_weight == NULL) {
-        config->font_weight = (gchar *) "bold";
-    }
-    config->font_style = g_key_file_get_string(
-        keyfile, "greeter-theme", "font-style", NULL);
-    if (config->font_style == NULL) {
-        config->font_style = (gchar *) "normal";
-    }
+    config->font_weight = parse_greeter_string(
+        keyfile, "greeter-theme", "font-weight", "bold");
+    config->font_style = parse_greeter_string(
+        keyfile, "greeter-theme", "font-style", "normal");
     config->text_color =
         parse_greeter_color_key(keyfile, "text-color");
     config->error_color =
@@ -117,11 +107,8 @@ Config *initialize_config(void)
         config->password_border_color =
             parse_greeter_color_key(keyfile, "password-border-color");
     }
-    config->password_border_width = g_key_file_get_string(
-        keyfile, "greeter-theme", "password-border-width", NULL);
-    if (config->password_border_width == NULL) {
-        config->password_border_width = config->border_width;
-    }
+    config->password_border_width = parse_greeter_string(
+        keyfile, "greeter-theme", "password-border-width", config->border_width);
 
     gint layout_spacing = g_key_file_get_integer(
         keyfile, "greeter-theme", "layout-space", NULL);
@@ -162,6 +149,20 @@ void destroy_config(Config *config)
     free(config);
 }
 
+
+/* Parse a string from the config file, returning the fallback value if the key
+ * is not present in the group.
+ */
+static gchar *parse_greeter_string(GKeyFile *keyfile, const char *group_name,
+                                   const char *key_name, const gchar *fallback)
+{
+    gchar *parsed_string = g_key_file_get_string(keyfile, group_name, key_name, NULL);
+    if (parsed_string == NULL) {
+        return (gchar *) fallback;
+    } else {
+        return parsed_string;
+    }
+}
 
 /* Parse a greeter-colors group key into a newly-allocated GdkRGBA value */
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name)
