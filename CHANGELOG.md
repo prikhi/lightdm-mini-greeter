@@ -2,6 +2,8 @@
 
 ## master
 
+* Add a `show-image-on-all-monitors` configuration option to display the
+  background image on every monitor instead of just the primary monitor.
 * Ignore any trailing whitespace in the `user`, `mod-key`, &
   `password-alignment` configuration options.
 

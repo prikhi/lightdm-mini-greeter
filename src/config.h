@@ -27,6 +27,7 @@ typedef struct Config_ {
     GdkRGBA  *error_color;
     // Windows
     gchar    *background_image;
+    gboolean  show_image_on_all_monitors;
     GdkRGBA  *background_color;
     GdkRGBA  *window_color;
     GdkRGBA  *border_color;

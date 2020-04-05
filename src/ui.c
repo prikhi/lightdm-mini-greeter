@@ -75,7 +75,8 @@ static void setup_background_windows(Config *config, UI *ui)
         GtkWindow *background_window = new_background_window(monitor);
         ui->background_windows[m] = background_window;
 
-        gboolean show_background_image = gdk_monitor_is_primary(monitor) &&
+        gboolean show_background_image =
+            (gdk_monitor_is_primary(monitor) || config->show_image_on_all_monitors) &&
             (strcmp(config->background_image, "\"\"") != 0);
         if (show_background_image) {
             GtkStyleContext *style_context =

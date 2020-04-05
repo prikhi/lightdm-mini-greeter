@@ -47,6 +47,8 @@ Config *initialize_config(void)
     config->show_input_cursor = 
         g_key_file_get_boolean(keyfile, "greeter", "show-input-cursor", NULL);
     config->password_alignment = parse_greeter_password_alignment(keyfile);
+    config->show_image_on_all_monitors = g_key_file_get_boolean(
+        keyfile, "greeter", "show-image-on-all-monitors", NULL);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key");
