@@ -145,11 +145,10 @@ static void hide_mouse_cursor(GtkWidget *widget, gpointer user_data)
 /* Move the mouse cursor to the upper-left corner of the primary screen.
  *
  * This is necessary for hiding the mouse cursor because we cannot hide the
- * mouse cursor when it is hovered over a GtkEntry. Instead, we hide the cursor
- * when it is over the background windows and then move the mouse to the corner
- * of the screen where it should hover over the background window or main
- * window instead.
- *
+ * mouse cursor when it is hovered over the GtkEntry password input. Instead,
+ * we hide the cursor when it is over the background windows and then move the
+ * mouse to the corner of the screen where it should hover over the background
+ * window or main window instead.
  */
 static void move_mouse_to_background_window(void)
 {
