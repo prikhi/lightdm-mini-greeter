@@ -17,6 +17,8 @@ typedef struct Config_ {
     gchar    *invalid_password_text;
     gboolean  show_input_cursor;
     gboolean  password_alignment;
+    gint      password_input_width;
+    gboolean  show_image_on_all_monitors;
 
     /* Theme Configuration */
     gchar    *font;
@@ -27,7 +29,6 @@ typedef struct Config_ {
     GdkRGBA  *error_color;
     // Windows
     gchar    *background_image;
-    gboolean  show_image_on_all_monitors;
     GdkRGBA  *background_color;
     GdkRGBA  *window_color;
     GdkRGBA  *border_color;

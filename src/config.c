@@ -11,6 +11,8 @@
 
 static gchar *parse_greeter_string(GKeyFile *keyfile, const char *group_name,
                                    const char *key_name, const gchar *fallback);
+static gint parse_greeter_integer(GKeyFile *keyfile, const char *group_name,
+                                  const char *key_name, const gint fallback);
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
 static gboolean parse_greeter_password_alignment(GKeyFile *keyfile);
@@ -47,6 +49,8 @@ Config *initialize_config(void)
     config->show_input_cursor =
         g_key_file_get_boolean(keyfile, "greeter", "show-input-cursor", NULL);
     config->password_alignment = parse_greeter_password_alignment(keyfile);
+    config->password_input_width = parse_greeter_integer(
+        keyfile, "greeter", "password-input-width", -1);
     config->show_image_on_all_monitors = g_key_file_get_boolean(
         keyfile, "greeter", "show-image-on-all-monitors", NULL);
 
@@ -170,6 +174,30 @@ static gchar *parse_greeter_string(GKeyFile *keyfile, const char *group_name,
     } else {
         return parsed_string;
     }
+}
+
+/* Parse an integer from the config file, returning the fallback value if the
+ * key is not present in the group, or if the value is not an integer.
+ */
+static gint parse_greeter_integer(GKeyFile *keyfile, const char *group_name,
+                                  const char *key_name, const gint fallback)
+{
+    GError *parse_error = NULL;
+    gint parse_result = g_key_file_get_integer(
+        keyfile, "greeter", "password-input-width", &parse_error);
+    if (parse_error != NULL) {
+        if (parse_error->code == G_KEY_FILE_ERROR_INVALID_VALUE) {
+            // Read the value as a string so we can log it
+            gchar *value = g_key_file_get_string(
+                keyfile, group_name, key_name, NULL);
+            g_warning("Invalid integer for %s.%s: `%s`",
+                      group_name, key_name, value);
+            free(value);
+        }
+        g_error_free(parse_error);
+        return fallback;
+    }
+    return parse_result;
 }
 
 /* Parse a greeter-colors group key into a newly-allocated GdkRGBA value */

@@ -224,6 +224,11 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     gtk_entry_set_visibility(GTK_ENTRY(ui->password_input), FALSE);
     gtk_entry_set_alignment(GTK_ENTRY(ui->password_input),
                             (gfloat) config->password_alignment);
+    // TODO: The width is usually a little shorter than we specify. Is there a
+    // way to force this exact character width?
+    // Maybe use 2 GtkBoxes instead of a GtkGrid?
+    gtk_entry_set_width_chars(GTK_ENTRY(ui->password_input),
+                              config->password_input_width);
     gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
     gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
 
