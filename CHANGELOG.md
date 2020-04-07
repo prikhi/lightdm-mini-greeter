@@ -2,6 +2,9 @@
 
 ## master
 
+* Disable the password input while authenticating. This fixes a bug causing
+  lightdm to crash if the greeter tried authenticating before a previous
+  authentication attempt had completed.
 * Add a `password-input-width` configuration option to set the number of
   characters that should fit in the password input. This is just a suggested
   width - GTK may render a narrower input.

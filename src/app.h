@@ -11,6 +11,9 @@ typedef struct App_ {
     Config *config;
     LightDMGreeter *greeter;
     UI *ui;
+
+    // Signal Handler ID for the `handle_password` callback
+    gulong password_callback_id;
 } App;
 
 

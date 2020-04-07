@@ -11,7 +11,12 @@
 
 /* LightDM Callbacks */
 
-/* Start the Default Session Once Fully Authenticated */
+/* Start the Default Session Once Fully Authenticated.
+ *
+ * The callback will clear & re-enable the input widget, and re-add the
+ * `handle_password` callback so the user can try again if authentication
+ * fails.
+ */
 void authentication_complete_cb(LightDMGreeter *greeter, App *app)
 {
     if (lightdm_greeter_get_is_authenticated(greeter)) {
@@ -31,6 +36,7 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
             g_message("Unable to start session");
         }
     } else {
+        g_message("Authentication failed");
         if (strlen(app->config->invalid_password_text) > 0) {
            if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
                 gtk_widget_show(APP_FEEDBACK_LABEL(app));
@@ -40,16 +46,33 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
         }
         begin_authentication_as_default_user(app);
     }
+    gtk_entry_set_text(GTK_ENTRY(APP_PASSWORD_INPUT(app)), "");
+    gtk_editable_set_editable(GTK_EDITABLE(APP_PASSWORD_INPUT(app)), TRUE);
+    app->password_callback_id =
+        g_signal_connect(GTK_ENTRY(APP_PASSWORD_INPUT(app)), "activate",
+                         G_CALLBACK(handle_password), app);
 }
 
 
 
 /* GUI Callbacks */
 
-/* Attempt to Authenticate When a Password is Entered */
+/* Attempt to Authenticate When a Password is Entered.
+ *
+ * The callback disables itself & the input widget to prevent two
+ * authentication attempts from running at the same time - which would cause
+ * LightDM to throw a critical error.
+ */
 void handle_password(GtkWidget *password_input, App *app)
 {
+    if (app->password_callback_id != 0) {
+        g_signal_handler_disconnect(GTK_ENTRY(APP_PASSWORD_INPUT(app)),
+                                    app->password_callback_id);
+        app->password_callback_id = 0;
+    }
+
     if (!lightdm_greeter_get_is_authenticated(app->greeter)) {
+        gtk_editable_set_editable(GTK_EDITABLE(password_input), FALSE);
         if (!lightdm_greeter_get_in_authentication(app->greeter)) {
             begin_authentication_as_default_user(app);
         }
@@ -60,7 +83,6 @@ void handle_password(GtkWidget *password_input, App *app)
     } else {
         g_message("Password entered while already authenticated");
     }
-    gtk_entry_set_text(GTK_ENTRY(password_input), "");
 }
 
 
