@@ -136,6 +136,25 @@ it may not appear during normal use if the file is not in directory which
 lightdm has permission to read(like `/etc/lightdm/`). A symlink into this
 location won't work.
 
+### Keyboard layout
+
+If your keyboard layout is loaded from your shell configuration files (`.bashrc`
+for example) then it may not be impossible to type certain characters after
+installing lightdm-mini-greeter. You should consider modifying your 
+[Xorg keyboard configuration](https://wiki.archlinux.org/index.php/Xorg/Keyboard_configuration#Using_X_configuration_files).
+
+For example for a french keyboard layout (azerty) you should edit/create 
+`/etc/X11/xorg.conf.d/00-keyboard.conf` with at least the following options:
+
+```
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbModel" "pc104"
+        Option "XkbLayout" "fr"
+EndSection
+```
+
 ## Contribute
 
 You can submit feature requests, bug reports, pull requests or patches on
