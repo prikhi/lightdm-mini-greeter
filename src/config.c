@@ -26,10 +26,21 @@ Config *initialize_config(void)
         g_error("Could not allocate memory for Config");
     }
 
+    // Find out if the config file is a symlink
+    GFile *file = g_file_new_for_path(CONFIG_FILE);
+    GFileInfo *fileinfo = g_file_query_info(
+        file, "", G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    const char *filepath = CONFIG_FILE;
+    if (g_file_info_get_is_symlink(fileinfo)) {
+        filepath = g_file_info_get_symlink_target(fileinfo);
+    }
+    g_object_unref(fileinfo);
+    g_object_unref(file);
+
     // Load the key-value file
     GKeyFile *keyfile = g_key_file_new();
     gboolean keyfile_loaded = g_key_file_load_from_file(
-        keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL);
+        keyfile, filepath, G_KEY_FILE_NONE, NULL);
     if (!keyfile_loaded) {
         g_error("Could not load configuration file.");
     }
