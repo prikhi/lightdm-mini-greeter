@@ -2,6 +2,7 @@
 
 ## master
 
+* Support symlinking of the configuration file to an arbitrary path.
 * Disable the password input while authenticating. This fixes a bug causing
   lightdm to crash if the greeter tried authenticating before a previous
   authentication attempt had completed.
