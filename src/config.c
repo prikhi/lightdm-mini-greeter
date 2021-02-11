@@ -15,6 +15,7 @@ static gint parse_greeter_integer(GKeyFile *keyfile, const char *group_name,
                                   const char *key_name, const gint fallback);
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
+static gunichar *parse_greeter_password_char(GKeyFile *keyfile);
 static gboolean parse_greeter_password_alignment(GKeyFile *keyfile);
 static gboolean is_rtl_keymap_layout(void);
 
@@ -112,6 +113,8 @@ Config *initialize_config(void)
     config->border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "border-width", NULL);
     // Password
+    config->password_char =
+        parse_greeter_password_char(keyfile);
     config->password_color =
         parse_greeter_color_key(keyfile, "password-color");
     config->password_background_color =
@@ -160,6 +163,7 @@ void destroy_config(Config *config)
     free(config->border_width);
     free(config->password_label_text);
     free(config->invalid_password_text);
+    free(config->password_char);
     free(config->password_color);
     free(config->password_background_color);
     free(config->password_border_color);
@@ -239,6 +243,72 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
     }
 
     return gdk_unicode_to_keyval((guint) key[0]);
+}
+
+/* Parse the password masking character that should be displayed when typing
+ * into the password input.
+ *
+ * We first attempt to parse a literal -1 or 0, where -1 means to use the
+ * default character & 0 means to display no characters when typing a password.
+ *
+ * If that parsing fails, we attempt to parse the field as a string & use the
+ * first character of the string. If the string is empty or parsing fails, we
+ * fall back to the default characer.
+ *
+ * Since the related gtk_entry function takes a unsigned int, we use pointers,
+ * where NULL means "use the default" & all other values indicate an argument
+ * to the `gtk_entry_set_invisible_char` function.
+ *
+ */
+static gunichar *parse_greeter_password_char(GKeyFile *keyfile) {
+    const char *const group_name = "greeter-theme";
+    const char *const key_name = "password-character";
+    GError *parse_error = NULL;
+
+    // Attempt the int parsing
+
+    const gint int_result = g_key_file_get_integer(
+        keyfile, group_name, key_name, &parse_error);
+    // Matches -1
+    if (int_result == -1) {
+        return NULL;
+    }
+
+    gunichar *result = malloc(sizeof(gunichar));
+    // Matches 0
+    if (int_result == 0 && parse_error == NULL) {
+        *result = 0;
+        return result;
+    } else if (parse_error != NULL) {
+        g_error_free(parse_error);
+    }
+
+    // Atempt the string parsing
+
+    gchar *str_result = g_key_file_get_string(
+        keyfile, group_name, key_name, NULL);
+
+    // Invalid or 0-length string
+    if (str_result == NULL || strlen(str_result) == 0) {
+        if (str_result != NULL) {
+            free(str_result);
+        }
+        free(result);
+        return NULL;
+    }
+
+    // Convert to unicode code points
+    gunichar *unicode_str = g_utf8_to_ucs4(str_result, -1, NULL, NULL, NULL);
+    free(str_result);
+
+    if (unicode_str == NULL) {
+        free(result);
+        return NULL;
+    }
+
+    *result = unicode_str[0];
+    g_free(unicode_str);
+    return result;
 }
 
 /* Parse the password input alignment, properly handling RTL layouts.
