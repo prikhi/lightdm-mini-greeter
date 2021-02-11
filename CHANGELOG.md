@@ -2,6 +2,7 @@
 
 ## master
 
+* Document how to make configuration file a symlink into home directories.
 * Improve error message when configuration file is unreadable.
 * Disable the password input while authenticating. This fixes a bug causing
   lightdm to crash if the greeter tried authenticating before a previous

@@ -140,10 +140,10 @@ location won't work.
 
 If your keyboard layout is loaded from your shell configuration files (`.bashrc`
 for example) then it might not be possible to type certain characters after
-installing lightdm-mini-greeter. You should consider modifying your 
+installing lightdm-mini-greeter. You should consider modifying your
 [Xorg keyboard configuration](https://wiki.archlinux.org/index.php/Xorg/Keyboard_configuration#Using_X_configuration_files).
 
-For example for a french keyboard layout (azerty) you should edit/create 
+For example for a french keyboard layout (azerty) you should edit/create
 `/etc/X11/xorg.conf.d/00-keyboard.conf` with at least the following options:
 
 ```
@@ -154,6 +154,47 @@ Section "InputClass"
         Option "XkbLayout" "fr"
 EndSection
 ```
+
+### Config file in $HOME
+
+You may wish to include your config file in their your home folder/dotfiles so
+it is version controlled & easily transferable between systems. This is
+possible, but on most systems, LightDM will not be able to read the
+configuration file due to permission errors.
+
+The proper way to handle this is to loosen the permissions on your home
+directory a bit.
+
+Start off by adding the `lightdm` user to your user's group:
+
+    sudo usermod -aG $(whoami) lightdm
+
+Allow your user group to read your home directory:
+
+    chmod g+rx ~
+
+Move the mini-greeter config file:
+
+    sudo mv /etc/lightdm/lightdm-mini-greeter.conf ~/.dotfiles/mini-greeter.conf
+
+And then add a symlink pointing to the file in your home directory:
+
+    sudo ln -s ~/.dotfiles/mini-greeter.conf /etc/lightdm/lightdm-mini-greeter.conf
+
+And finally log out & restart LightDM:
+
+    sudo systemctl restart lightdm
+
+If LightDM fails to start back up, check the greeter's log file(usually at
+`/var/log/lightdm/seat0-greeter.log`) for the following line:
+
+    Could not load configuration file: Permission denied
+
+If present, your permissions need further adjustment. You can test your
+permissions by attempting to read the file with `sudo`:
+
+    sudo -u lightdm cat ~/.dotfiles/mini-greeter.conf
+
 
 ## Contribute
 
