@@ -28,10 +28,16 @@ Config *initialize_config(void)
 
     // Load the key-value file
     GKeyFile *keyfile = g_key_file_new();
+    GError *keyerror = NULL;
     gboolean keyfile_loaded = g_key_file_load_from_file(
-        keyfile, CONFIG_FILE, G_KEY_FILE_NONE, NULL);
+        keyfile, CONFIG_FILE, G_KEY_FILE_NONE, &keyerror);
     if (!keyfile_loaded) {
-        g_error("Could not load configuration file.");
+        if (keyerror != NULL) {
+            g_error("Could not load configuration file: %s", keyerror->message);
+            free(keyerror);
+        } else {
+            g_error("Could not load configuration file.");
+        }
     }
 
     // Parse values from the keyfile into a Config.
