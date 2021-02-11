@@ -190,7 +190,7 @@ static gint parse_greeter_integer(GKeyFile *keyfile, const char *group_name,
 {
     GError *parse_error = NULL;
     gint parse_result = g_key_file_get_integer(
-        keyfile, "greeter", "password-input-width", &parse_error);
+        keyfile, group_name, key_name, &parse_error);
     if (parse_error != NULL) {
         if (parse_error->code == G_KEY_FILE_ERROR_INVALID_VALUE) {
             // Read the value as a string so we can log it
