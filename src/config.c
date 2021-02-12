@@ -260,7 +260,8 @@ static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name
  * to the `gtk_entry_set_invisible_char` function.
  *
  */
-static gunichar *parse_greeter_password_char(GKeyFile *keyfile) {
+static gunichar *parse_greeter_password_char(GKeyFile *keyfile)
+{
     const char *const group_name = "greeter-theme";
     const char *const key_name = "password-character";
     GError *parse_error = NULL;
@@ -316,7 +317,8 @@ static gunichar *parse_greeter_password_char(GKeyFile *keyfile) {
  * Note that the gboolean returned by this function is meant to be used with
  * the `gtk_entry_set_alignment` function.
  */
-static gboolean parse_greeter_password_alignment(GKeyFile *keyfile) {
+static gboolean parse_greeter_password_alignment(GKeyFile *keyfile)
+{
     gboolean initial_alignment;
 
     gchar *password_alignment_text = g_key_file_get_string(
@@ -346,7 +348,8 @@ static gboolean parse_greeter_password_alignment(GKeyFile *keyfile) {
 
 /* Determine if the default Display's Keymap is in the Right-to-Left direction
  */
-static gboolean is_rtl_keymap_layout(void) {
+static gboolean is_rtl_keymap_layout(void)
+{
     GdkDisplay *display = gdk_display_get_default();
     if (display == NULL) {
         return FALSE;
