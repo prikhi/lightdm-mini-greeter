@@ -27,9 +27,9 @@ Right now you can:
 * hide the `Password:` label & customize the text
 * hide the password input's cursor
 * set the password masking character
-* set the size of the login window, the font & every color
+* set the size of the login window, the font, & every color
 * set a background image
-* use modifiable hotkeys to trigger a shutdown, restart, hibernate or suspend
+* use modifiable hotkeys to trigger a shutdown, restart, hibernate, or suspend
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
 
