@@ -130,6 +130,8 @@ Config *initialize_config(void)
     }
     config->password_border_width = parse_greeter_string(
         keyfile, "greeter-theme", "password-border-width", config->border_width);
+    config->password_border_radius = parse_greeter_string(
+        keyfile, "greeter-theme", "password-border-radius", "0.341125em");
 
     gint layout_spacing =
         g_key_file_get_integer(keyfile, "greeter-theme", "layout-space", NULL);
@@ -168,6 +170,7 @@ void destroy_config(Config *config)
     free(config->password_background_color);
     free(config->password_border_color);
     free(config->password_border_width);
+    free(config->password_border_radius);
     free(config);
 }
 

@@ -40,6 +40,7 @@ typedef struct Config_ {
     GdkRGBA  *password_background_color;
     GdkRGBA  *password_border_color;
     gchar    *password_border_width;
+    gchar    *password_border_radius;
 
     /* Hotkeys */
     guint     mod_bit;

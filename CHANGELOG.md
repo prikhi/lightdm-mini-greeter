@@ -2,6 +2,8 @@
 
 ## master
 
+* Add a `password-border-radius` configuration option to set the border radius
+  of the password input.
 * Add a `password-character` configuration option to set the character used to
   mask the entered password. `-1` specifies the default character, `0` hides
   any entered text, & the first character is used for any other value.

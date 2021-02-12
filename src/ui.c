@@ -314,6 +314,7 @@ static void attach_config_colors_to_screen(Config *config)
             "background-color: %s;\n"
             "border-width: %s;\n"
             "border-color: %s;\n"
+            "border-radius: %s;\n"
             "background-image: none;\n"
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
@@ -343,6 +344,7 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->password_background_color)
         , config->password_border_width
         , gdk_rgba_to_string(config->password_border_color)
+        , config->password_border_radius
     );
 
     if (css_string_length >= 0) {
