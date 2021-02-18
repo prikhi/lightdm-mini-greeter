@@ -42,7 +42,7 @@ Install the [lightdm-mini-greeter package][aur-package] from the Arch User
 Repository:
 
 ```sh
-packer -S lightdm-mini-greeter
+yay -S lightdm-mini-greeter
 ```
 
 ### Gentoo Linux
