@@ -16,8 +16,9 @@ static gint parse_greeter_integer(GKeyFile *keyfile, const char *group_name,
 static GdkRGBA *parse_greeter_color_key(GKeyFile *keyfile, const char *key_name);
 static guint parse_greeter_hotkey_keyval(GKeyFile *keyfile, const char *key_name);
 static gunichar *parse_greeter_password_char(GKeyFile *keyfile);
-static gboolean parse_greeter_password_alignment(GKeyFile *keyfile);
+static gfloat parse_greeter_password_alignment(GKeyFile *keyfile);
 static gboolean is_rtl_keymap_layout(void);
+gboolean input_string_equals(gchar *input_str, const gchar * const fixed_str);
 
 /* Initialize the configuration, sourcing the greeter's configuration file */
 Config *initialize_config(void)
@@ -320,33 +321,23 @@ static gunichar *parse_greeter_password_char(GKeyFile *keyfile)
  * Note that the gboolean returned by this function is meant to be used with
  * the `gtk_entry_set_alignment` function.
  */
-static gboolean parse_greeter_password_alignment(GKeyFile *keyfile)
+static gfloat parse_greeter_password_alignment(GKeyFile *keyfile)
 {
-    gboolean initial_alignment;
+    gfloat alignment;
 
-    gchar *password_alignment_text = g_key_file_get_string(
-        keyfile, "greeter", "password-alignment", NULL);
-    if (password_alignment_text == NULL) {
-        initial_alignment = 1;
-    } else {
-        if (strcmp(g_strchomp(password_alignment_text), "left") == 0) {
-            initial_alignment = 0;
-        } else {
-            initial_alignment = 1;
-        }
-        free(password_alignment_text);
-    }
+    gchar *password_alignment_text = parse_greeter_string(
+        keyfile, "greeter", "password-alignment", "right");
+    gboolean is_rtl = is_rtl_keymap_layout();
 
-    // The left/right values are switched for RTL layouts.
-    if (is_rtl_keymap_layout()) {
-        if (initial_alignment == 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+    if (input_string_equals(password_alignment_text, "left")) {
+        alignment = is_rtl ? 1 : 0;
+    } else if (input_string_equals(password_alignment_text, "center")) {
+        alignment = 0.5;
     } else {
-        return initial_alignment;
+        alignment = is_rtl ? 0 : 1;
     }
+    free(password_alignment_text);
+    return alignment;
 }
 
 /* Determine if the default Display's Keymap is in the Right-to-Left direction
@@ -360,4 +351,11 @@ static gboolean is_rtl_keymap_layout(void)
     GdkKeymap *keymap = gdk_keymap_get_for_display(display);
     PangoDirection text_direction = gdk_keymap_get_direction(keymap);
     return text_direction == PANGO_DIRECTION_RTL;
+}
+
+/* Take a string from the config file, trim any whitespace & check it's
+ * equality with a fixed string.
+ */
+gboolean input_string_equals(gchar *input_str, const gchar * const fixed_str) {
+    return strcmp(g_strchomp(input_str), fixed_str) == 0;
 }

@@ -16,7 +16,7 @@ typedef struct Config_ {
     gchar    *password_label_text;
     gchar    *invalid_password_text;
     gboolean  show_input_cursor;
-    gboolean  password_alignment;
+    gfloat    password_alignment;
     gint      password_input_width;
     gboolean  show_image_on_all_monitors;
 

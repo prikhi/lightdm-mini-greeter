@@ -2,6 +2,8 @@
 
 ## master
 
+* Allow setting the `password-alignment` option to `center`, in addition to
+  `left` or `right`.
 * Add a `password-border-radius` configuration option to set the border radius
   of the password input.
 * Add a `password-character` configuration option to set the character used to

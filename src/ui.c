@@ -226,7 +226,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
         gtk_entry_set_invisible_char(GTK_ENTRY(ui->password_input), *config->password_char);
     }
     gtk_entry_set_alignment(GTK_ENTRY(ui->password_input),
-                            (gfloat) config->password_alignment);
+                            config->password_alignment);
     // TODO: The width is usually a little shorter than we specify. Is there a
     // way to force this exact character width?
     // Maybe use 2 GtkBoxes instead of a GtkGrid?
