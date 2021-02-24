@@ -96,6 +96,9 @@ fakeroot dh binary
 sudo dpkg -i ../lightdm-mini-greeter_*.deb
 ```
 
+Note: on Ubuntu, you need `liblightdm-gobject-1-dev` instead of
+`liblightdm-gobject-dev`.
+
 ### Manual
 
 You will need `automake`, `pkg-config`, `gtk+`, & `liblightdm-gobject` to build
