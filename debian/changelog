@@ -1,3 +1,9 @@
+lightdm-mini-greeter (0.5.0-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Pavan Rikhi <pavan.rikhi@gmail.com>  Tue, 23 Feb 2021 23:29:15 -0500
+
 lightdm-mini-greeter (0.4.0-1) unstable; urgency=medium
 
   * New upstream release

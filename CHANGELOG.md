@@ -2,6 +2,9 @@
 
 ## master
 
+
+## v0.5.0
+
 * Allow setting the `password-alignment` option to `center`, in addition to
   `left` or `right`.
 * Add a `password-border-radius` configuration option to set the border radius
