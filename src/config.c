@@ -176,15 +176,15 @@ void destroy_config(Config *config)
 }
 
 
-/* Parse a string from the config file, returning the fallback value if the key
- * is not present in the group.
+/* Parse a string from the config file, returning a copy of the fallback value
+ * if the key is not present in the group.
  */
 static gchar *parse_greeter_string(GKeyFile *keyfile, const char *group_name,
                                    const char *key_name, const gchar *fallback)
 {
     gchar *parsed_string = g_key_file_get_string(keyfile, group_name, key_name, NULL);
     if (parsed_string == NULL) {
-        return (gchar *) fallback;
+        return g_strdup(fallback);
     } else {
         return parsed_string;
     }
