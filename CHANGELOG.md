@@ -2,7 +2,11 @@
 
 ## master
 
-* Fix crash when `password-alignment` option is missing from configration file.
+
+## v0.5.1
+
+* Fix crash when `password-alignment` option is missing from configuration
+  file.
 
 ## v0.5.0
 
