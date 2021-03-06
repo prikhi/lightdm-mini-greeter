@@ -54,6 +54,8 @@ Config *initialize_config(void)
         keyfile, "greeter", "password-label-text", "Password:");
     config->invalid_password_text = parse_greeter_string(
         keyfile, "greeter", "invalid-password-text", "Invalid Password");
+    config->title_label_text = parse_greeter_string(
+        keyfile, "greeter", "title-label-text", "Invalid Password");
     config->show_input_cursor =
         g_key_file_get_boolean(keyfile, "greeter", "show-input-cursor", NULL);
     config->password_alignment = parse_greeter_password_alignment(keyfile);

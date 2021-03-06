@@ -24,6 +24,7 @@ static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
+static void create_and_attach_title_label(Config *config, UI *ui);
 static void attach_config_colors_to_screen(Config *config);
 
 
@@ -38,6 +39,7 @@ UI *initialize_ui(Config *config)
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
     create_and_attach_feedback_label(ui);
+    create_and_attach_title_label(config, ui);
     attach_config_colors_to_screen(config);
 
     return ui;
@@ -58,6 +60,7 @@ static UI *new_ui(void)
     ui->password_label = NULL;
     ui->password_input = NULL;
     ui->feedback_label = NULL;
+    ui->title_label = NULL;
 
     return ui;
 }
@@ -264,6 +267,28 @@ static void create_and_attach_feedback_label(UI *ui)
 
     gtk_grid_attach_next_to(ui->layout_container, ui->feedback_label,
                             attachment_point, GTK_POS_BOTTOM, width, 1);
+}
+
+/* Create a title label that always shows */
+static void create_and_attach_title_label(Config *config, UI *ui)
+{
+    ui->title_label = gtk_label_new(config->title_label_text);
+    gtk_label_set_justify(GTK_LABEL(ui->title_label), GTK_JUSTIFY_CENTER);
+    // gtk_widget_set_no_show_all(ui->title_label, TRUE);
+    // gtk_widget_set_name(GTK_WIDGET(ui->title_label), "title");
+
+    GtkWidget *attachment_point;
+    gint width;
+    if (ui->password_label == NULL) {
+        attachment_point = ui->password_input;
+        width = 1;
+    } else {
+        attachment_point = ui->password_label;
+        width = 2;
+    }
+
+    gtk_grid_attach_next_to(ui->layout_container, ui->title_label,
+                            attachment_point, GTK_POS_TOP, width, 1);
 }
 
 /* Attach a style provider to the screen, using color options from config */

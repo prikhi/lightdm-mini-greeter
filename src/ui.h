@@ -12,6 +12,7 @@ typedef struct UI_ {
     GtkWidget   *password_label;
     GtkWidget   *password_input;
     GtkWidget   *feedback_label;
+    GtkWidget   *title_label;
 } UI;
 
 
