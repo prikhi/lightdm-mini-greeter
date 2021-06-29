@@ -121,7 +121,7 @@ Run `sudo make uninstall` to remove the greeter.
 Once installed, you should specify `lightdm-mini-greeter` as your
 `greeter-session` in `/etc/lightdm/lightdm.conf`. If you have multiple Desktop
 Environments or Window Managers installed, you can specify the one to start by
-changing the `user-session` option as well(look in `/usr/share/xsession` for
+changing the `user-session` option as well(look in `/usr/share/xsessions` for
 possible values).
 
 Modify `/etc/lightdm/lightdm-mini-greeter.conf` to customize the greeter. At
