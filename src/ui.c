@@ -23,6 +23,7 @@ static void setup_main_window(Config *config, UI *ui);
 static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
+static void create_and_attach_username_label(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
 static void attach_config_colors_to_screen(Config *config);
 
@@ -37,6 +38,7 @@ UI *initialize_ui(Config *config)
     setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
     create_and_attach_password_field(config, ui);
+    create_and_attach_username_label(config, ui);
     create_and_attach_feedback_label(ui);
     attach_config_colors_to_screen(config);
 
@@ -57,6 +59,7 @@ static UI *new_ui(void)
     ui->layout_container = NULL;
     ui->password_label = NULL;
     ui->password_input = NULL;
+    ui->username_label = NULL;
     ui->feedback_label = NULL;
 
     return ui;
@@ -243,6 +246,23 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     }
 }
 
+/* Add a label for the user's name
+ * If the login_user != CHANGE_ME
+ */
+
+static void create_and_attach_username_label(Config *config, UI *ui)
+{
+    if(strcmp(config->login_user, "CHANGE_ME") == 0){
+        ui->username_label = gtk_label_new("User Not Defined!");
+        gtk_widget_set_name(GTK_WIDGET(ui->username_label), "undefined_username");
+    } else{
+        ui->username_label = gtk_label_new(config->login_user);
+        gtk_widget_set_name(GTK_WIDGET(ui->username_label), "username");
+    }
+        gtk_label_set_justify(GTK_LABEL(ui->username_label), GTK_JUSTIFY_CENTER);
+        gtk_grid_attach_next_to(ui->layout_container, ui->username_label,
+                                ui->password_input, GTK_POS_TOP, 1, 1);
+}
 
 /* Add a label for feedback to the user */
 static void create_and_attach_feedback_label(UI *ui)
@@ -319,6 +339,32 @@ static void attach_config_colors_to_screen(Config *config)
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
         "}\n"
+        "#username {\n"
+            "color: %s;\n"
+            "caret-color: %s;\n"
+            "background-color: %s;\n"
+            "padding: %s;\n"
+            "border: %s;\n"
+            "border-width: %s;\n"
+            "border-color: %s;\n"
+            "border-radius: %s;\n"
+            "background-image: none;\n"
+            "box-shadow: none;\n"
+            "border-image-width: 0;\n"
+        "}\n"
+        "#undefined_username{\n"
+            "color: %s;\n"
+            "caret-color: %s;\n"
+            "background-color: %s;\n"
+            "padding: %s;\n"
+            "border: %s;\n"
+            "border-width: %s;\n"
+            "border-color: %s;\n"
+            "border-radius: %s;\n"
+            "background-image: none;\n"
+            "box-shadow: none;\n"
+            "border-image-width: 0;\n"
+        "}\n"
         // *
         , config->font
         , config->font_size
@@ -342,6 +388,24 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->password_color)
         , gdk_rgba_to_string(caret_color)
         , gdk_rgba_to_string(config->password_background_color)
+        , config->password_border_width
+        , gdk_rgba_to_string(config->password_border_color)
+        , config->password_border_radius
+        // #username
+        , gdk_rgba_to_string(config->password_color)
+        , gdk_rgba_to_string(caret_color)
+        , gdk_rgba_to_string(config->password_background_color)
+        , "8px"
+        , "2px solid black"
+        , config->password_border_width
+        , gdk_rgba_to_string(config->password_border_color)
+        , config->password_border_radius
+        // #undefined_username
+        , "red"
+        , gdk_rgba_to_string(caret_color)
+        , gdk_rgba_to_string(config->password_background_color)
+        , "8px"
+        , "2px solid red"
         , config->password_border_width
         , gdk_rgba_to_string(config->password_border_color)
         , config->password_border_radius
