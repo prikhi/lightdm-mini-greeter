@@ -57,9 +57,10 @@ static UI *new_ui(void)
     ui->monitor_count = 0;
     ui->main_window = NULL;
     ui->layout_container = NULL;
+    ui->username_label = NULL;
+    ui->username_input = NULL;
     ui->password_label = NULL;
     ui->password_input = NULL;
-    ui->username_label = NULL;
     ui->feedback_label = NULL;
 
     return ui;
@@ -236,7 +237,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     gtk_entry_set_width_chars(GTK_ENTRY(ui->password_input),
                               config->password_input_width);
     gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
-    gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
+    gtk_grid_attach(ui->layout_container, ui->password_input, 0, 1, 1, 1);
 
     if (config->show_password_label) {
         ui->password_label = gtk_label_new(config->password_label_text);
@@ -252,16 +253,23 @@ static void create_and_attach_password_field(Config *config, UI *ui)
 
 static void create_and_attach_username_label(Config *config, UI *ui)
 {
-    if(strcmp(config->login_user, "CHANGE_ME") == 0){
-        ui->username_label = gtk_label_new("User Not Defined!");
-        gtk_widget_set_name(GTK_WIDGET(ui->username_label), "undefined_username");
-    } else{
-        ui->username_label = gtk_label_new(config->login_user);
-        gtk_widget_set_name(GTK_WIDGET(ui->username_label), "username");
+    if(!config->show_username_label){
+        // Don't show any label or username
     }
-        gtk_label_set_justify(GTK_LABEL(ui->username_label), GTK_JUSTIFY_CENTER);
+
+    if(strcmp(config->login_user, "CHANGE_ME") == 0){
+        ui->username_input = gtk_label_new("User Not Defined!");
+    } else{
+        ui->username_input = gtk_label_new(config->login_user);
+    };
+        gtk_label_set_justify(GTK_LABEL(ui->username_input), GTK_JUSTIFY_CENTER);
+        gtk_widget_set_name(GTK_WIDGET(ui->username_input), "username");
+        gtk_grid_attach(ui->layout_container, ui->username_input, 0, 0, 1, 1);
+
+        ui->username_label = gtk_label_new(config->username_label_text);
+        gtk_label_set_justify(GTK_LABEL(ui->username_label), GTK_JUSTIFY_RIGHT);
         gtk_grid_attach_next_to(ui->layout_container, ui->username_label,
-                                ui->password_input, GTK_POS_TOP, 1, 1);
+                                ui->username_input, GTK_POS_LEFT, 1, 1);
 }
 
 /* Add a label for feedback to the user */
@@ -344,22 +352,7 @@ static void attach_config_colors_to_screen(Config *config)
             "caret-color: %s;\n"
             "background-color: %s;\n"
             "padding: %s;\n"
-            "border: %s;\n"
-            "border-width: %s;\n"
-            "border-color: %s;\n"
-            "border-radius: %s;\n"
-            "background-image: none;\n"
-            "box-shadow: none;\n"
-            "border-image-width: 0;\n"
-        "}\n"
-        "#undefined_username{\n"
-            "color: %s;\n"
-            "caret-color: %s;\n"
-            "background-color: %s;\n"
-            "padding: %s;\n"
-            "border: %s;\n"
-            "border-width: %s;\n"
-            "border-color: %s;\n"
+            "border: %s solid %s;\n"
             "border-radius: %s;\n"
             "background-image: none;\n"
             "box-shadow: none;\n"
@@ -392,23 +385,13 @@ static void attach_config_colors_to_screen(Config *config)
         , gdk_rgba_to_string(config->password_border_color)
         , config->password_border_radius
         // #username
-        , gdk_rgba_to_string(config->password_color)
+        , gdk_rgba_to_string(config->username_color)
         , gdk_rgba_to_string(caret_color)
-        , gdk_rgba_to_string(config->password_background_color)
-        , "8px"
-        , "2px solid black"
-        , config->password_border_width
-        , gdk_rgba_to_string(config->password_border_color)
-        , config->password_border_radius
-        // #undefined_username
-        , "red"
-        , gdk_rgba_to_string(caret_color)
-        , gdk_rgba_to_string(config->password_background_color)
-        , "8px"
-        , "2px solid red"
-        , config->password_border_width
-        , gdk_rgba_to_string(config->password_border_color)
-        , config->password_border_radius
+        , gdk_rgba_to_string(config->username_background_color)
+        , config->username_padding
+        , config->username_border_width
+        , gdk_rgba_to_string(config->username_border_color)
+        , config->username_border_radius
     );
 
     if (css_string_length >= 0) {

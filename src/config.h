@@ -12,6 +12,8 @@
 // Represents the System's Greeter Configuration. Parsed from `CONFIG_FILE`.
 typedef struct Config_ {
     gchar    *login_user;
+    gboolean  show_username_label;
+    gchar    *username_label_text;
     gboolean  show_password_label;
     gchar    *password_label_text;
     gchar    *invalid_password_text;
@@ -34,6 +36,13 @@ typedef struct Config_ {
     GdkRGBA  *border_color;
     gchar    *border_width;
     guint     layout_spacing;
+    // Username (Fixed)Input
+    GdkRGBA  *username_color;
+    GdkRGBA  *username_background_color;
+    GdkRGBA  *username_border_color;
+    gchar    *username_border_width;
+    gchar    *username_padding;
+    gchar    *username_border_radius;
     // Password Input
     gunichar *password_char;
     GdkRGBA  *password_color;

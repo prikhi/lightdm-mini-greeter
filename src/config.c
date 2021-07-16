@@ -48,6 +48,10 @@ Config *initialize_config(void)
     if (strcmp(config->login_user, "CHANGE_ME") == 0) {
         g_message("User configuration value is unchanged.");
     }
+    config->show_username_label =
+        g_key_file_get_boolean(keyfile, "greeter", "show-username-label", NULL);
+    config->username_label_text = parse_greeter_string(
+        keyfile, "greeter", "username-label-text", "Username:");
     config->show_password_label =
         g_key_file_get_boolean(keyfile, "greeter", "show-password-label", NULL);
     config->password_label_text = parse_greeter_string(
@@ -113,6 +117,26 @@ Config *initialize_config(void)
         parse_greeter_color_key(keyfile, "border-color");
     config->border_width = g_key_file_get_string(
         keyfile, "greeter-theme", "border-width", NULL);
+    // Username
+    config->username_color =
+        parse_greeter_color_key(keyfile, "username-color");
+    config->username_background_color =
+        parse_greeter_color_key(keyfile, "username-background-color");
+    gchar *temp_username_border_color = g_key_file_get_string(
+        keyfile, "greeter-theme", "username-border-color", NULL);
+    if (temp_username_border_color == NULL) {
+        config->username_border_color = config->border_color;
+    } else {
+        free(temp_username_border_color);
+        config->username_border_color =
+            parse_greeter_color_key(keyfile, "username-border-color");
+    }
+    config->username_border_width = parse_greeter_string(
+        keyfile, "greeter-theme", "username-border-width", config->border_width);
+    config->username_padding = parse_greeter_string(
+        keyfile, "greeter-theme", "username-padding", "8px");
+    config->username_border_radius = parse_greeter_string(
+        keyfile, "greeter-theme", "username-border-radius", "0.341125em");
     // Password
     config->password_char =
         parse_greeter_password_char(keyfile);
@@ -172,6 +196,11 @@ void destroy_config(Config *config)
     free(config->password_border_color);
     free(config->password_border_width);
     free(config->password_border_radius);
+    free(config->username_color);
+    free(config->username_background_color);
+    free(config->username_border_color);
+    free(config->username_border_width);
+    free(config->username_border_radius);
     free(config);
 }
 
