@@ -253,9 +253,7 @@ static void create_and_attach_password_field(Config *config, UI *ui)
 
 static void create_and_attach_username_label(Config *config, UI *ui)
 {
-    if(!config->show_username_label){
-        // Don't show any label or username
-    }
+    if(config->show_username_label){
 
     if(strcmp(config->login_user, "CHANGE_ME") == 0){
         ui->username_input = gtk_label_new("User Not Defined!");
@@ -270,6 +268,7 @@ static void create_and_attach_username_label(Config *config, UI *ui)
         gtk_label_set_justify(GTK_LABEL(ui->username_label), GTK_JUSTIFY_RIGHT);
         gtk_grid_attach_next_to(ui->layout_container, ui->username_label,
                                 ui->username_input, GTK_POS_LEFT, 1, 1);
+    }
 }
 
 /* Add a label for feedback to the user */
