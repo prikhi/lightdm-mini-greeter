@@ -196,6 +196,7 @@ void destroy_config(Config *config)
     free(config->password_border_color);
     free(config->password_border_width);
     free(config->password_border_radius);
+    free(config->username_label_text);
     free(config->username_color);
     free(config->username_background_color);
     free(config->username_border_color);
