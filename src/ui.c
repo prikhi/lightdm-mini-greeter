@@ -298,6 +298,7 @@ static void attach_config_colors_to_screen(Config *config)
         "#background.with-image {\n"
             "background-image: image(url(%s), %s);\n"
             "background-repeat: no-repeat;\n"
+            "background-size: %s;\n"
             "background-position: center;\n"
         "}\n"
         "#main, #password {\n"
@@ -333,6 +334,8 @@ static void attach_config_colors_to_screen(Config *config)
         // #background.image-background
         , config->background_image
         , gdk_rgba_to_string(config->background_color)
+        // #background image size
+        , config->background_image_size
         // #main, #password
         , config->border_width
         , gdk_rgba_to_string(config->border_color)
