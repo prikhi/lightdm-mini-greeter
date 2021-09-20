@@ -107,7 +107,7 @@ Config *initialize_config(void)
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color");
     config->background_image_size =
-        parse_greeter_string(keyfile, "greeter-theme", "background-image-size", "cover");
+        parse_greeter_string(keyfile, "greeter-theme", "background-image-size", "auto");
     // Window
     config->window_color =
         parse_greeter_color_key(keyfile, "window-color");
