@@ -2,6 +2,8 @@
 
 ## master
 
+* Add a `background-image-size` configuration option for scaling the background
+  image to fit or fill the screen.
 
 ## v0.5.1
 
