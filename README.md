@@ -28,7 +28,7 @@ Right now you can:
 * hide the password input's cursor
 * set the password masking character
 * set the size of the login window, the font, & every color
-* set a background image
+* set & scale a background image
 * use modifiable hotkeys to trigger a shutdown, restart, hibernate, or suspend
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
@@ -125,7 +125,8 @@ changing the `user-session` option as well(look in `/usr/share/xsessions` for
 possible values).
 
 Modify `/etc/lightdm/lightdm-mini-greeter.conf` to customize the greeter. At
-the very least, you will need to set the `user`.
+the very least, you will need to set the `user`. All other settings are
+optional & can be commented out or removed.
 
 You can test it out using LightDM's `test-mode`:
 

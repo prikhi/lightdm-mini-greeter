@@ -2,6 +2,8 @@
 
 ## master
 
+* Make every configuration option besides `greeter.user` optional. Any
+  undefined configuration options will fallback to their original values.
 * Add a `background-image-size` configuration option for scaling the background
   image to fit or fill the screen.
 
