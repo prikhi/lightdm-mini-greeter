@@ -51,9 +51,9 @@ gchar *focus_ring_next(FocusRing *ring)
 gchar *focus_ring_prev(FocusRing *ring)
 {
     if (ring->selected->prev == NULL) {
-        ring->selected = ring->beginning;
-    } else {
         ring->selected = ring->end;
+    } else {
+        ring->selected = ring->selected->prev;
     }
     return focus_ring_get_value(ring);
 }
