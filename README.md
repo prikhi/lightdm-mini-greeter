@@ -13,7 +13,6 @@ Eventually this is will present a more customizable interface:
 
 * Randomized Background Wallpapers
 * Configurable language/session info? (lightdm provides this already?)
-* Hotkey to cycle between DE/WM sessions
 * Handle GdkDisplay's `monitor-added` & `monitor-removed` signals
 
 [Open Feature Requests](http://bugs.sleepanarchy.com/projects/mini-greeter/issues/)
@@ -29,7 +28,8 @@ Right now you can:
 * set the password masking character
 * set the size of the login window, the font, & every color
 * set & scale a background image
-* use modifiable hotkeys to trigger a shutdown, restart, hibernate, or suspend
+* use modifiable hotkeys to cycle through sessions or trigger a shutdown,
+  restart, hibernate, or suspend
 
 ![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
 
@@ -71,6 +71,7 @@ Enable & configure the greeter & default session in your `configuration.nix`:
                 background-image = ""
             '';
         };
+        # Optionally, set a default session
         windowManager = {
             default = "awesome";
             awesome.enable = true;
@@ -120,9 +121,9 @@ Run `sudo make uninstall` to remove the greeter.
 
 Once installed, you should specify `lightdm-mini-greeter` as your
 `greeter-session` in `/etc/lightdm/lightdm.conf`. If you have multiple Desktop
-Environments or Window Managers installed, you can specify the one to start by
-changing the `user-session` option as well(look in `/usr/share/xsessions` for
-possible values).
+Environments or Window Managers installed, you can specify the default
+selection by changing the `user-session` option as well(look in
+`/usr/share/xsessions` for possible values).
 
 Modify `/etc/lightdm/lightdm-mini-greeter.conf` to customize the greeter. At
 the very least, you will need to set the `user`. All other settings are

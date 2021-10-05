@@ -4,6 +4,7 @@
 #include <lightdm.h>
 
 #include "config.h"
+#include "focus_ring.h"
 #include "ui.h"
 
 
@@ -11,6 +12,7 @@ typedef struct App_ {
     Config *config;
     LightDMGreeter *greeter;
     UI *ui;
+    FocusRing *session_ring;
 
     // Signal Handler ID for the `handle_password` callback
     gulong password_callback_id;

@@ -15,6 +15,7 @@ int main(int argc, char **argv)
 
     connect_to_lightdm_daemon(app->greeter);
     begin_authentication_as_default_user(app);
+    make_session_focus_ring(app);
 
     for (int m = 0; m < APP_MONITOR_COUNT(app); m++) {
         gtk_widget_show_all(GTK_WIDGET(APP_BACKGROUND_WINDOWS(app)[m]));

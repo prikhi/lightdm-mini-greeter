@@ -5,13 +5,16 @@
 
 #include "app.h"
 #include "utils.h"
+#include "focus_ring.h"
 #include "callbacks.h"
 #include "compat.h"
+
+static void set_ui_feedback_label(App *app, gchar *feedback_text);
 
 
 /* LightDM Callbacks */
 
-/* Start the Default Session Once Fully Authenticated.
+/* Start the Selected Session Once Fully Authenticated.
  *
  * The callback will clear & re-enable the input widget, and re-add the
  * `handle_password` callback so the user can try again if authentication
@@ -20,17 +23,12 @@
 void authentication_complete_cb(LightDMGreeter *greeter, App *app)
 {
     if (lightdm_greeter_get_is_authenticated(greeter)) {
-        const gchar *default_session =
-            lightdm_greeter_get_default_session_hint(greeter);
+        const gchar *session = focus_ring_get_value(app->session_ring);
 
-        g_message("Attempting to start session: %s", default_session);
-
-        if (g_strcmp0(default_session, "default") == 0) {
-            default_session = NULL;
-        }
+        g_message("Attempting to start session: %s", session);
 
         gboolean session_started_successfully =
-            !lightdm_greeter_start_session_sync(greeter, default_session, NULL);
+            !lightdm_greeter_start_session_sync(greeter, session, NULL);
 
         if (!session_started_successfully) {
             g_message("Unable to start session");
@@ -38,11 +36,7 @@ void authentication_complete_cb(LightDMGreeter *greeter, App *app)
     } else {
         g_message("Authentication failed");
         if (strlen(app->config->invalid_password_text) > 0) {
-           if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
-                gtk_widget_show(APP_FEEDBACK_LABEL(app));
-            }
-            gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)),
-                               app->config->invalid_password_text);
+            set_ui_feedback_label(app, app->config->invalid_password_text);
         }
         begin_authentication_as_default_user(app);
     }
@@ -101,11 +95,14 @@ gboolean handle_tab_key(GtkWidget *widget, GdkEvent *event, App *app)
     return TRUE;
 }
 
-/* Shutdown, Restart, Hibernate or Suspend if the correct keys are pressed */
-gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
-                                      Config *config)
+/* Shutdown, Restart, Hibernate, Suspend, or Switch Sessions if the correct
+ * keys are pressed.
+ */
+gboolean handle_hotkeys(GtkWidget *widget, GdkEventKey *event, App *app)
 {
     (void) widget;
+    Config *config = app->config;
+    FocusRing *sessions = app->session_ring;
 
     if (event->state & config->mod_bit) {
         if (event->keyval == config->suspend_key && lightdm_get_can_suspend()) {
@@ -119,6 +116,9 @@ gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
         } else if (event->keyval == config->shutdown_key &&
                    lightdm_get_can_shutdown()) {
             lightdm_shutdown(NULL);
+        } else if (event->keyval == config->session_key && sessions != NULL) {
+            gchar *new_session = focus_ring_next(sessions);
+            set_ui_feedback_label(app, new_session);
         } else {
             return FALSE;
         }
@@ -126,4 +126,13 @@ gboolean handle_power_management_keys(GtkWidget *widget, GdkEventKey *event,
     }
 
     return FALSE;
+}
+
+/* Set the Feedback Label's text & ensure it is visible. */
+static void set_ui_feedback_label(App *app, gchar *feedback_text)
+{
+    if (!gtk_widget_get_visible(APP_FEEDBACK_LABEL(app))) {
+        gtk_widget_show(APP_FEEDBACK_LABEL(app));
+    }
+    gtk_label_set_text(GTK_LABEL(APP_FEEDBACK_LABEL(app)), feedback_text);
 }

@@ -47,6 +47,7 @@ lightdm_mini_greeter_SOURCES = \
 							src/callbacks.c \
 							src/compat.c \
 							src/config.c \
+							src/focus_ring.c \
 							src/ui.c \
 							src/utils.c
 

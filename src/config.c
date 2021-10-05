@@ -69,6 +69,7 @@ Config *initialize_config(void)
     config->hibernate_key = parse_greeter_hotkey_keyval(keyfile, "hibernate-key", 'h');
     config->restart_key = parse_greeter_hotkey_keyval(keyfile, "restart-key", 'r');
     config->shutdown_key = parse_greeter_hotkey_keyval(keyfile, "shutdown-key", 's');
+    config->session_key = parse_greeter_hotkey_keyval(keyfile, "session-key", 'e');
     gchar *mod_key =
         g_key_file_get_string(keyfile, "greeter-hotkeys", "mod-key", NULL);
     if (mod_key == NULL) {

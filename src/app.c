@@ -40,7 +40,7 @@ App *initialize_app(int argc, char **argv)
                          G_CALLBACK(handle_tab_key), app);
     }
     g_signal_connect(GTK_WIDGET(APP_MAIN_WINDOW(app)), "key-press-event",
-                     G_CALLBACK(handle_power_management_keys), app->config);
+                     G_CALLBACK(handle_hotkeys), app);
 
     return app;
 }

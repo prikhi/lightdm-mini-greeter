@@ -2,6 +2,9 @@
 
 ## master
 
+* Add the ability to cycle between available sessions instead of only using
+  LightDM's `default-session`. Change sessions by pressing `<mod-key>+e`; a
+  `session-key` configuration option has been added to allow for customization.
 * Make every configuration option besides `greeter.user` optional. Any
   undefined configuration options will fallback to their original values.
 * Add a `background-image-size` configuration option for scaling the background
