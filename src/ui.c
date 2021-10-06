@@ -22,6 +22,7 @@ static void move_mouse_to_background_window(void);
 static void setup_main_window(Config *config, UI *ui);
 static void place_main_window(GtkWidget *main_window, gpointer user_data);
 static void create_and_attach_layout_container(UI *ui);
+static void create_and_attach_sys_info_label(Config *config, UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
 static void attach_config_colors_to_screen(Config *config);
@@ -36,6 +37,7 @@ UI *initialize_ui(Config *config)
     move_mouse_to_background_window();
     setup_main_window(config, ui);
     create_and_attach_layout_container(ui);
+    create_and_attach_sys_info_label(config, ui);
     create_and_attach_password_field(config, ui);
     create_and_attach_feedback_label(ui);
     attach_config_colors_to_screen(config);
@@ -212,6 +214,45 @@ static void create_and_attach_layout_container(UI *ui)
                       GTK_WIDGET(ui->layout_container));
 }
 
+/* Create a container for the system information & current time.
+ *
+ * Set the system information text by querying LightDM & the Config, but leave
+ * the time blank & let the timer update it.
+ */
+static void create_and_attach_sys_info_label(Config *config, UI *ui)
+{
+    if (!config->show_sys_info) {
+        return;
+    }
+    // container for system info & time
+    ui->info_container = GTK_GRID(gtk_grid_new());
+    gtk_grid_set_column_spacing(ui->info_container, 0);
+    gtk_grid_set_row_spacing(ui->info_container, 5);
+    gtk_widget_set_name(GTK_WIDGET(ui->info_container), "info");
+
+    // system info: <user>@<hostname>
+    const gchar *hostname = lightdm_get_hostname();
+    gchar *output_string;
+    asprintf(&output_string, "%s@%s", config->login_user, hostname);
+    ui->sys_info_label = gtk_label_new(output_string);
+    gtk_label_set_xalign(GTK_LABEL(ui->sys_info_label), 0.0f);
+    gtk_widget_set_name(GTK_WIDGET(ui->sys_info_label), "sys-info");
+
+    // time: filled out by callback
+    ui->time_label = gtk_label_new("");
+    gtk_label_set_xalign(GTK_LABEL(ui->time_label), 1.0f);
+    gtk_widget_set_hexpand(GTK_WIDGET(ui->time_label), TRUE);
+    gtk_widget_set_name(GTK_WIDGET(ui->time_label), "time-info");
+
+    // attach labels to info container, attach info container to layout.
+    gtk_grid_attach(
+        ui->info_container, GTK_WIDGET(ui->sys_info_label), 0, 0, 1, 1);
+    gtk_grid_attach(
+        ui->info_container, GTK_WIDGET(ui->time_label), 1, 0, 1, 1);
+    gtk_grid_attach(
+        ui->layout_container, GTK_WIDGET(ui->info_container), 0, 0, 2, 1);
+}
+
 
 /* Add a label & entry field for the user's password.
  *
@@ -233,7 +274,8 @@ static void create_and_attach_password_field(Config *config, UI *ui)
     gtk_entry_set_width_chars(GTK_ENTRY(ui->password_input),
                               config->password_input_width);
     gtk_widget_set_name(GTK_WIDGET(ui->password_input), "password");
-    gtk_grid_attach(ui->layout_container, ui->password_input, 0, 0, 1, 1);
+    const gint top = config->show_sys_info ? 1 : 0;
+    gtk_grid_attach(ui->layout_container, ui->password_input, 1, top, 1, 1);
 
     if (config->show_password_label) {
         ui->password_label = gtk_label_new(config->password_label_text);
@@ -320,6 +362,15 @@ static void attach_config_colors_to_screen(Config *config)
             "box-shadow: none;\n"
             "border-image-width: 0;\n"
         "}\n"
+        "#info {\n"
+            "margin: %s;\n"
+        "}\n"
+        "#info label {\n"
+            "font-family: %s;\n"
+            "font-size: %s;\n"
+            "color: %s;\n"
+        "}\n"
+
         // *
         , config->font
         , config->font_size
@@ -347,6 +398,12 @@ static void attach_config_colors_to_screen(Config *config)
         , config->password_border_width
         , gdk_rgba_to_string(config->password_border_color)
         , config->password_border_radius
+        // #info
+        , config->sys_info_margin
+        // #info label
+        , config->sys_info_font
+        , config->sys_info_font_size
+        , gdk_rgba_to_string(config->sys_info_color)
     );
 
     if (css_string_length >= 0) {

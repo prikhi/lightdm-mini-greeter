@@ -19,6 +19,7 @@ typedef struct Config_ {
     gfloat    password_alignment;
     gint      password_input_width;
     gboolean  show_image_on_all_monitors;
+    gboolean  show_sys_info;
 
     /* Theme Configuration */
     gchar    *font;
@@ -42,6 +43,11 @@ typedef struct Config_ {
     GdkRGBA  *password_border_color;
     gchar    *password_border_width;
     gchar    *password_border_radius;
+    // System Info
+    gchar    *sys_info_font;
+    gchar    *sys_info_font_size;
+    GdkRGBA  *sys_info_color;
+    gchar    *sys_info_margin;
 
     /* Hotkeys */
     guint     mod_bit;

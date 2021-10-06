@@ -41,6 +41,11 @@ App *initialize_app(int argc, char **argv)
     }
     g_signal_connect(GTK_WIDGET(APP_MAIN_WINDOW(app)), "key-press-event",
                      G_CALLBACK(handle_hotkeys), app);
+    // Update the current time every 15 seconds
+    if (app->config->show_sys_info) {
+        handle_time_update(app);
+        g_timeout_add_seconds(15, G_SOURCE_FUNC(handle_time_update), app);
+    }
 
     return app;
 }

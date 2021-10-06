@@ -2,6 +2,11 @@
 
 ## master
 
+* Add a `show-sys-info` configuration option to show the username, hostname, &
+  current time above the password label/input. Additional configuration options
+  let you customize the font, size, color, & spacing. The output format is
+  currently fixed to `<user>@<hostname>` & `HH:MM` but may be customizable in
+  the future.
 * Add the ability to cycle between available sessions instead of only using
   LightDM's `default-session`. Change sessions by pressing `<mod-key>+e`; a
   `session-key` configuration option has been added to allow for customization.

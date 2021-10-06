@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <lightdm.h>
 #include <string.h>
+#include <time.h>
 
 #include "app.h"
 #include "utils.h"
@@ -126,6 +127,19 @@ gboolean handle_hotkeys(GtkWidget *widget, GdkEventKey *event, App *app)
     }
 
     return FALSE;
+}
+
+/** Determine the current time & update the time GtkLabel.
+ */
+gboolean handle_time_update(App *app)
+{
+    time_t now = time(NULL);
+    struct tm *local_now = localtime(&now);
+    gchar date_string[30];
+    strftime(date_string, 29, "%H:%M", local_now);
+    gtk_label_set_text(GTK_LABEL(APP_TIME_LABEL(app)), date_string);
+
+    return TRUE;
 }
 
 /* Set the Feedback Label's text & ensure it is visible. */

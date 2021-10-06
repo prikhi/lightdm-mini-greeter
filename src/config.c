@@ -63,6 +63,8 @@ Config *initialize_config(void)
         keyfile, "greeter", "password-input-width", -1);
     config->show_image_on_all_monitors = parse_greeter_boolean(
         keyfile, "greeter", "show-image-on-all-monitors", FALSE);
+    config->show_sys_info = parse_greeter_boolean(
+        keyfile, "greeter", "show-sys-info", FALSE);
 
     // Parse Hotkey Settings
     config->suspend_key = parse_greeter_hotkey_keyval(keyfile, "suspend-key", 'u');
@@ -138,6 +140,21 @@ Config *initialize_config(void)
         keyfile, "greeter-theme", "password-border-width", config->border_width);
     config->password_border_radius = parse_greeter_string(
         keyfile, "greeter-theme", "password-border-radius", "0.341125em");
+    // System Info
+    gchar *temp_sys_info_color = g_key_file_get_string(
+        keyfile, "greeter-theme", "sys-info-color", NULL);
+    if (temp_sys_info_color == NULL) {
+        config->sys_info_color = config->text_color;
+    } else {
+        config->sys_info_color = parse_greeter_color_key(
+            keyfile, "sys-info-color", "#080800");
+    }
+    config->sys_info_font = parse_greeter_string(keyfile, "greeter-theme", "sys-info-font", config->font);
+    config->sys_info_font_size =
+        parse_greeter_string(keyfile, "greeter-theme", "sys-info-font-size", config->font_size);
+    config->sys_info_margin =
+        parse_greeter_string(keyfile, "greeter-theme", "sys-info-margin", "-5px -5px -5px");
+
 
     gint layout_spacing =
         parse_greeter_integer(keyfile, "greeter-theme", "layout-space", 15);
@@ -178,6 +195,9 @@ void destroy_config(Config *config)
     free(config->password_border_color);
     free(config->password_border_width);
     free(config->password_border_radius);
+    free(config->sys_info_color);
+    free(config->sys_info_font_size);
+    free(config->sys_info_margin);
     free(config);
 }
 

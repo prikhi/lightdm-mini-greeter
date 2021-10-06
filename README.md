@@ -25,6 +25,7 @@ Right now you can:
 * log in
 * hide the `Password:` label & customize the text
 * hide the password input's cursor
+* show the user, hostname, & current time
 * set the password masking character
 * set the size of the login window, the font, & every color
 * set & scale a background image

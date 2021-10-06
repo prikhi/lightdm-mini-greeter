@@ -31,5 +31,6 @@ void destroy_app(App *app);
 #define APP_MAIN_WINDOW(app)            (app)->ui->main_window
 #define APP_PASSWORD_INPUT(app)         (app)->ui->password_input
 #define APP_FEEDBACK_LABEL(app)         (app)->ui->feedback_label
+#define APP_TIME_LABEL(app)             (app)->ui->time_label
 
 #endif
