@@ -233,7 +233,7 @@ static void create_and_attach_sys_info_label(Config *config, UI *ui)
     // system info: <user>@<hostname>
     const gchar *hostname = lightdm_get_hostname();
     gchar *output_string;
-    int output_string_length = asprintf(&output_string, "%s@%s", 
+    int output_string_length = asprintf(&output_string, "%s@%s",
                                         config->login_user, hostname);
     if (output_string_length >= 0) {
         ui->sys_info_label = gtk_label_new(output_string);
