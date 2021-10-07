@@ -233,8 +233,14 @@ static void create_and_attach_sys_info_label(Config *config, UI *ui)
     // system info: <user>@<hostname>
     const gchar *hostname = lightdm_get_hostname();
     gchar *output_string;
-    asprintf(&output_string, "%s@%s", config->login_user, hostname);
-    ui->sys_info_label = gtk_label_new(output_string);
+    int output_string_length = asprintf(&output_string, "%s@%s", 
+                                        config->login_user, hostname);
+    if (output_string_length >= 0) {
+        ui->sys_info_label = gtk_label_new(output_string);
+    } else {
+        g_warning("Could not allocate memory for system info string.");
+        ui->sys_info_label = gtk_label_new("");
+    }
     gtk_label_set_xalign(GTK_LABEL(ui->sys_info_label), 0.0f);
     gtk_widget_set_name(GTK_WIDGET(ui->sys_info_label), "sys-info");
 
