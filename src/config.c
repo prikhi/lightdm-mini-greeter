@@ -1,6 +1,7 @@
 /* Functions related to the Configuration */
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 
 #include <gdk/gdk.h>
 #include <glib.h>
@@ -108,6 +109,48 @@ Config *initialize_config(void)
         g_key_file_get_string(keyfile, "greeter-theme", "background-image", NULL);
     if (config->background_image == NULL || strcmp(config->background_image, "") == 0) {
         config->background_image = (gchar *) "\"\"";
+    } else {
+        size_t path_size = strlen(config->background_image);
+        if (config->background_image[path_size - 2] == '/'){
+            // removes starting and trailing quotes for use with opendir
+            config->background_image[path_size - 1] = '\0';
+            char * raw_path = config->background_image + 1;
+
+            DIR *dir_stream = opendir(raw_path);
+            if (dir_stream == NULL) {
+                g_error("Could not open background image folder: %s", config->background_image);
+                config->background_image = (gchar *) "\"\"";
+            } else {
+                unsigned int images_found = 0;
+                struct dirent * de[100];
+                //goes through all the files in the directory
+                while ((de[images_found] = readdir(dir_stream)) != NULL) {
+                    char * end_pointer = de[images_found]->d_name + strlen(de[images_found]->d_name);
+                    //if a file contains an image extension saves the entity with its filename
+                    if (strcmp(end_pointer - 5, ".jpeg") == 0 ||
+                        strcmp(end_pointer - 4, ".jpg")  == 0 ||
+                        strcmp(end_pointer - 4, ".png")  == 0) {
+                        images_found++;
+                    }
+                }
+                //if any images were found
+                if (images_found > 0) {
+                    //randomly select one
+                    srand( (unsigned int) time(NULL));
+                    unsigned int selected_image = ((unsigned int) rand()) % images_found;
+                    size_t filename_size = strlen(de[selected_image]->d_name);
+                    //resize the path variable
+                    config->background_image = (char * ) realloc(config->background_image, path_size + filename_size);
+                    //append it to the path
+                    memcpy(config->background_image + path_size - 1, de[selected_image]->d_name, filename_size + 2);
+                    config->background_image[path_size + filename_size - 1] = '\"';
+                } else {
+                    g_error("No images were found in the background image folder: %s", config->background_image);
+                    config->background_image = (gchar *) "\"\"";
+                }
+            }
+            closedir(dir_stream);
+        }
     }
     config->background_color =
         parse_greeter_color_key(keyfile, "background-color", "#1B1D1E");
