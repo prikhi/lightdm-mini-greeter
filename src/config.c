@@ -139,11 +139,15 @@ Config *initialize_config(void)
                     srand( (unsigned int) time(NULL));
                     unsigned int selected_image = ((unsigned int) rand()) % images_found;
                     size_t filename_size = strlen(de[selected_image]->d_name);
-                    //resize the path variable
-                    config->background_image = (char * ) realloc(config->background_image, path_size + filename_size);
-                    //append it to the path
-                    memcpy(config->background_image + path_size - 1, de[selected_image]->d_name, filename_size + 2);
+                    //resize the path variable to contain the folder and file
+                    //the path_size already contains the space for the two quotes
+                    //one added for string termination 
+                    config->background_image = (char * ) g_realloc(config->background_image, path_size + filename_size + 1);
+                    //append filename to the path, overwriting the trailing quote of the path
+                    memcpy(config->background_image + path_size - 1, de[selected_image]->d_name, filename_size);
+                    //adds final trailing quote and string termination char
                     config->background_image[path_size + filename_size - 1] = '\"';
+                    config->background_image[path_size + filename_size]     = '\0';
                 } else {
                     g_error("No images were found in the background image folder: %s", config->background_image);
                     config->background_image = (gchar *) "\"\"";
