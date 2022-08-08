@@ -18,7 +18,9 @@ int main(int argc, char **argv)
     make_session_focus_ring(app);
 
     for (int m = 0; m < APP_MONITOR_COUNT(app); m++) {
-        gtk_widget_show_all(GTK_WIDGET(APP_BACKGROUND_WINDOWS(app)[m]));
+        if (APP_BACKGROUND_WINDOWS(app)[m] != NULL) {
+            gtk_widget_show_all(GTK_WIDGET(APP_BACKGROUND_WINDOWS(app)[m]));
+        }
     }
     gtk_widget_show_all(GTK_WIDGET(APP_MAIN_WINDOW(app)));
     gtk_window_present(APP_MAIN_WINDOW(app));

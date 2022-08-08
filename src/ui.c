@@ -69,24 +69,36 @@ static UI *new_ui(void)
 static void setup_background_windows(Config *config, UI *ui)
 {
     GdkDisplay *display = gdk_display_get_default();
-    ui->monitor_count = gdk_display_get_n_monitors(display);
+    if (config->show_image_on_all_monitors) {
+        ui->monitor_count = gdk_display_get_n_monitors(display);
+    } else {
+        ui->monitor_count = 1;
+    }
     ui->background_windows = malloc((uint) ui->monitor_count * sizeof (GtkWindow *));
-    for (int m = 0; m < ui->monitor_count; m++) {
-        GdkMonitor *monitor = gdk_display_get_monitor(display, m);
-        if (monitor == NULL) {
-            break;
-        }
 
-        GtkWindow *background_window = new_background_window(monitor);
-        ui->background_windows[m] = background_window;
+    for (int m = 0; m < ui->monitor_count; m++) {
+        GdkMonitor *monitor = NULL;
+        if (config->show_image_on_all_monitors) {
+            monitor = gdk_display_get_monitor(display, m);
+        } else {
+            monitor = gdk_display_get_primary_monitor(display);
+        }
+        if (monitor == NULL) {
+            ui->background_windows[m] = NULL;
+            continue;
+        }
 
         gboolean show_background_image =
             (gdk_monitor_is_primary(monitor) || config->show_image_on_all_monitors) &&
             (strcmp(config->background_image, "\"\"") != 0);
         if (show_background_image) {
+            GtkWindow *background_window = new_background_window(monitor);
+            ui->background_windows[m] = background_window;
             GtkStyleContext *style_context =
                 gtk_widget_get_style_context(GTK_WIDGET(background_window));
             gtk_style_context_add_class(style_context, "with-image");
+        } else {
+            ui->background_windows[m] = NULL;
         }
     }
 }
