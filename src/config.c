@@ -72,6 +72,7 @@ Config *initialize_config(void)
     config->restart_key = parse_greeter_hotkey_keyval(keyfile, "restart-key", 'r');
     config->shutdown_key = parse_greeter_hotkey_keyval(keyfile, "shutdown-key", 's');
     config->session_key = parse_greeter_hotkey_keyval(keyfile, "session-key", 'e');
+    config->help_key = parse_greeter_hotkey_keyval(keyfile, "help-key", 'k');
     gchar *mod_key =
         g_key_file_get_string(keyfile, "greeter-hotkeys", "mod-key", NULL);
     if (mod_key == NULL) {

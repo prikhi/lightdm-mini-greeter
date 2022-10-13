@@ -56,6 +56,7 @@ typedef struct Config_ {
     guint     hibernate_key;
     guint     suspend_key;
     guint     session_key;
+    guint     help_key;
 } Config;
 
 
