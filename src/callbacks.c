@@ -120,6 +120,12 @@ gboolean handle_hotkeys(GtkWidget *widget, GdkEventKey *event, App *app)
         } else if (event->keyval == config->session_key && sessions != NULL) {
             gchar *new_session = focus_ring_next(sessions);
             set_ui_feedback_label(app, new_session);
+        } else if (event->keyval == config->help_key) {
+            if (gtk_widget_is_visible(GTK_WIDGET(app->ui->help_window))) {
+                gtk_widget_hide(GTK_WIDGET(app->ui->help_window));
+            } else {
+                gtk_widget_show(GTK_WIDGET(app->ui->help_window));
+            }
         } else {
             return FALSE;
         }

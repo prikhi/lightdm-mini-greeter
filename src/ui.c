@@ -25,6 +25,7 @@ static void create_and_attach_layout_container(UI *ui);
 static void create_and_attach_sys_info_label(Config *config, UI *ui);
 static void create_and_attach_password_field(Config *config, UI *ui);
 static void create_and_attach_feedback_label(UI *ui);
+static void create_help_window(Config *config, UI *ui);
 static void attach_config_colors_to_screen(Config *config);
 
 
@@ -40,6 +41,7 @@ UI *initialize_ui(Config *config)
     create_and_attach_sys_info_label(config, ui);
     create_and_attach_password_field(config, ui);
     create_and_attach_feedback_label(ui);
+    create_help_window(config, ui);
     attach_config_colors_to_screen(config);
 
     return ui;
@@ -56,6 +58,7 @@ static UI *new_ui(void)
     ui->background_windows = NULL;
     ui->monitor_count = 0;
     ui->main_window = NULL;
+    ui->help_window = NULL;
     ui->layout_container = NULL;
     ui->password_label = NULL;
     ui->password_input = NULL;
@@ -314,6 +317,85 @@ static void create_and_attach_feedback_label(UI *ui)
                             attachment_point, GTK_POS_BOTTOM, width, 1);
 }
 
+/* Create window with some useful information (hot keys, ...) */
+static void create_help_window(Config *config, UI *ui)
+{
+    GtkWindow *help_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+
+    gtk_container_set_border_width(GTK_CONTAINER(help_window),
+                                   config->layout_spacing);
+    gtk_widget_set_name(GTK_WIDGET(help_window), "help");
+
+    // Grid container to widgets on help window
+    GtkGrid *help_grid = GTK_GRID(gtk_grid_new());
+    gtk_grid_set_column_spacing(help_grid, 5);
+    gtk_grid_set_row_spacing(help_grid, 5);
+    gtk_container_add(GTK_CONTAINER(help_window),
+                      GTK_WIDGET(help_grid));
+
+    // Add data to grid. (left, top, width, height)
+    char shortcut[1024];
+    char mod_key_name[1024];
+    if (config->mod_bit == GDK_CONTROL_MASK) {
+        strcpy(mod_key_name, "Ctrl + ");
+    } else if (config->mod_bit == GDK_MOD1_MASK) {
+        strcpy(mod_key_name, "Alt + ");
+    } else if (config->mod_bit == GDK_SUPER_MASK) {
+        strcpy(mod_key_name, "Meta + ");
+    }
+    GtkWidget *key_label;
+    gtk_grid_attach(
+        help_grid, GTK_WIDGET(gtk_label_new("Shortcuts")), 0, 0, 2, 1);
+    // help key
+    key_label = gtk_label_new("Help:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, key_label, 0, 1, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->help_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 1, 1, 1);
+    // suspend key
+    key_label = gtk_label_new("Suspend:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, GTK_WIDGET(key_label), 0, 2, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->suspend_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 2, 1, 1);
+    // hibernate key
+    key_label = gtk_label_new("Hibernate:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, GTK_WIDGET(key_label), 0, 3, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->hibernate_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 3, 1, 1);
+    // restart key
+    key_label = gtk_label_new("Restart:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, GTK_WIDGET(key_label), 0, 4, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->restart_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 4, 1, 1);
+    // shutdown key
+    key_label = gtk_label_new("Shutdown:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, GTK_WIDGET(key_label), 0, 5, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->shutdown_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 5, 1, 1);
+    // session key
+    key_label = gtk_label_new("Switch session:");
+    gtk_label_set_xalign(GTK_LABEL(key_label), 1);
+    gtk_grid_attach(help_grid, GTK_WIDGET(key_label), 0, 6, 1, 1);
+    strcpy(shortcut, mod_key_name);
+    strcat(shortcut, gdk_keyval_name(config->session_key));
+    gtk_grid_attach(help_grid, GTK_WIDGET(gtk_label_new(shortcut)), 1, 6, 1, 1);
+
+    gtk_widget_show_all(GTK_WIDGET(help_grid));
+
+    g_signal_connect(help_window, "realize", G_CALLBACK(hide_mouse_cursor), NULL);
+
+    ui->help_window = help_window;
+}
+
 /* Attach a style provider to the screen, using color options from config */
 static void attach_config_colors_to_screen(Config *config)
 {
@@ -349,12 +431,12 @@ static void attach_config_colors_to_screen(Config *config)
             "background-size: %s;\n"
             "background-position: center;\n"
         "}\n"
-        "#main, #password {\n"
+        "#main, #password, #help {\n"
             "border-width: %s;\n"
             "border-color: %s;\n"
             "border-style: solid;\n"
         "}\n"
-        "#main {\n"
+        "#main, #help {\n"
             "background-color: %s;\n"
         "}\n"
         "#password {\n"
