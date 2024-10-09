@@ -32,7 +32,7 @@ Right now you can:
 * use modifiable hotkeys to cycle through sessions or trigger a shutdown,
   restart, hibernate, or suspend
 
-![A screen with a dark background and a single password input box in the center](http://bugs.sleepanarchy.com/projects/mini-greeter/repository/revisions/master/entry/screenshot.png "Mini Greeter Screenshot")
+![A screen with a dark background and a single password input box in the center](https://raw.githubusercontent.com/prikhi/lightdm-mini-greeter/refs/heads/master/screenshot.png "Mini Greeter Screenshot")
 
 
 ## Install
